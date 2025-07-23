@@ -1,5 +1,5 @@
 # OOPFinalProject
-repo for cst8288 final project
+repo for cst8288 final project. please make a clone and create a branch to work off of.
 <table>
 <tr>
   <th>Name</th>

@@ -78,6 +78,18 @@ CREATE TABLE MaintenanceLog (
     FOREIGN KEY (ComponentID) REFERENCES Components(ComponentID)
 );
 
+-- Users Table
+CREATE TABLE Users (
+Username VARCHAR(20),
+Password VARCHAR(20),
+StaffID INT NOT NULL,
+FOREIGN KEY (StaffID) REFERENCES Staff(StaffID)
+);
+
+-- Users INSERT 
+INSERT INTO Users (Username, Password, StaffID) VALUES
+('cst8288', 'cst8288', '1' );
+
 -- Staff INSERT
 INSERT INTO Staff (FirstName, LastName, Email, Role) VALUES
 ('Bruce', 'Wayne', 'bruce.wayne@gothamtransit.com', 'TransitManager'),

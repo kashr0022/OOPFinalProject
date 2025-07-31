@@ -10,22 +10,22 @@ package model;
  */
 public abstract class Vehicles {
 
-    private int vehicleID;
+    private int vehicleNumber;
     private VehicleType vehicleType;
     private String consumptionRate;
 
     /**
-     * @return the vehicleID
+     * @return the vehicleNumber
      */
-    public int getVehicleID() {
-        return vehicleID;
+    public int getVehicleNumber() {
+        return vehicleNumber;
     }
 
     /**
-     * @param vehicleID the vehicleID to set
+     * @param vehicleNumber the vehicleNumber to set
      */
-    public void setVehicleID(int vehicleID) {
-        this.vehicleID = vehicleID;
+    public void setVehicleNumber(int vehicleNumber) {
+        this.vehicleNumber = vehicleNumber;
     }
 
     /**

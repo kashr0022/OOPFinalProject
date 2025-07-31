@@ -12,7 +12,7 @@ repo for cst8288 final project. please make a clone and create a branch to work 
   <td>ashr0022@algonquinlive.com</td>
 </tr>
 <tr>
-  <td>Lily Schmeer</td>
+  <td>Lily S.</td>
   <td>041003275</td>
   <td>schm0137@algonquinlive.com</td>
 </tr>

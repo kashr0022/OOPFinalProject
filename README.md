@@ -36,14 +36,14 @@ repo for cst8288 final project. please make a clone and create a branch to work 
 </tr>
 <tr>
   <td>1</td>
-  <td>Francesca Parent, Khairunnisa Ashri, Lily Schmeer</td>
+  <td>Francesca Parent, Khairunnisa Ashri, Lily S.</td>
   <td>Introduction done by Francesca</td>
   <td>July 3, 2025</td>
   
 </tr>
 <tr>
   <td>1.1</td>
-  <td>Lily Schmeer</td>
+  <td>Lily S.</td>
   <td>Added target audience & scope sections</td>
   <td>July 13th, 2025</td>
 </tr>

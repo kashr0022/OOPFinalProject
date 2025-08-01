@@ -31,18 +31,6 @@ public class DataSource {
 
     }
 
-    public static boolean authenticate(String logUsername, String logPassword) {
-//      Grab db credentials from prop file and load into variables
-        openProperties();
-
-//      directly compare with user entered credentials
-        if (logUsername.equals(username) && logPassword.equals(password)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     public static synchronized Connection getConnection() {
         try {
             if (connection == null) {

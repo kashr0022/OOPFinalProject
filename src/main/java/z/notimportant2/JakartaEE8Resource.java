@@ -1,4 +1,4 @@
-package com.algonquincollege.Group17.FinalProjectOOP.resources;
+package z.notimportant2;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

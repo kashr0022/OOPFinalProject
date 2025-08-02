@@ -4,11 +4,13 @@
  */
 package model;
 
+import dataaccesslayer.Item;
+
 /**
  *
  * @author khair
  */
-public abstract class Staff {
+public abstract class Staff extends Item {
     
     private int staffId;
     private String firstName;

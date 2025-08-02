@@ -19,9 +19,25 @@ import java.util.logging.Logger;
  *	@since JDK 21.0.4
  */
 public class DataSource {
+    
+    /**
+     * 
+     */
     private static Connection connection = null;
+    
+    /**
+     * 
+     */
     private static String url = null;
+    
+    /**
+     * 
+     */
     private static String username = null;
+    
+    /**
+     * 
+     */
     private static String password = null;
 
     /**
@@ -31,6 +47,10 @@ public class DataSource {
 
     }
 
+    /**
+     * 
+     * @return 
+     */
     public static synchronized Connection getConnection() {
         try {
             if (connection == null) {
@@ -51,6 +71,9 @@ public class DataSource {
         return connection;
     }
 
+    /**
+     * 
+     */
     private static void openProperties() {
         Properties props = new Properties();
         try (InputStream in = DataSource.class.getClassLoader().getResourceAsStream("prop/database.properties")) {

@@ -69,9 +69,11 @@ public class FrontControllerServlet extends HttpServlet {
         try (PrintWriter out = res.getWriter()) {
             out.println("<!DOCTYPE html><html><head>");
             out.println("<title>Enter PTFMS Credentials</title>");
-            out.println("<link rel='stylesheet' href='" + req.getContextPath() + "/assets/styles.css'>");
+            out.println("<link rel='stylesheet' href='assets/styles.css'>");
             out.println("</head><body>");
-            out.println("<h1>Enter PTFMS Credentials</h1>");
+            out.println("<center>");
+            out.println("<h1 class=\"title\">PTFMS</h1>");
+            out.println("<h2 class=\"subtitle\">Enter Credentials</h2>");
 
             // login
             out.println("<form action='controller' method='get'>");
@@ -85,7 +87,7 @@ public class FrontControllerServlet extends HttpServlet {
             out.println("<button type='submit' name='action' value='register'>Register</button>");
             out.println("<div style='form-row'>");
             out.println("</form>");
-            
+            out.println("</center>");
             if (errorMessage != null) {
                 out.println("<p style='color:red;'>" + errorMessage + "</p>");
             }

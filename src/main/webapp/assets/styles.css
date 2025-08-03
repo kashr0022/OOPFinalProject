@@ -23,11 +23,6 @@ h1 {
     text-align: center;
 }
 
-center {
-    border: 1px solid var(--white);
-    border-radius: 6px;
-    padding: 50px;
-}
 input {
     background-color: #404040;
     border: 1px solid #555555;
@@ -75,4 +70,16 @@ button:hover {
     font-style: italic;
     font-size: 1rem;
 
+}
+.border-white {
+    border: 1px solid var(--white);
+    border-radius: 6px;
+    padding: 50px;
+}
+
+.fc-button-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5rem;
 }

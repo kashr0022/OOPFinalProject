@@ -2,7 +2,7 @@ DROP DATABASE IF EXISTS ptfms;
 CREATE DATABASE ptfms;
 USE ptfms;
 
--- Staff Table with Role ENUM to separate privelages 
+-- Staff Table with Role ENUM to separate privelages
 CREATE TABLE Staff (
     StaffID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     FirstName VARCHAR(30),
@@ -55,7 +55,7 @@ CREATE TABLE FuelReport (
     ReportID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     StaffID INT NOT NULL,
     VehicleNumber INT NOT NULL,
-    UsageAmt DECIMAL(10,2) NOT NULL, 
+    UsageAmt DECIMAL(10,2) NOT NULL,
     Date DATETIME NOT NULL,
     Status VARCHAR(20),
     FOREIGN KEY (VehicleNumber) REFERENCES Vehicles(VehicleNumber),
@@ -69,7 +69,7 @@ CREATE TABLE MaintenanceLog (
     GPSID INT NOT NULL,
     VehicleNumber INT NOT NULL,
     ComponentID INT NOT NULL,
-    UsageAmt DECIMAL(10,2) NOT NULL, 
+    UsageAmt DECIMAL(10,2) NOT NULL,
     Date DATETIME NOT NULL,
     Status VARCHAR(20),
     FOREIGN KEY (GPSID) REFERENCES GPS(GPSID),
@@ -134,3 +134,18 @@ INSERT INTO MaintenanceLog (StaffID, GPSID, VehicleNumber, ComponentID, UsageAmt
 (4, 4, 4, 4, 40.00, '2025-07-29 10:00:00', 'Pending'),
 (2, 5, 5, 5, 25.00, '2025-07-29 11:00:00', 'Completed');
 
+-- Users Table
+CREATE TABLE Users (
+    Username VARCHAR(20),
+    Password VARCHAR(20),
+    StaffID INT NOT NULL,
+    FOREIGN KEY (StaffID) REFERENCES Staff(StaffID)
+);
+
+-- Users INSERT
+INSERT INTO Users (Username, Password, StaffID) VALUES
+    ('cst8288', 'cst8288', '1' );
+
+-- Corresponding input into Staff for CST
+INSERT INTO Staff (FirstName, LastName, Email, Role) VALUES
+    ('cst8288', 'cst8288', 'cst8288@gmail.com', 'TransitManager');

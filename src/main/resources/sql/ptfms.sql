@@ -134,3 +134,18 @@ INSERT INTO MaintenanceLog (StaffID, GPSID, VehicleNumber, ComponentID, UsageAmt
 (4, 4, 4, 4, 40.00, '2025-07-29 10:00:00', 'Pending'),
 (2, 5, 5, 5, 25.00, '2025-07-29 11:00:00', 'Completed');
 
+-- Users Table
+CREATE TABLE Users (
+Username VARCHAR(20),
+Password VARCHAR(20),
+StaffID INT NOT NULL,
+FOREIGN KEY (StaffID) REFERENCES Staff(StaffID)
+);
+ 
+-- Users INSERT 
+INSERT INTO Users (Username, Password, StaffID) VALUES
+('cst8288', 'cst8288', '1' );
+
+-- Corresponding input into Staff for CST
+INSERT INTO Staff (FirstName, LastName, Email, Role) VALUES
+('cst8288', 'cst8288', 'cst8288@gmail.com', 'TransitManager');

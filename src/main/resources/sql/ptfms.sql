@@ -11,11 +11,20 @@ CREATE TABLE Staff (
     Role ENUM('Operator', 'TransitManager') NOT NULL
 );
 
+-- Users Table
+CREATE TABLE Users (
+    Username VARCHAR(20),
+    Password VARCHAR(20),
+    StaffID INT NOT NULL PRIMARY KEY,
+    FOREIGN KEY (StaffID) REFERENCES Staff(StaffID)
+);
+
 -- Vehicles Table with Type ENUM and ConsumptionRate
 CREATE TABLE Vehicles (
     VehicleNumber INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     VehicleType ENUM('DieselBus', 'DieselElectricTrain', 'ElectricLightRail') NOT NULL,
-    ConsumptionRate VARCHAR(20) NOT NULL
+    ConsumptionRate DECIMAL(10,2) NOT NULL,
+    ConsumptionUnit ENUM('mpg', '1/km', 'kWh/hr') NOT NULL
 );
 
 -- Components Table for All Vehicle Types
@@ -78,6 +87,14 @@ CREATE TABLE MaintenanceLog (
     FOREIGN KEY (ComponentID) REFERENCES Components(ComponentID)
 );
 
+-- FOR TESTING Staff INSERT
+INSERT INTO Staff (FirstName, LastName, Email, Role) VALUES
+    ('cst8288', 'cst8288', 'cst8288@gmail.com', 'TransitManager');
+
+-- FOR TESTING Users INSERT FOR TESTING
+INSERT INTO Users (Username, Password, StaffID) VALUES
+    ('cst8288', 'cst8288', '1' );
+
 -- Staff INSERT
 INSERT INTO Staff (FirstName, LastName, Email, Role) VALUES
 ('Bruce', 'Wayne', 'bruce.wayne@gothamtransit.com', 'TransitManager'),
@@ -88,11 +105,11 @@ INSERT INTO Staff (FirstName, LastName, Email, Role) VALUES
 
 -- Vehicles INSERT
 INSERT INTO Vehicles (VehicleType, ConsumptionRate) VALUES
-('DieselBus', '8 mpg'),
-('DieselElectricTrain', '5.5 l/km'),
-('ElectricLightRail', '120 kWh/hr'),
-('DieselElectricTrain', '6 l/km'),
-('ElectricLightRail', '110 kWh/hr');
+('DieselBus', '8', 'mpg'),
+('DieselElectricTrain', '5.5, 'l/km'),
+('ElectricLightRail', '120, 'kWh/hr'),
+('DieselElectricTrain', '6', 'l/km'),
+('ElectricLightRail', '110', 'kWh/hr');
 
 -- Components INSERT
 INSERT INTO Components (VehicleNumber, ComponentName, ComponentType, HoursUsed) VALUES
@@ -133,19 +150,3 @@ INSERT INTO MaintenanceLog (StaffID, GPSID, VehicleNumber, ComponentID, UsageAmt
 (2, 3, 3, 3, 20.00, '2025-07-28 18:00:00', 'Completed'),
 (4, 4, 4, 4, 40.00, '2025-07-29 10:00:00', 'Pending'),
 (2, 5, 5, 5, 25.00, '2025-07-29 11:00:00', 'Completed');
-
--- Users Table
-CREATE TABLE Users (
-    Username VARCHAR(20),
-    Password VARCHAR(20),
-    StaffID INT NOT NULL,
-    FOREIGN KEY (StaffID) REFERENCES Staff(StaffID)
-);
-
--- Users INSERT
-INSERT INTO Users (Username, Password, StaffID) VALUES
-    ('cst8288', 'cst8288', '1' );
-
--- Corresponding input into Staff for CST
-INSERT INTO Staff (FirstName, LastName, Email, Role) VALUES
-    ('cst8288', 'cst8288', 'cst8288@gmail.com', 'TransitManager');

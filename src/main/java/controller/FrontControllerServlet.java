@@ -41,7 +41,7 @@ public class FrontControllerServlet extends HttpServlet {
             out.println("<h1 class=\"title\">PTFMS</h1>");
             out.println("<h2 class=\"subtitle\">Enter Credentials</h2>");
 
-            // Login form only
+
             out.println("<form action='controller' method='POST'>");
             out.println("<label>Username: <input type='text' name='username' required></label><br>");
             out.println("<label>Password: <input type='password' name='password' required></label><br><br>");
@@ -53,16 +53,25 @@ public class FrontControllerServlet extends HttpServlet {
             out.print("<br>");
 
             if (loggedIn) {
-                out.print("<div class=\"fc-button-group\">");
+                out.print("<div class=\"button-con\">");
 
                 out.print("<form action=\"\" method=\"GET\">");
-                out.print("<input type=\"submit\" value=\"Page One\">");
+                out.print("<button type=\"submit\" value=\"PageOne\">Page One</button>");
                 out.print("</form>");
 
 
                 out.print("</div>");
                 loggedIn = false;
 
+            } else {
+                out.print("<div class=\"button-con\">");
+
+                out.print("<form action=\"register\" method=\"GET\">");
+                out.print("<button type=\"submit\" value=\"Register\">Register</button>");
+                out.print("</form>");
+
+
+                out.print("</div>");
             }
             out.println("</center>");
             out.println("</body></html>");

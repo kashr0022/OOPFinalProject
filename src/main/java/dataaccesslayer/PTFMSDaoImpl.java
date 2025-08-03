@@ -1,5 +1,8 @@
 package dataaccesslayer;
 
+import transferobjects.staff.StaffDTO;
+import transferobjects.users.UsersDTO;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,5 +34,31 @@ public class PTFMSDaoImpl implements PTFMSDao {
         }
 
         return false;
+    }
+
+    @Override
+    public void addStaffUser(StaffDTO staff, UsersDTO user) {
+        Connection connection = DataSource.getConnection();
+
+        try {
+            String staffQuery = "INSERT INTO Staff (FirstName, LastName, Email, Role) VALUES (?, ?, ?, ?)";
+            try (PreparedStatement staffStmt = connection.prepareStatement(staffQuery)) {
+                staffStmt.setString(1, staff.getFirstName());
+                staffStmt.setString(2, staff.getLastName());
+                staffStmt.setString(3, staff.getEmail());
+                staffStmt.setString(4, staff.getRole());
+                staffStmt.executeUpdate();
+            }
+
+            String userQuery = "INSERT INTO Users (Username, Password, StaffID) VALUES (?, ?, LAST_INSERT_ID())";
+            try (PreparedStatement userStmt = connection.prepareStatement(userQuery)) {
+                userStmt.setString(1, user.getUsername());
+                userStmt.setString(2, user.getPassword());
+                userStmt.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 }

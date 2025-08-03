@@ -1,6 +1,8 @@
 :root {
     --bg-color: #1a1a1a;
+    --bg-color-lighter: #424141;
     --white: #ffffff;
+    --grey-md: #353535;
 }
 
 body {
@@ -24,8 +26,8 @@ h1 {
 }
 
 input {
-    background-color: #404040;
-    border: 1px solid #555555;
+    background-color: var(--bg-color-lighter);
+    border: 1px solid var(--bg-color-lighter);
     color: var(--white);
     padding: 12px 15px;
     border-radius: 6px;
@@ -38,7 +40,7 @@ input {
 input:focus {
     background-color: var(--white);
     border-color: var(--white);
-    color: #333333;
+    color: var(--grey-md);
     outline: none;
     box-shadow: 0 0 0 3px var(--white);
 }
@@ -52,8 +54,43 @@ button {
     cursor: pointer;
     font-size: 14px;
     font-weight: 500;
-    margin: 0 10px;
+    margin: 0px 10px 0px 10px;
     transition: all 0.3s ease-in-out;
+}
+
+select {
+    background-color: var(--bg-color-lighter);
+    border: 1px solid var(--bg-color-lighter);
+    color: var(--white);
+    padding: 12px 15px;
+    border-radius: 6px;
+    width: 100%;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    margin-bottom: 15px;
+}
+
+select:focus {
+    background-color: var(--white);
+    border-color: var(--white);
+    color: var(--grey-md);
+    outline: none;
+    box-shadow: 0 0 0 3px var(--white);
+}
+
+select option {
+    background-color: var(--bg-color-lighter);
+    color: var(--white);
+}
+
+select:focus option {
+    background-color: var(--white);
+    color: var(--grey-md);
+}
+
+.register-form input {
+    width: 100%;
+    box-sizing: border-box;
 }
 
 button:hover {
@@ -69,17 +106,51 @@ button:hover {
 .subtitle {
     font-style: italic;
     font-size: 1rem;
-
 }
+
 .border-white {
     border: 1px solid var(--white);
     border-radius: 6px;
     padding: 50px;
 }
 
-.fc-button-group {
+.fc-button-con {
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 0.5rem;
+}
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+.form-con {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    text-align: left;
+}
+
+.form-label {
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: var(--white);
+    font-size: 14px;
+}
+
+.button-con {
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button-con button {
+    width: 125px;
 }

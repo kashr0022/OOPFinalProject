@@ -3,64 +3,120 @@ package viewlayer.authentication;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.io.PrintWriter;
+
+import businesslayer.PTFMSBusinessLogic;
 import model.Role;
 import static model.Role.OPERATOR;
 import transferobjects.staff.OperatorDTO;
+import transferobjects.staff.StaffDTO;
+import transferobjects.users.UsersDTO;
 
-/**
- * Description: AddTitleServlet to add new title
- */
 public class RegisterServlet extends HttpServlet {
+    private boolean registerComplete;
 
+    protected void processRequest(HttpServletRequest req, HttpServletResponse res)
+            throws IOException {
+        res.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = res.getWriter()) {
+            out.println("<!DOCTYPE html><html><head>");
+            out.println("<title>Register New User</title>");
+            out.println("<link rel='stylesheet' href='assets/styles.css'>");
+            out.println("</head><body>");
+            out.println("<center>");
+
+            out.println("<div class=\"border-white\">");
+            if (registerComplete) {
+                out.println("<p>Register complete, please log in with the username & password.</p>");
+                out.println("</form>");
+                out.print("<form action=\"controller\" method=\"GET\">");
+                out.print("<button type=\"submit\" value=\"Return\">Log in</button>");
+                out.print("</form>");
+                registerComplete = false;
+            } else {
+                out.println("<h1 class=\"title\">REGISTER</h1>");
+                out.println("<h2 class=\"subtitle\">Creating a new user</h2>");
+
+                out.println("<form action='register' method='POST' class='register-form'>");
+
+                out.println("<div class='form-con'>");
+                out.println("<label class='form-label'>First Name:</label>");
+                out.println("<input type='text' name='firstname' required>");
+                out.println("</div>");
+
+                out.println("<div class='form-con'>");
+                out.println("<label class='form-label'>Last Name:</label>");
+                out.println("<input type='text' name='lastname' required>");
+                out.println("</div>");
+
+                out.println("<div class='form-con'>");
+                out.println("<label class='form-label'>Email:</label>");
+                out.println("<input type='email' name='email' required>");
+                out.println("</div>");
+
+                out.println("<div class='form-con'>");
+                out.println("<label class='form-label'>Username:</label>");
+                out.println("<input type='text' name='username' required>");
+                out.println("</div>");
+
+                out.println("<div class='form-con'>");
+                out.println("<label class='form-label'>Password:</label>");
+                out.println("<input type='password' name='password' required>");
+                out.println("</div>");
+
+                out.println("<div class='form-con'>");
+                out.println("<label class='form-label'>Choose an option:</label>");
+                out.println("<select name='roleoptions' required>");
+                out.println("<option value='Operator'>Operator</option>");
+                out.println("<option value='TransitManager'>Transit Manager</option>");
+                out.println("</select>");
+                out.println("</div>");
+
+                out.println("<div class='button-con'>");
+                out.println("<button type='submit' name='registerCheck' value='RegisterUser'>Register</button>");
+                out.println("</form>");
+                out.print("<form action=\"controller\" method=\"GET\">");
+                out.print("<button type=\"submit\" value=\"Return\">Return</button>");
+                out.print("</form>");
+                out.println("</div>");
+            }
+
+
+
+            out.println("</div>");
+
+            out.println("</center>");
+            out.println("</body></html>");
+        }
+    }
+
+    protected void commitNewRegister(HttpServletRequest req, HttpServletResponse res) {
+        PTFMSBusinessLogic ptfmsBusinessLogic = new PTFMSBusinessLogic();
+        StaffDTO staff = new StaffDTO();
+        UsersDTO user = new UsersDTO();
+
+        staff.setFirstName(req.getParameter("firstname"));
+        staff.setLastName(req.getParameter("lastname"));
+        staff.setEmail(req.getParameter("email"));
+        staff.setRole(req.getParameter("roleoptions"));
+        user.setUsername(req.getParameter("username"));
+        user.setPassword(req.getParameter("password"));
+
+        ptfmsBusinessLogic.addStaffUser(staff, user);
+
+        registerComplete = true;
+
+    }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/views/authentication/Register.jsp").forward(req, res);
+        processRequest(req, res);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-
-        String firstName = req.getParameter("firstName");
-        String lastName = req.getParameter("lastName");
-        String email = req.getParameter("email");
-        String role = req.getParameter("role");
-
-        if (firstName == null || firstName.trim().isEmpty()
-                || lastName == null || lastName.trim().isEmpty()
-                || email == null || email.trim().isEmpty()
-                || role == null || role.trim().isEmpty()) {
-
-            req.setAttribute("error", "All fields are required and cannot be empty.");
-            req.getRequestDispatcher("/WEB-INF/views/authentication/Register.jsp").forward(req, res);
-            return;
-        }
-
-//        try {
-//            int edition = Integer.parseInt(editionStr);
-//
-//            if (Role == OPERATOR){
-//                OperatorDTO operator = new OperatorDTO();
-//            operator.setFirstName(firstName);
-//            operator.setLastName(lastName);
-//            operator.setEmail(email);
-//            operator.setRole(role);
-//
-//            }
-//            
-//            CredentialsDTO creds = new CredentialsDTO();
-//            creds.setUsername("cst8288");
-//            creds.setPassword("cst8288");
-//
-//            TitlesDaoImpl dao = new TitlesDaoImpl(creds);
-//            dao.addTitle(t);
-//
-//            res.sendRedirect(req.getContextPath() + "/controller?action=getAllTitles");
-//
-//        } catch (Exception e) {
-//            req.setAttribute("error", "Failed to add title: " + e.getMessage());
-//            req.getRequestDispatcher("/WEB-INF/views/titles/AddTitle.jsp").forward(req, res);
-//        }
+        commitNewRegister(req, res);
+        processRequest(req, res);
     }
 }

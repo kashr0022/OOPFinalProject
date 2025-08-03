@@ -1,5 +1,7 @@
 package controller;
 
+import businesslayer.PTFMSBusinessLogic;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
@@ -8,89 +10,107 @@ import java.io.PrintWriter;
 
 public class FrontControllerServlet extends HttpServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse res)
-            throws ServletException, IOException {
+    private boolean loggedIn;
 
-        String action = req.getParameter("action");
-
-        if (action == null || action.isEmpty()) {
-            showHomePage(req, res, null);
-            return;
-        }
-
-        String targetServlet = null;
-        String nextAction = req.getParameter("nextAction");
-        switch (action) {
-            // authors
-            case "":
-                targetServlet = "/";
-                break;
-
-            default:
-                res.sendError(HttpServletResponse.SC_NOT_FOUND, "Unknown GET action: " + action);
-                return;
-        }
-        RequestDispatcher dispatcher = req.getRequestDispatcher(targetServlet);
-        dispatcher.forward(req, res);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse res)
-            throws ServletException, IOException {
-
-        String action = req.getParameter("action");
-        String targetServlet = null;
-
-        if (action == null || action.isEmpty()) {
-            res.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing POST action");
-            return;
-        }
-
-        switch (action) {
-            // authentication
-            case "register":
-                targetServlet = "/WEB-INF/views/authentication/Register.jsp";
-                break;
-
-            default:
-                res.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unknown POST action: " + action);
-                return;
-        }
-
-        RequestDispatcher dispatcher = req.getRequestDispatcher(targetServlet);
-        dispatcher.forward(req, res);
-    }
-
-    private void showHomePage(HttpServletRequest req, HttpServletResponse res, String errorMessage)
+    protected void processRequest(HttpServletRequest req, HttpServletResponse res)
             throws IOException {
 
         res.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = res.getWriter()) {
             out.println("<!DOCTYPE html><html><head>");
             out.println("<title>Enter PTFMS Credentials</title>");
-            out.println("<link rel='stylesheet' href='" + req.getContextPath() + "/assets/styles.css'>");
+            out.println("<link rel='stylesheet' href='assets/styles.css'>");
             out.println("</head><body>");
-            out.println("<h1>Enter PTFMS Credentials</h1>");
+            out.println("<center>");
+//          type casting to String because .toString causes null pointer exception
+            String logInFailMsg = (String) req.getAttribute("logInFailMsg");
+            String logInSuccessMsg = (String) req.getAttribute("logInSuccessMsg");
+            if (logInFailMsg != null) {
+                out.println("<center>");
+                out.println("<p style='color:red;'>" + logInFailMsg + "</p>");
+                out.println("</center>");
+                logInFailMsg = null;
+            } if (logInSuccessMsg != null) {
+                out.println("<center>");
+                out.println("<p style='color:green;'>" + logInSuccessMsg + "</p>");
+                out.println("</center>");
+                logInSuccessMsg = null;
+            }
 
-            // login
-            out.println("<form action='controller' method='get'>");
+            out.println("<center class=\"border-white\">");
+            out.println("<h1 class=\"title\">PTFMS</h1>");
+            out.println("<h2 class=\"subtitle\">Enter Credentials</h2>");
+
+
+            out.println("<form action='controller' method='POST'>");
             out.println("<label>Username: <input type='text' name='username' required></label><br>");
             out.println("<label>Password: <input type='password' name='password' required></label><br><br>");
+            out.println("<button type='submit' name=\"logInCheck\" value='Login'>Login</button>");
             out.println("</form>");
-            
-            // register
-            out.println("<form action='controller' method='post'>");
-            out.println("<button type='submit' name='action' value='login'>Login</button>");
-            out.println("<button type='submit' name='action' value='register'>Register</button>");
-            out.println("<div style='form-row'>");
-            out.println("</form>");
-            
-            if (errorMessage != null) {
-                out.println("<p style='color:red;'>" + errorMessage + "</p>");
+
+
+
+            out.print("<br>");
+
+            if (loggedIn) {
+                out.print("<div class=\"button-con\">");
+
+                out.print("<form action=\"\" method=\"GET\">");
+                out.print("<button type=\"submit\" value=\"PageOne\">Page One</button>");
+                out.print("</form>");
+
+
+                out.print("</div>");
+                loggedIn = false;
+
+            } else {
+                out.print("<div class=\"button-con\">");
+
+                out.print("<form action=\"register\" method=\"GET\">");
+                out.print("<button type=\"submit\" value=\"Register\">Register</button>");
+                out.print("</form>");
+
+
+                out.print("</div>");
             }
-//           
+            out.println("</center>");
             out.println("</body></html>");
         }
     }
+
+    protected boolean authenticateAccount(String userIn, String passIn) {
+        PTFMSBusinessLogic ptfmsBusinessLogic = new PTFMSBusinessLogic();
+        return ptfmsBusinessLogic.checkCred(userIn, passIn);
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
+        processRequest(req, res);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String logInCheck = request.getParameter("logInCheck");
+
+        if ("Login".equals(logInCheck)) {
+            boolean loginSuccess = authenticateAccount(request.getParameter("username"), request.getParameter("password"));
+
+            if (loginSuccess) {
+                loggedIn = true;
+                request.setAttribute("logInSuccessMsg", "Welcome back " + request.getParameter("username") + ".");
+                processRequest(request, response);
+            } else {
+                request.setAttribute("logInFailMsg", "Invalid Credentials. Please Retry.");
+                processRequest(request, response);
+
+            }
+        } else {
+
+            processRequest(request, response);
+        }
+    }
+
 }

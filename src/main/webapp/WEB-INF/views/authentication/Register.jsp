@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/styles.css">
     </head>
     <body>
+        <center>
         <div class="container">
             <h1 style="text-align:center;">Register </h1>
             <form action="${pageContext.request.contextPath}/controller?action=register" method="POST">
@@ -43,5 +44,6 @@
             </form>
         </div>
     </div>
+        </center>
 </body>
 </html>

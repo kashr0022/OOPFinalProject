@@ -45,6 +45,11 @@ input:focus {
     box-shadow: 0 0 0 3px var(--white);
 }
 
+input:disabled {
+    font-style: italic;
+    color: var(--bg-color);
+}
+
 button {
     background-color: var(--bg-color);
     color: var(--white);
@@ -104,8 +109,10 @@ button:hover {
 }
 
 .subtitle {
-    font-style: italic;
     font-size: 1rem;
+}
+.it {
+    font-style: italic;
 }
 
 .border-white {
@@ -153,4 +160,27 @@ button:hover {
 
 .button-con button {
     width: 125px;
+}
+
+.con {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+}
+
+.corner-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.corner-btn button {
+    margin: 0;
+}
+
+.line {
+    border: none;
+    background-color: var(--white);
+    height: 1px;
+    margin: 0px 0px 20px 0px;
 }

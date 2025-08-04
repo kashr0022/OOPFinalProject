@@ -24,7 +24,7 @@ CREATE TABLE Users
 -- Vehicles Table with Type ENUM and ConsumptionRate
 CREATE TABLE Vehicles
 (
-    VehicleId   INT            NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    VehicleID   INT            NOT NULL AUTO_INCREMENT PRIMARY KEY,
     VehicleNumber VARCHAR(50) UNIQUE,
     VehicleType     ENUM('DieselBus', 'DieselElectricTrain', 'ElectricLightRail') NOT NULL,
     ConsumptionRate DECIMAL(10, 2) NOT NULL,
@@ -37,11 +37,11 @@ CREATE TABLE Vehicles
 CREATE TABLE Components
 (
     ComponentID   INT         NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    VehicleId INT         NOT NULL,
+    VehicleID INT         NOT NULL,
     ComponentName VARCHAR(50) NOT NULL,
     ComponentType ENUM('Diesel', 'Electric', 'Hybrid') NOT NULL,
     HoursUsed     INT         NOT NULL,
-    FOREIGN KEY (VehicleId) REFERENCES Vehicles (VehicleId)
+    FOREIGN KEY (VehicleID) REFERENCES Vehicles (VehicleID)
 );
 
 -- Staff log of working hours
@@ -60,11 +60,11 @@ CREATE TABLE GPS
 (
     GPSID         INT      NOT NULL AUTO_INCREMENT PRIMARY KEY,
     StaffID       INT      NOT NULL,
-    VehicleId INT      NOT NULL,
+    VehicleID INT      NOT NULL,
     StartTime     DATETIME NOT NULL,
     EndTime       DATETIME NOT NULL,
     Notes         VARCHAR(100),
-    FOREIGN KEY (VehicleId) REFERENCES Vehicles (VehicleId),
+    FOREIGN KEY (VehicleID) REFERENCES Vehicles (VehicleID),
     FOREIGN KEY (StaffID) REFERENCES Staff (StaffID)
 );
 
@@ -73,11 +73,13 @@ CREATE TABLE FuelReport
 (
     ReportID      INT            NOT NULL AUTO_INCREMENT PRIMARY KEY,
     StaffID       INT            NOT NULL,
-    VehicleId INT            NOT NULL,
+    VehicleID INT            NOT NULL,
     UsageAmt      DECIMAL(10, 2) NOT NULL,
+    DistanceTraveled INT         NOT NULL,
+    FuelType      VARCHAR(20)    NOT NULL,
     Date          DATETIME       NOT NULL,
     Status        VARCHAR(20),
-    FOREIGN KEY (VehicleId) REFERENCES Vehicles (VehicleId),
+    FOREIGN KEY (VehicleID) REFERENCES Vehicles (VehicleID),
     FOREIGN KEY (StaffID) REFERENCES Staff (StaffID)
 );
 
@@ -87,14 +89,14 @@ CREATE TABLE MaintenanceLog
     LogID         INT            NOT NULL AUTO_INCREMENT PRIMARY KEY,
     StaffID       INT            NOT NULL,
     GPSID         INT            NOT NULL,
-    VehicleId INT            NOT NULL,
+    VehicleID INT            NOT NULL,
     ComponentID   INT            NOT NULL,
     UsageAmt      DECIMAL(10, 2) NOT NULL,
     Date          DATETIME       NOT NULL,
     Status        VARCHAR(20),
     FOREIGN KEY (GPSID) REFERENCES GPS (GPSID),
     FOREIGN KEY (StaffID) REFERENCES Staff (StaffID),
-    FOREIGN KEY (VehicleId) REFERENCES Vehicles (VehicleId),
+    FOREIGN KEY (VehicleID) REFERENCES Vehicles (VehicleID),
     FOREIGN KEY (ComponentID) REFERENCES Components (ComponentID)
 );
 
@@ -143,7 +145,7 @@ VALUES ('DB001', 'DieselBus', 8, 'mpg', 40, 'South to Downtown'),
        ('ER002', 'ElectricLightRail', 110, 'kWh/hr', 1000, 'City Core to Outskirts');
 
 -- Components INSERT
-INSERT INTO Components (VehicleId, ComponentName, ComponentType, HoursUsed)
+INSERT INTO Components (VehicleID, ComponentName, ComponentType, HoursUsed)
 VALUES (1, 'Diesel Engine', 'Diesel', 1200),
        (2, 'Battery System', 'Electric', 800),
        (3, 'Pantograph', 'Electric', 900),
@@ -159,7 +161,7 @@ VALUES (1, '2025-07-28 08:00:00', '2025-07-28 16:00:00', 'Morning shift'),
        (4, '2025-07-28 11:00:00', '2025-07-28 19:00:00', 'Overseeing repairs');
 
 -- GPS INSERT
-INSERT INTO GPS (StaffID, VehicleId, StartTime, EndTime, Notes)
+INSERT INTO GPS (StaffID, VehicleID, StartTime, EndTime, Notes)
 VALUES (1, 1, '2025-07-28 08:00:00', '2025-07-28 12:00:00', 'Downtown route'),
        (3, 3, '2025-07-28 09:30:00', '2025-07-28 13:30:00', 'City loop'),
        (5, 5, '2025-07-28 10:00:00', '2025-07-28 14:00:00', 'Downtown to East'),
@@ -167,15 +169,16 @@ VALUES (1, 1, '2025-07-28 08:00:00', '2025-07-28 12:00:00', 'Downtown route'),
        (3, 4, '2025-07-29 13:00:00', '2025-07-29 17:00:00', 'City Core to Outskirts');
 
 -- FuelReport INSERT
-INSERT INTO FuelReport (StaffID, VehicleId, UsageAmt, Date, Status)
-VALUES (1, 1, 50.75, '2025-07-28 13:00:00', 'Approved'),
-       (3, 2, 120.50, '2025-07-28 14:30:00', 'Pending'),
-       (5, 4, 80.00, '2025-07-28 15:00:00', 'Approved'),
-       (2, 1, 45.25, '2025-07-29 11:00:00', 'Rejected'),
-       (4, 3, 100.00, '2025-07-29 12:00:00', 'Approved');
+INSERT INTO FuelReport (StaffID, VehicleID, UsageAmt, DistanceTraveled, FuelType, Date, Status)
+VALUES 
+        (1, 1, 50.75, 100, 'Diesel', '2025-07-28 13:00:00', 'Approved'),
+        (3, 2, 120.50, 200, 'DieselElectric', '2025-07-28 14:30:00', 'Pending'),
+        (5, 4, 80.00, 150, 'DieselElectric', '2025-07-28 15:00:00', 'Approved'),
+        (2, 1, 45.25, 90, 'Diesel', '2025-07-29 11:00:00', 'Rejected'),
+        (4, 3, 100.00, 180, 'Electric', '2025-07-29 12:00:00', 'Approved');
 
 -- MaintenanceLog INSERT
-INSERT INTO MaintenanceLog (StaffID, GPSID, VehicleId, ComponentID, UsageAmt, Date, Status)
+INSERT INTO MaintenanceLog (StaffID, GPSID, VehicleID, ComponentID, UsageAmt, Date, Status)
 VALUES (2, 1, 1, 1, 50.00, '2025-07-28 16:00:00', 'Completed'),
        (4, 2, 2, 2, 30.00, '2025-07-28 17:00:00', 'In Progress'),
        (2, 3, 3, 3, 20.00, '2025-07-28 18:00:00', 'Completed'),

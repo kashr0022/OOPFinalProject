@@ -25,6 +25,22 @@ h1 {
     text-align: center;
 }
 
+h2 {
+    color: var(--white);
+    margin-bottom: 30px;
+    font-size: 20px;
+    text-align: center;
+}
+
+table {
+    justify-content: center;
+    text-align: center;
+}
+
+th, td {
+    padding: 10px;
+}
+
 input {
     background-color: var(--bg-color-lighter);
     border: 1px solid var(--bg-color-lighter);

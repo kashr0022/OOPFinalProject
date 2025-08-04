@@ -76,8 +76,10 @@ public class FrontControllerServlet extends HttpServlet {
                 out.print("<hr class=\"line\">");
                 out.println("<h2 class=\"subtitle\">Navigation</h2>");
                 out.print("<div class=\"button-con\">");
+
                 out.print("<form action=\"vehicleregistration\" method=\"GET\">");
                 out.print("<button type=\"submit\" value=\"Vehicle Registration\">Vehicle Registration</button>");
+
                 out.print("</form>");
                 out.print("</div>");
 
@@ -98,6 +100,7 @@ public class FrontControllerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
         processRequest(req, res);
+        
     }
 
     @Override

@@ -61,4 +61,55 @@ public class PTFMSDaoImpl implements PTFMSDao {
             Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE, null, e);
         }
     }
+
+    @Override
+    public boolean checkUserTaken(UsersDTO user) {
+        Connection connection = null;
+        String query = "SELECT * FROM Users WHERE Username = ?";
+
+        connection = DataSource.getConnection();
+
+        try (PreparedStatement prepState = connection.prepareStatement(query)) {
+
+            prepState.setString(1, user.getUsername());
+
+            try (ResultSet resultSet = prepState.executeQuery()) {
+                if (resultSet.next()) {
+                    return true;
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean checkStaffTaken(StaffDTO staff) {
+        Connection connection = null;
+        String query = "SELECT * FROM Staff WHERE FirstName = ? AND LastName = ?";
+
+        connection = DataSource.getConnection();
+        try (
+             PreparedStatement prepState = connection.prepareStatement(query)) {
+
+            prepState.setString(1, staff.getFirstName());
+            prepState.setString(2, staff.getLastName());
+
+            try (ResultSet resultSet = prepState.executeQuery()) {
+                if (resultSet.next()) {
+                    return true;
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE,
+                    "Exception caught related to staff exist check functionality. (" + staff.getFirstName() + " " + staff.getLastName() + ").", ex);
+            return false;
+        }
+        return false;
+    }
 }

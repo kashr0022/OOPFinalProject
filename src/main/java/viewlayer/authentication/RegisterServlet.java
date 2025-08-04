@@ -1,14 +1,11 @@
 package viewlayer.authentication;
 
-import javax.servlet.*;
+import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 
 import businesslayer.PTFMSBusinessLogic;
-import model.Role;
-import static model.Role.OPERATOR;
-import transferobjects.staff.OperatorDTO;
 import transferobjects.staff.StaffDTO;
 import transferobjects.users.UsersDTO;
 
@@ -25,6 +22,13 @@ public class RegisterServlet extends HttpServlet {
             out.println("</head><body>");
             out.println("<center>");
 
+            String alreadyExistsMsg = (String) req.getAttribute("alreadyExistsMsg");
+            if (alreadyExistsMsg != null) {
+                out.println("<center>");
+                out.println("<p style='color:red;'>" + alreadyExistsMsg + "</p>");
+                out.println("</center>");
+                alreadyExistsMsg = null;
+            }
             out.println("<div class=\"border-white\">");
             if (registerComplete) {
                 out.println("<p>Register complete, please log in with the username & password.</p>");
@@ -107,6 +111,34 @@ public class RegisterServlet extends HttpServlet {
         registerComplete = true;
 
     }
+    protected boolean checkIfExists(HttpServletRequest req, HttpServletResponse res) {
+        PTFMSBusinessLogic ptfmsBusinessLogic = new PTFMSBusinessLogic();
+        StaffDTO staff = new StaffDTO();
+        UsersDTO user = new UsersDTO();
+
+        staff.setFirstName(req.getParameter("firstname"));
+        staff.setLastName(req.getParameter("lastname"));
+        staff.setEmail(req.getParameter("email"));
+        staff.setRole(req.getParameter("roleoptions"));
+        user.setUsername(req.getParameter("username"));
+        user.setPassword(req.getParameter("password"));
+
+        boolean staffExists = ptfmsBusinessLogic.checkStaffTaken(staff);
+        boolean userExists = ptfmsBusinessLogic.checkUserTaken(user);
+
+        if (staffExists && userExists) {
+            req.setAttribute("alreadyExistsMsg", "Staff First/Last & Username (" + req.getParameter("username") + ") already taken.");
+            return true;
+        } else if (userExists) {
+            req.setAttribute("alreadyExistsMsg", "Username (" + req.getParameter("username") + ") already taken.");
+            return true;
+        } else if (staffExists) {
+            req.setAttribute("alreadyExistsMsg", "First/Last name (" + req.getParameter("firstname") + " " + req.getParameter("lastname") + ") already taken.");
+            return true;
+        } else {
+            return false;
+        }
+    }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
@@ -116,7 +148,9 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-        commitNewRegister(req, res);
+        if (!checkIfExists(req, res)) {
+            commitNewRegister(req, res);
+        }
         processRequest(req, res);
     }
 }

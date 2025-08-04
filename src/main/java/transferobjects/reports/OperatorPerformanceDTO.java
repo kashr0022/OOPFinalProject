@@ -1,15 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package transferobjects.reports;
+
+import model.Role;
 
 /**
  *
- * @author A
+ * @author Khairunnisa Ashri
  */
 public class OperatorPerformanceDTO {
     private int staffID;
+    private Role role;
     private String firstName;
     private String lastName;
     private double onTimeRate;
@@ -99,5 +99,19 @@ public class OperatorPerformanceDTO {
      */
     public void setTotalHoursWorked(double totalHoursWorked) {
         this.totalHoursWorked = totalHoursWorked;
+    }
+
+    /**
+     * @return the role
+     */
+    public Role getRole() {
+        return role;
+    }
+
+    /**
+     * @param role the role to set
+     */
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

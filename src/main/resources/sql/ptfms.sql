@@ -41,6 +41,7 @@ CREATE TABLE Components
     ComponentName VARCHAR(50) NOT NULL,
     ComponentType ENUM('Diesel', 'Electric', 'Hybrid') NOT NULL,
     HoursUsed     INT         NOT NULL,
+    RatePerHour   DECIMAL(10, 2) NOT NULL DEFAULT 50.00,
     FOREIGN KEY (VehicleID) REFERENCES Vehicles (VehicleID)
 );
 
@@ -102,6 +103,13 @@ CREATE TABLE MaintenanceLog
     FOREIGN KEY (VehicleID) REFERENCES Vehicles (VehicleID),
     FOREIGN KEY (ComponentID) REFERENCES Components (ComponentID)
 );
+
+-- Fuel Rates Table
+CREATE TABLE FuelRates (
+    FuelType VARCHAR(50) PRIMARY KEY,
+    RatePerUnit DECIMAL(10,2)
+);
+
 
 -- FOR TESTING Staff INSERT
 INSERT INTO Staff (FirstName, LastName, Email, Role)
@@ -176,8 +184,8 @@ VALUES
 INSERT INTO FuelReport (StaffID, VehicleID, UsageAmt, DistanceTraveled, FuelType, Date, Status)
 VALUES 
         (1, 1, 50.75, 100, 'Diesel', '2025-07-28 13:00:00', 'Approved'),
-        (3, 2, 120.50, 200, 'DieselElectric', '2025-07-28 14:30:00', 'Pending'),
-        (5, 4, 80.00, 150, 'DieselElectric', '2025-07-28 15:00:00', 'Approved'),
+        (3, 2, 120.50, 200, 'Hybrid', '2025-07-28 14:30:00', 'Pending'),
+        (5, 4, 80.00, 150, 'Hybrid', '2025-07-28 15:00:00', 'Approved'),
         (2, 1, 45.25, 90, 'Diesel', '2025-07-29 11:00:00', 'Rejected'),
         (4, 3, 100.00, 180, 'Electric', '2025-07-29 12:00:00', 'Approved');
 
@@ -188,3 +196,10 @@ VALUES (2, 1, 1, 1, 50.00, '2025-07-28 16:00:00', 'Completed'),
        (2, 3, 3, 3, 20.00, '2025-07-28 18:00:00', 'Completed'),
        (4, 4, 4, 4, 40.00, '2025-07-29 10:00:00', 'Pending'),
        (2, 5, 5, 5, 25.00, '2025-07-29 11:00:00', 'Completed');
+
+-- Fuel Rates INSERT
+INSERT INTO FuelRates (FuelType, RatePerUnit) VALUES 
+        ('Diesel', 1.50),
+        ('Electric', 0.20),
+        ('Hybrid', 1.10);
+

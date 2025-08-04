@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package viewlayer;
 
 import dataaccesslayer.OperatorPerformanceDao;
@@ -16,7 +13,7 @@ import transferobjects.reports.OperatorPerformanceDTO;
 
 /**
  *
- * @author A
+ * @author Khairunnisa Ashri
  */
 public class OperatorPerformanceServlet extends HttpServlet {
     private OperatorPerformanceDao dao = new OperatorPerformanceDao();

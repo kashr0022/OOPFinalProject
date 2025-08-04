@@ -1,14 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package transferobjects.reports;
 
 import java.time.LocalDateTime;
 
 /**
  *
- * @author A
+ * @author Khairunnisa Asrhi
  */
 public class MaintenanceLogDTO {
     private int logID;
@@ -22,6 +18,7 @@ public class MaintenanceLogDTO {
     private String diagnostics;
     private LocalDateTime date;
     private String status;
+    private double cost;
 
     /**
      * @return the logID
@@ -175,6 +172,20 @@ public class MaintenanceLogDTO {
      */
     public void setVehicleType(String vehicleType) {
         this.vehicleType = vehicleType;
+    }
+
+    /**
+     * @return the cost
+     */
+    public double getCost() {
+        return cost;
+    }
+
+    /**
+     * @param cost the cost to set
+     */
+    public void setCost(double cost) {
+        this.cost = cost;
     }
 
     

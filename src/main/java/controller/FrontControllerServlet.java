@@ -7,35 +7,36 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-
 public class FrontControllerServlet extends HttpServlet {
-
-    private boolean loggedIn;
 
     protected void processRequest(HttpServletRequest req, HttpServletResponse res)
             throws IOException {
 
+        HttpSession session = req.getSession(false);
+        boolean loggedIn = (session != null && session.getAttribute("username") != null);
         res.setContentType("text/html;charset=UTF-8");
+
         try (PrintWriter out = res.getWriter()) {
             out.println("<!DOCTYPE html><html><head>");
             out.println("<title>Enter PTFMS Credentials</title>");
             out.println("<link rel='stylesheet' href='assets/styles.css'>");
             out.println("</head><body>");
             out.println("<center>");
-//          type casting to String because .toString causes null pointer exception
+
             String logInFailMsg = (String) req.getAttribute("logInFailMsg");
             String logInSuccessMsg = (String) req.getAttribute("logInSuccessMsg");
+
             if (logInFailMsg != null) {
                 out.println("<center>");
                 out.println("<p style='color:red;'>" + logInFailMsg + "</p>");
                 out.println("</center>");
-                logInFailMsg = null;
-            } if (logInSuccessMsg != null) {
+            }
+            if (logInSuccessMsg != null) {
                 out.println("<center>");
                 out.println("<p style='color:green;'>" + logInSuccessMsg + "</p>");
                 out.println("</center>");
-                logInSuccessMsg = null;
             }
+
             out.println("<div class=\"con\">");
 
             if (!loggedIn) {
@@ -46,19 +47,20 @@ public class FrontControllerServlet extends HttpServlet {
                 out.println("</div>");
             } else {
                 out.println("<div class=\"corner-btn\">");
-                out.println("<form action='controller' method='GET'>");
-                out.print("<button type=\"submit\" value=\"Log out\">Log out</button>");
+                out.println("<form action='controller' method='POST'>");
+                out.println("<input type='hidden' name='action' value='logout'>");
+                out.println("<button type=\"submit\">Log out</button>");
                 out.println("</form>");
                 out.println("</div>");
             }
+
             out.println("<center class=\"border-white\">");
             out.println("<h1 class=\"title\">PTFMS</h1>");
+
             if (loggedIn) {
                 out.println("<h2 class=\"subtitle it\">Current Account:</h2>");
-
-                String loggedUsername = req.getParameter("username");
+                String loggedUsername = (String) session.getAttribute("username");
                 out.println("<label>Username: <input type='text' value=\"" + loggedUsername + "\" disabled></label><br>");
-
             } else {
                 out.println("<h2 class=\"subtitle it\">Enter Credentials:</h2>");
                 out.println("<form action='controller' method='POST'>");
@@ -68,22 +70,19 @@ public class FrontControllerServlet extends HttpServlet {
                 out.println("</form>");
             }
 
-
             out.print("<br>");
 
             if (loggedIn) {
                 out.print("<hr class=\"line\">");
                 out.println("<h2 class=\"subtitle\">Navigation</h2>");
                 out.print("<div class=\"button-con\">");
-                out.print("<form action=\"\" method=\"GET\">");
-                out.print("<button type=\"submit\" value=\"PageOne\">Page One</button>");
+                out.print("<form action=\"vehicleregistration\" method=\"GET\">");
+                out.print("<button type=\"submit\" value=\"Vehicle Registration\">Vehicle Registration</button>");
                 out.print("</form>");
-
-
                 out.print("</div>");
-                loggedIn = false;
 
             }
+
             out.println("</center>");
             out.println("</div>");
             out.println("</body></html>");
@@ -106,23 +105,28 @@ public class FrontControllerServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String logInCheck = request.getParameter("logInCheck");
+        String action = request.getParameter("action");
 
         if ("Login".equals(logInCheck)) {
             boolean loginSuccess = authenticateAccount(request.getParameter("username"), request.getParameter("password"));
-
             if (loginSuccess) {
-                loggedIn = true;
+                HttpSession session = request.getSession(true);
+                session.setAttribute("username", request.getParameter("username"));
                 request.setAttribute("logInSuccessMsg", "Welcome back " + request.getParameter("username") + ".");
                 processRequest(request, response);
             } else {
                 request.setAttribute("logInFailMsg", "Invalid Credentials. Please Retry.");
                 processRequest(request, response);
-
             }
+        } else if ("logout".equals(action)) {
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+//              remove sesh from storage
+                session.invalidate();
+            }
+            processRequest(request, response);
         } else {
-
             processRequest(request, response);
         }
     }
-
 }

@@ -83,7 +83,7 @@ public class FrontControllerServlet extends HttpServlet {
                 out.print("</form>");
                 
                 out.print("<form action=\"dashboard\" method=\"GET\">");
-                out.print("<button type=\"submit\" value=\"Dashboard\">Dashboard</button>");
+                out.print("<button type=\"submit\" value=\"Dashboard\">Manager Dashboard</button>");
                 out.print("</form>");
                 
                 out.print("</div>");

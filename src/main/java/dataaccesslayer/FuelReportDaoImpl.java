@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package dataaccesslayer;
 
 import java.sql.Connection;
@@ -14,33 +11,35 @@ import transferobjects.reports.FuelReportDTO;
 
 /**
  *
- * @author A
+ * @author Khairunnisa Ashri
  */
-public class FuelReportDao {
+public class FuelReportDaoImpl {
 
     public List<FuelReportDTO> getFuelReport() throws SQLException {
         List<FuelReportDTO> reports = new ArrayList<>();
-        String sql = "SELECT \n"
-                + "    fr.ReportID,\n"
-                + "    fr.VehicleID,\n"
-                + "    v.VehicleType,\n"
-                + "    fr.StaffID,\n"
-                + "    s.FirstName,\n"
-                + "    s.LastName,\n"
-                + "    fr.FuelType,\n"
-                + "    fr.UsageAmt,\n"
-                + "    CASE\n"
-                + "        WHEN v.VehicleType = 'ElectricLightRail' THEN 'kWh/hr'\n"
-                + "        WHEN v.VehicleType = 'DieselBus' THEN 'mpg'\n"
-                + "        WHEN v.VehicleType = 'DieselElectricTrain' THEN 'mpg'\n"
-                + "        ELSE 'units'\n"
-                + "    END AS Unit,\n"
-                + "    fr.DistanceTraveled,\n"
-                + "    fr.Date,\n"
-                + "    fr.Status\n"
-                + "FROM FuelReport fr\n"
-                + "JOIN Vehicles v ON fr.VehicleID = v.VehicleID\n"
-                + "JOIN Staff s ON fr.StaffID = s.StaffID";
+        String sql = """
+                     SELECT
+                         fr.ReportID,
+                         fr.VehicleID,
+                         v.VehicleType,
+                         fr.StaffID,
+                         s.FirstName,
+                         s.LastName,
+                         fr.FuelType,
+                         fr.UsageAmt,
+                         CASE
+                             WHEN v.VehicleType = 'ElectricLightRail' THEN 'kWh/hr'
+                             WHEN v.VehicleType = 'DieselBus' THEN 'mpg'
+                             WHEN v.VehicleType = 'DieselElectricTrain' THEN 'mpg'
+                             ELSE 'units'
+                         END AS Unit,
+                         fr.DistanceTraveled,
+                         fr.Date,
+                         fr.Status
+                     FROM FuelReport fr
+                     JOIN Vehicles v ON fr.VehicleID = v.VehicleID
+                     JOIN Staff s ON fr.StaffID = s.StaffID;
+                     """;
 
         try (Connection conn = DataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 

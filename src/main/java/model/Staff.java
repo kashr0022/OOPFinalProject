@@ -17,6 +17,7 @@ public abstract class Staff extends Item {
     private String lastName;
     private String email;
     private Role role;
+    private String tableName = "Staff";
 
     /**
      * @return the staffId
@@ -88,5 +89,9 @@ public abstract class Staff extends Item {
      */
     public void setRole(Role role) {
         this.role = role;
+    }
+    
+    public String getTableName() {
+        return tableName;
     }
 }

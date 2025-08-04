@@ -26,10 +26,13 @@ public class DaoImplementation implements DaoInterface {
     public List<Item> getAllItems(Item item) {
 
         try (Connection con = DataSource.getConnection(); 
-                PreparedStatement ps = con.prepareStatement(getAllQuery); ResultSet rs = null) {
-           ps.setString(1, item.toString().substring(0, item.toString().indexOf('@')));
-           //Above code converts item name to a String with ClassName@HashCode, and chops off the HashCode
-           //This is done as the item name corresponds to a table name
+                PreparedStatement ps = con.prepareStatement(getAllQuery)) {
+           ps.setString(1, item.getTableName());
+           //Have to create 2nd try w/ resources, to auto-close rs in case of problem
+           try (ResultSet rs = ps.executeQuery()) {
+               
+           }
+           
         }
         catch (SQLException e) {
             
@@ -52,8 +55,18 @@ public class DaoImplementation implements DaoInterface {
      * @param i 
      */
     @Override
-    public void addItem(Item i) {
+    public void addItem(Item item) {
         
+        try (Connection con = DataSource.getConnection(); 
+                PreparedStatement ps = con.prepareStatement(addItemQuery)) {
+           ps.setString(1, item.getTableName());
+           //Have to create 2nd try w/ resources, to auto-close rs in case of problem
+           ps.executeQuery(addItemQuery);
+           
+        }
+        catch (SQLException e) {
+            
+        }
     }
     
     /**

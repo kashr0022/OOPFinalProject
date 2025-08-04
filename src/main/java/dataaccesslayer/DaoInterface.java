@@ -25,17 +25,17 @@ public interface DaoInterface {
     /**
      * 
      */
-    String addItem = "";
+    String addItemQuery = "INSERT INTO ? VALUES (FirstName, LastName, Email, Role)"; //TEMPORARY HARDCODE, CHANGE THIS
     
     /**
      * 
      */
-    String updateItem = "";
+    String updateItemQuery = "";
     
     /**
      * 
      */
-    String deleteItem = "";
+    String deleteItemQuery = "";
     
     /**
      * 

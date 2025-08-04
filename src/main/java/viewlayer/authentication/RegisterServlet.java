@@ -1,11 +1,16 @@
 package viewlayer.authentication;
 
+import dataaccesslayer.DaoImplementation;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 import model.Role;
 import static model.Role.OPERATOR;
+import model.Staff;
 import transferobjects.staff.OperatorDTO;
+import transferobjects.staff.TransitManagerDTO;
 
 /**
  * Description: AddTitleServlet to add new title

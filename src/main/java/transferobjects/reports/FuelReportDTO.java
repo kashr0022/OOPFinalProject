@@ -15,9 +15,11 @@ public class FuelReportDTO {
     private int staffID;
     private int vehicleID;
     private String vehicleType;
-    private double usageAmt;
+    private double fuelConsumed;
     private double distanceTraveled;
     private String fuelType;
+    private double fuelEfficiency;
+    private String fuelEfficiencyUnit;
     private LocalDateTime date;
     private String status;
 
@@ -61,20 +63,6 @@ public class FuelReportDTO {
      */
     public void setVehicleID(int vehicleID) {
         this.vehicleID = vehicleID;
-    }
-
-    /**
-     * @return the usageAmt
-     */
-    public double getUsageAmt() {
-        return usageAmt;
-    }
-
-    /**
-     * @param usageAmt the usageAmt to set
-     */
-    public void setUsageAmt(double usageAmt) {
-        this.usageAmt = usageAmt;
     }
 
     /**
@@ -133,14 +121,6 @@ public class FuelReportDTO {
         this.status = status;
     }
     
-    public double getFuelConsumed() {
-        return usageAmt;
-    }
-    
-    public double getFuelEfficiency() {
-        return distanceTraveled == 0 ? 0 : distanceTraveled / usageAmt;
-    }
-
     /**
      * @return the vehicleType
      */
@@ -153,6 +133,48 @@ public class FuelReportDTO {
      */
     public void setVehicleType(String vehicleType) {
         this.vehicleType = vehicleType;
+    }
+
+    /**
+     * @return the fuelConsumed
+     */
+    public double getFuelConsumed() {
+        return fuelConsumed;
+    }
+
+    /**
+     * @param fuelConsumed the fuelConsumed to set
+     */
+    public void setFuelConsumed(double fuelConsumed) {
+        this.fuelConsumed = fuelConsumed;
+    }
+
+    /**
+     * @return the fuelEfficiency
+     */
+    public double getFuelEfficiency() {
+        return fuelEfficiency;
+    }
+
+    /**
+     * @param fuelEfficiency the fuelEfficiency to set
+     */
+    public void setFuelEfficiency(double fuelEfficiency) {
+        this.fuelEfficiency = fuelEfficiency;
+    }
+
+    /**
+     * @return the fuelEfficiencyUnit
+     */
+    public String getFuelEfficiencyUnit() {
+        return fuelEfficiencyUnit;
+    }
+
+    /**
+     * @param fuelEfficiencyUnit the fuelEfficiencyUnit to set
+     */
+    public void setFuelEfficiencyUnit(String fuelEfficiencyUnit) {
+        this.fuelEfficiencyUnit = fuelEfficiencyUnit;
     }
 
 

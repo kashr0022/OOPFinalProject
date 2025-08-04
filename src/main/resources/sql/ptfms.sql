@@ -61,8 +61,11 @@ CREATE TABLE GPS
     GPSID         INT      NOT NULL AUTO_INCREMENT PRIMARY KEY,
     StaffID       INT      NOT NULL,
     VehicleID INT      NOT NULL,
+    StartingLocation VARCHAR(100), 
     StartTime     DATETIME NOT NULL,
     EndTime       DATETIME NOT NULL,
+    EndingLocation VARCHAR(100),
+    ScheduledEndTime DATETIME NOT NULL,
     Notes         VARCHAR(100),
     FOREIGN KEY (VehicleID) REFERENCES Vehicles (VehicleID),
     FOREIGN KEY (StaffID) REFERENCES Staff (StaffID)
@@ -161,12 +164,13 @@ VALUES (1, '2025-07-28 08:00:00', '2025-07-28 16:00:00', 'Morning shift'),
        (4, '2025-07-28 11:00:00', '2025-07-28 19:00:00', 'Overseeing repairs');
 
 -- GPS INSERT
-INSERT INTO GPS (StaffID, VehicleID, StartTime, EndTime, Notes)
-VALUES (1, 1, '2025-07-28 08:00:00', '2025-07-28 12:00:00', 'Downtown route'),
-       (3, 3, '2025-07-28 09:30:00', '2025-07-28 13:30:00', 'City loop'),
-       (5, 5, '2025-07-28 10:00:00', '2025-07-28 14:00:00', 'Downtown to East'),
-       (1, 2, '2025-07-29 08:00:00', '2025-07-29 12:00:00', 'Train Testing Route'),
-       (3, 4, '2025-07-29 13:00:00', '2025-07-29 17:00:00', 'City Core to Outskirts');
+INSERT INTO GPS (StaffID, VehicleID, StartingLocation, StartTime, EndTime, EndingLocation, ScheduledEndTime, Notes)
+VALUES 
+		(1, 1, 'Central Station', '2025-07-28 08:00:00', '2025-07-28 12:00:00', 'Downtown Terminal', '2025-07-28 12:00:00', 'Downtown route'),
+		(3, 3, 'East Side Depot', '2025-07-28 09:30:00', '2025-07-28 13:30:00', 'City Loop', '2025-07-28 13:30:00', 'City loop'),
+		(5, 5, 'North Station', '2025-07-28 10:00:00', '2025-07-28 14:00:00', 'East Terminal', '2025-07-28 14:00:00', 'Downtown to East'),
+		(1, 2, 'West Yard', '2025-07-29 08:00:00', '2025-07-29 12:00:00', 'Test Route End', '2025-07-29 12:00:00', 'Train Testing Route'),
+		(3, 4, 'City Core Start', '2025-07-29 13:00:00', '2025-07-29 17:00:00', 'Outskirts End', '2025-07-29 17:00:00', 'City Core to Outskirts');
 
 -- FuelReport INSERT
 INSERT INTO FuelReport (StaffID, VehicleID, UsageAmt, DistanceTraveled, FuelType, Date, Status)

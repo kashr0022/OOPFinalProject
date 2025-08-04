@@ -20,24 +20,52 @@ public class FuelReportDao {
 
     public List<FuelReportDTO> getFuelReport() throws SQLException {
         List<FuelReportDTO> reports = new ArrayList<>();
-        String sql = "SELECT fr.ReportID, fr.VehicleID, v.VehicleType, fr.StaffID, s.FirstName, s.LastName, "
-                + "fr.FuelType, fr.UsageAmt, fr.DistanceTraveled, fr.Date, fr.Status "
-                + "FROM FuelReport fr "
-                + "JOIN Vehicles v ON fr.VehicleID = v.VehicleID "
+        String sql = "SELECT \n"
+                + "    fr.ReportID,\n"
+                + "    fr.VehicleID,\n"
+                + "    v.VehicleType,\n"
+                + "    fr.StaffID,\n"
+                + "    s.FirstName,\n"
+                + "    s.LastName,\n"
+                + "    fr.FuelType,\n"
+                + "    fr.UsageAmt,\n"
+                + "    CASE\n"
+                + "        WHEN v.VehicleType = 'ElectricLightRail' THEN 'kWh/hr'\n"
+                + "        WHEN v.VehicleType = 'DieselBus' THEN 'mpg'\n"
+                + "        WHEN v.VehicleType = 'DieselElectricTrain' THEN 'mpg'\n"
+                + "        ELSE 'units'\n"
+                + "    END AS Unit,\n"
+                + "    fr.DistanceTraveled,\n"
+                + "    fr.Date,\n"
+                + "    fr.Status\n"
+                + "FROM FuelReport fr\n"
+                + "JOIN Vehicles v ON fr.VehicleID = v.VehicleID\n"
                 + "JOIN Staff s ON fr.StaffID = s.StaffID";
 
         try (Connection conn = DataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 FuelReportDTO report = new FuelReportDTO();
-                report.setReportID(rs.getInt("reportID"));
-                report.setStaffID(rs.getInt("staffID"));
-                report.setVehicleID(rs.getInt("vehicleID"));
-                report.setUsageAmt(rs.getDouble("usageAmt"));
-                report.setDate(rs.getTimestamp("date").toLocalDateTime());
-                report.setStatus(rs.getString("status"));
-                report.setVehicleType(rs.getString("vehicleType")); 
-                reports.add(report);
+                report.setReportID(rs.getInt("ReportID"));
+                report.setStaffID(rs.getInt("StaffID"));
+                report.setVehicleID(rs.getInt("VehicleID"));
+                report.setFuelConsumed(rs.getDouble("UsageAmt"));
+                report.setDistanceTraveled(rs.getDouble("DistanceTraveled"));
+                report.setDate(rs.getTimestamp("Date").toLocalDateTime());
+                report.setStatus(rs.getString("Status"));
+                report.setVehicleType(rs.getString("VehicleType"));
+                report.setFuelType(rs.getString("FuelType"));
+                report.setFuelEfficiencyUnit(rs.getString("Unit"));
+
+                // calculate fuel efficiency
+                double fuelConsumed = report.getFuelConsumed();
+                double distance = report.getDistanceTraveled();
+                if (fuelConsumed > 0) {
+                    report.setFuelEfficiency(distance / fuelConsumed);
+                } else {
+                    report.setFuelEfficiency(0);
+                }
+
                 reports.add(report);
             }
         }

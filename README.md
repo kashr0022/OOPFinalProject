@@ -145,4 +145,15 @@ Checks in database for duplicate username/first+last combo prevention during reg
    </td>
   <td>August 4th, 2025</td>
 </tr>
+<tr>
+  <td>2.9</td>
+  <td>Khairunnisa Ashri</td>
+  <td>
+     <ul>
+        <li>FR06 - Reporting & Analytics complete</li>
+        <li>added cost report and navigation from dashboard back to controller</li>
+        <li>edited controller button for dashboard</li>
+   </td>
+  <td>August 4th, 2025</td>
+</tr>
 

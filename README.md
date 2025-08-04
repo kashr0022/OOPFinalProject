@@ -138,7 +138,7 @@ Checks in database for duplicate username/first+last combo prevention during reg
   <td>
      <ul>
         <li>FR06 - Reporting & Analytics (dashboards) functional</li>
-        <li>FR04 - Monitoring Energy/Fuel Consumption partially fulfilled</li>
+        <li>FR04 - Monitoring Energy/Fuel Consumption and FR05 Predictive Maintenance partially fulfilled</li>
         <li>necessary class and .sql changes made</li>
         <li>missing expenses/cost reports</li>
       </ul>

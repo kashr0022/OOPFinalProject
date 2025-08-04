@@ -76,7 +76,7 @@ public class FrontControllerServlet extends HttpServlet {
                 out.println("<h2 class=\"subtitle\">Navigation</h2>");
                 out.print("<div class=\"button-con\">");
                 out.print("<form action=\"\" method=\"GET\">");
-                out.print("<button type=\"submit\" value=\"operatorPerformance\">Page One</button>");
+                out.print("<button type=\"submit\" value=\"dashboard\">Dashboard</button>");
                 out.print("</form>");
 
 

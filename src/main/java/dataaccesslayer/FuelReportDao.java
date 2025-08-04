@@ -36,7 +36,7 @@ public class FuelReportDao {
                 report.setUsageAmt(rs.getDouble("usageAmt"));
                 report.setDate(rs.getTimestamp("date").toLocalDateTime());
                 report.setStatus(rs.getString("status"));
-                report.setVehicleType(rs.getString("vehicleType")); // Add this field in DTO
+                report.setVehicleType(rs.getString("vehicleType")); 
                 reports.add(report);
                 reports.add(report);
             }

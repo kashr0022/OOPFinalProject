@@ -57,7 +57,7 @@ public class vehicleRegistration extends HttpServlet {
             out.println("<div class='form-con'>");
             out.println("<label class='form-label'>Consumption Unit:</label>");
             out.println("<select name='consumptionunit' required>");
-            out.println("<option value=''>Select Fuel Unit</option>");
+            out.println("<option value=''>Select Fuel</option>");
             out.println("<option value='mpg'>Miles per Gallon (mpg)</option>");
             out.println("<option value='L/km'>Liters per Kilometer (L/km)</option>");
             out.println("<option value='kWh/hr'>Kilowatt Hours per Hour (kWh/hr)</option>");

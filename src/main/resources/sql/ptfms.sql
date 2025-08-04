@@ -24,7 +24,7 @@ CREATE TABLE Users
 -- Vehicles Table with Type ENUM and ConsumptionRate
 CREATE TABLE Vehicles
 (
-    VehicleId   INT            NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    VehicleID   INT            NOT NULL AUTO_INCREMENT PRIMARY KEY,
     VehicleNumber VARCHAR(50) UNIQUE,
     VehicleType     ENUM('DieselBus', 'DieselElectricTrain', 'ElectricLightRail') NOT NULL,
     ConsumptionRate DECIMAL(10, 2) NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE Vehicles
 CREATE TABLE Components
 (
     ComponentID   INT         NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    VehicleId INT         NOT NULL,
+    VehicleID INT         NOT NULL,
     ComponentName VARCHAR(50) NOT NULL,
     ComponentType ENUM('Diesel', 'Electric', 'Hybrid') NOT NULL,
     HoursUsed     INT         NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE GPS
 (
     GPSID         INT      NOT NULL AUTO_INCREMENT PRIMARY KEY,
     StaffID       INT      NOT NULL,
-    VehicleId INT      NOT NULL,
+    VehicleID INT      NOT NULL,
     StartTime     DATETIME NOT NULL,
     EndTime       DATETIME NOT NULL,
     Notes         VARCHAR(100),
@@ -73,7 +73,7 @@ CREATE TABLE FuelReport
 (
     ReportID      INT            NOT NULL AUTO_INCREMENT PRIMARY KEY,
     StaffID       INT            NOT NULL,
-    VehicleId INT            NOT NULL,
+    VehicleID INT            NOT NULL,
     UsageAmt      DECIMAL(10, 2) NOT NULL,
     Date          DATETIME       NOT NULL,
     Status        VARCHAR(20),
@@ -87,7 +87,7 @@ CREATE TABLE MaintenanceLog
     LogID         INT            NOT NULL AUTO_INCREMENT PRIMARY KEY,
     StaffID       INT            NOT NULL,
     GPSID         INT            NOT NULL,
-    VehicleId INT            NOT NULL,
+    VehicleID INT            NOT NULL,
     ComponentID   INT            NOT NULL,
     UsageAmt      DECIMAL(10, 2) NOT NULL,
     Date          DATETIME       NOT NULL,

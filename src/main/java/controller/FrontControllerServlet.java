@@ -36,25 +36,45 @@ public class FrontControllerServlet extends HttpServlet {
                 out.println("</center>");
                 logInSuccessMsg = null;
             }
+            out.println("<div class=\"con\">");
 
+            if (!loggedIn) {
+                out.println("<div class=\"corner-btn\">");
+                out.println("<form action=\"register\" method=\"GET\">");
+                out.println("<button type=\"submit\" value=\"Register\">Register</button>");
+                out.println("</form>");
+                out.println("</div>");
+            } else {
+                out.println("<div class=\"corner-btn\">");
+                out.println("<form action='controller' method='GET'>");
+                out.print("<button type=\"submit\" value=\"Log out\">Log out</button>");
+                out.println("</form>");
+                out.println("</div>");
+            }
             out.println("<center class=\"border-white\">");
             out.println("<h1 class=\"title\">PTFMS</h1>");
-            out.println("<h2 class=\"subtitle\">Enter Credentials</h2>");
+            if (loggedIn) {
+                out.println("<h2 class=\"subtitle it\">Current Account:</h2>");
 
+                String loggedUsername = req.getParameter("username");
+                out.println("<label>Username: <input type='text' value=\"" + loggedUsername + "\" disabled></label><br>");
 
-            out.println("<form action='controller' method='POST'>");
-            out.println("<label>Username: <input type='text' name='username' required></label><br>");
-            out.println("<label>Password: <input type='password' name='password' required></label><br><br>");
-            out.println("<button type='submit' name=\"logInCheck\" value='Login'>Login</button>");
-            out.println("</form>");
-
+            } else {
+                out.println("<h2 class=\"subtitle it\">Enter Credentials:</h2>");
+                out.println("<form action='controller' method='POST'>");
+                out.println("<label>Username: <input type='text' name='username' required></label><br>");
+                out.println("<label>Password: <input type='password' name='password' required></label><br><br>");
+                out.println("<button type='submit' name=\"logInCheck\" value='Login'>Login</button>");
+                out.println("</form>");
+            }
 
 
             out.print("<br>");
 
             if (loggedIn) {
+                out.print("<hr class=\"line\">");
+                out.println("<h2 class=\"subtitle\">Navigation</h2>");
                 out.print("<div class=\"button-con\">");
-
                 out.print("<form action=\"\" method=\"GET\">");
                 out.print("<button type=\"submit\" value=\"PageOne\">Page One</button>");
                 out.print("</form>");
@@ -63,17 +83,9 @@ public class FrontControllerServlet extends HttpServlet {
                 out.print("</div>");
                 loggedIn = false;
 
-            } else {
-                out.print("<div class=\"button-con\">");
-
-                out.print("<form action=\"register\" method=\"GET\">");
-                out.print("<button type=\"submit\" value=\"Register\">Register</button>");
-                out.print("</form>");
-
-
-                out.print("</div>");
             }
             out.println("</center>");
+            out.println("</div>");
             out.println("</body></html>");
         }
     }

@@ -132,4 +132,17 @@ Checks in database for duplicate username/first+last combo prevention during reg
    </td>
   <td>August 4th, 2025</td>
 </tr>
+<tr>
+  <td>2.8</td>
+  <td>Khairunnisa Ashri</td>
+  <td>
+     <ul>
+        <li>FR06 - Reporting & Analytics (dashboards) functional</li>
+        <li>FR04 - Monitoring Energy/Fuel Consumption partially fulfilled</li>
+        <li>necessary class and .sql changes made</li>
+        <li>missing expenses/cost reports</li>
+      </ul>
+   </td>
+  <td>August 4th, 2025</td>
+</tr>
 

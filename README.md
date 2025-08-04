@@ -119,4 +119,17 @@ Checks in database for duplicate username/first+last combo prevention during reg
    </td>
   <td>August 4th, 2025</td>
 </tr>
+<tr>
+  <td>2.7</td>
+  <td>Khairunnisa Ashri</td>
+  <td>
+     <ul>
+        <li>FR06 - Reporting & Analytics partially fulfilled.</li>
+        <li>necessary classes have been added</li>
+        <li>.sql changes</li>
+        <li>more changes to .sql or existing files to be made on next update to get all data displayed</li>
+      </ul>
+   </td>
+  <td>August 4th, 2025</td>
+</tr>
 

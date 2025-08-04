@@ -37,14 +37,13 @@
                     <th>Total Hours Worked</th>
                 </tr>
                 <tbody>
-                    <%
-                        if (operatorPerformance != null) {
+                    <%                        if (operatorPerformance != null) {
                             for (OperatorPerformanceDTO op : operatorPerformance) {
                     %>
                     <tr>
                         <td><%= op.getFirstName() + " " + op.getLastName()%></td>
-                       
-                        <%--<td><%= String.format("%.2f", op.getOnTimeRate())%></td>--%>
+
+                        <td><%= String.format("%.2f", op.getOnTimeRate())%></td>
                         <td><%= String.format("%.1f", op.getAvgRouteDuration())%></td>
                         <td><%= String.format("%.1f", op.getTotalHoursWorked())%></td>
                     </tr>
@@ -76,8 +75,9 @@
                         <td><%= fuel.getVehicleType()%></td>
                         <td><%= fuel.getFuelType()%></td>
                         <td><%= String.format("%.2f", fuel.getFuelConsumed())%></td>
-                        <td><%= String.format("%.2f", fuel.getDistanceTraveled())%></td>
-                        <td><%= String.format("%.2f", fuel.getFuelEfficiency())%></td>
+                        <td><%= String.format("%.2f km", fuel.getDistanceTraveled())%></td>
+                        <td><%= String.format("%.2f %s", fuel.getFuelEfficiency(), fuel.getFuelEfficiencyUnit())%></td>
+                        <td><%= fuel.getDate()%></td>
                     </tr>
                     <%
                             }
@@ -89,6 +89,7 @@
             <h2>Maintenance Alerts</h2>
             <table border = "1">
                 <tr>
+                    <th>Log ID</th>
                     <th>Vehicle ID</th>
                     <th>Type</th>
                     <th>Component</th>
@@ -105,18 +106,19 @@
                     <tr>
                         <td><%= log.getLogID()%></td>
                         <td><%= log.getVehicleID()%></td>
-                        <td><%= log.getComponentID()%></td>
+                        <td><%= log.getVehicleType()%></td>
+                        <td><%= log.getComponentName()%></td>
                         <td><%= log.getUsageAmt()%></td>
-                        <td><%= log.getStatus()%></td>
+                        <td><%= log.getDiagnostics()%></td>
                         <td><%= log.getDate()%></td>
                         <td>
-                            <%
-                            if ("ALERT".equalsIgnoreCase(log.getStatus())) {%>
+                            <% if ("ALERT".equalsIgnoreCase(log.getStatus())) {%>
                             <a href="scheduleMaintenance?logID=<%= log.getLogID()%>">Schedule</a>
-                            %> } else { %>
-                            N/A
-                            <% }%>
+                            <% } else { %>
+                            <%= log.getStatus()%>
+                            <% } %>
                         </td>
+
                     </tr>
                     <%
                             }

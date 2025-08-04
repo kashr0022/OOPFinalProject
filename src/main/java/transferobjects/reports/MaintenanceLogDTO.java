@@ -15,8 +15,11 @@ public class MaintenanceLogDTO {
     private int staffID;
     private int gpsID;
     private int vehicleID;
+    private String vehicleType;
     private int componentID;
+    private String componentName;
     private double usageAmt;
+    private String diagnostics;
     private LocalDateTime date;
     private String status;
 
@@ -130,6 +133,48 @@ public class MaintenanceLogDTO {
      */
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    /**
+     * @return the componentName
+     */
+    public String getComponentName() {
+        return componentName;
+    }
+
+    /**
+     * @param componentName the componentName to set
+     */
+    public void setComponentName(String componentName) {
+        this.componentName = componentName;
+    }
+
+    /**
+     * @return the diagnostics
+     */
+    public String getDiagnostics() {
+        return diagnostics;
+    }
+
+    /**
+     * @param diagnostics the diagnostics to set
+     */
+    public void setDiagnostics(String diagnostics) {
+        this.diagnostics = diagnostics;
+    }
+
+    /**
+     * @return the vehicleType
+     */
+    public String getVehicleType() {
+        return vehicleType;
+    }
+
+    /**
+     * @param vehicleType the vehicleType to set
+     */
+    public void setVehicleType(String vehicleType) {
+        this.vehicleType = vehicleType;
     }
 
     

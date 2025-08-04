@@ -59,19 +59,19 @@ public class OperatorPerformanceDTO {
         this.lastName = lastName;
     }
 
-//    /**
-//     * @return the onTimeRate
-//     */
-//    public double getOnTimeRate() {
-//        return onTimeRate;
-//    }
-//
-//    /**
-//     * @param onTimeRate the onTimeRate to set
-//     */
-//    public void setOnTimeRate(double onTimeRate) {
-//        this.onTimeRate = onTimeRate;
-//    }
+    /**
+     * @return the onTimeRate
+     */
+    public double getOnTimeRate() {
+        return onTimeRate;
+    }
+
+    /**
+     * @param onTimeRate the onTimeRate to set
+     */
+    public void setOnTimeRate(double onTimeRate) {
+        this.onTimeRate = onTimeRate;
+    }
 
     /**
      * @return the avgRouteDuration

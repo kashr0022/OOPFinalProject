@@ -25,12 +25,12 @@
         <url-pattern>/register</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>DashboardServlet</servlet-name>
-        <servlet-class>viewlayer.DashboardServlet</servlet-class>
+        <servlet-name>VehicleRegistrationServlet</servlet-name>
+        <servlet-class>viewlayer.vehicleRegistration</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>DashboardServlet</servlet-name>
-        <url-pattern>/dashboard</url-pattern>
+        <servlet-name>VehicleRegistrationServlet</servlet-name>
+        <url-pattern>/vehicleregistration</url-pattern>
     </servlet-mapping>
-    
 </web-app>
+

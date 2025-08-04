@@ -1,5 +1,6 @@
 package dataaccesslayer;
 
+import businesslayer.builder.vehicles.Vehicle;
 import transferobjects.staff.StaffDTO;
 import transferobjects.users.UsersDTO;
 
@@ -111,5 +112,25 @@ public class PTFMSDaoImpl implements PTFMSDao {
             return false;
         }
         return false;
+    }
+
+    @Override
+    public void registerVehicle(Vehicle vehicle) {
+        Connection connection = null;
+        String query = "INSERT INTO Vehicles (VehicleNumber, VehicleType, ConsumptionRate, ConsumptionUnit, MaxPassengers, ActiveRoute)\n" +
+                "VALUES (?, ?, ?, ?, ?, ?)";
+
+        connection = DataSource.getConnection();
+        try (PreparedStatement userStmt = connection.prepareStatement(query)) {
+            userStmt.setString(1, vehicle.getVehicleNumber());
+            userStmt.setString(2, vehicle.getVehicleType());
+            userStmt.setDouble(3, vehicle.getConsumptionRate());
+            userStmt.setString(4, vehicle.getConsumptionUnit());
+            userStmt.setDouble(5, vehicle.getMaxPassengers());
+            userStmt.setString(6, vehicle.getActiveRoute());
+            userStmt.executeUpdate();
+        } catch (SQLException e) {
+            Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE, "SQL Exception occured when adding new vehicle to db.", e);
+        }
     }
 }

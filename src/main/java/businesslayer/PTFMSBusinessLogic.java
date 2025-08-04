@@ -1,9 +1,12 @@
 package businesslayer;
 
+import businesslayer.builder.vehicles.Vehicle;
+import businesslayer.simplefactory.SimpleVehicleFactory;
 import dataaccesslayer.PTFMSDao;
 import dataaccesslayer.PTFMSDaoImpl;
 import transferobjects.staff.StaffDTO;
 import transferobjects.users.UsersDTO;
+import transferobjects.vehicles.VehicleDTO;
 
 public class PTFMSBusinessLogic {
     private static PTFMSDao ptfmsDao = null;
@@ -22,5 +25,20 @@ public class PTFMSBusinessLogic {
     }
     public void addStaffUser(StaffDTO staff, UsersDTO user) {
         ptfmsDao.addStaffUser(staff, user);
+    }
+
+
+    public void registerVehicle(VehicleDTO vehicleDTO) {
+
+        Vehicle vehicle = SimpleVehicleFactory.createVehicle(
+                vehicleDTO.getVehicleNumber(),
+                vehicleDTO.getVehicleType(),
+                vehicleDTO.getConsumptionRate(),
+                vehicleDTO.getConsumptionUnit(),
+                vehicleDTO.getMaxPassengers(),
+                vehicleDTO.getActiveRoute()
+        );
+
+        ptfmsDao.registerVehicle(vehicle);
     }
 }

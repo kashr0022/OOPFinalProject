@@ -3,6 +3,11 @@ package businesslayer.builder;
 
 import businesslayer.builder.vehicles.DieselBus;
 
+/**
+ * author: Lily S.
+ * @version 1.0
+ * @since JDK 21.0.4
+ */
 public class DieselBusBuilder implements BuilderInterface {
     private String vehicleNumber;
     private String vehicleType;

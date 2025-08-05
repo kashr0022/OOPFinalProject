@@ -1,6 +1,8 @@
 package controller;
 
 import businesslayer.PTFMSBusinessLogic;
+import transferobjects.staff.StaffDTO;
+import transferobjects.users.UsersDTO;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -8,10 +10,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class FrontControllerServlet extends HttpServlet {
-
+    /**
+     * author: Lily S.
+     * @version 1.0
+     * @since JDK 21.0.4
+     */
     protected void processRequest(HttpServletRequest req, HttpServletResponse res)
             throws IOException {
-
         HttpSession session = req.getSession(false);
         boolean loggedIn = (session != null && session.getAttribute("username") != null);
         res.setContentType("text/html;charset=UTF-8");
@@ -81,11 +86,11 @@ public class FrontControllerServlet extends HttpServlet {
                 out.print("<button type=\"submit\" value=\"Vehicle Registration\">Vehicle Registration</button>");
 
                 out.print("</form>");
-                
+
                 out.print("<form action=\"dashboard\" method=\"GET\">");
                 out.print("<button type=\"submit\" value=\"Dashboard\">Manager Dashboard</button>");
                 out.print("</form>");
-                
+
                 out.print("</div>");
 
             }
@@ -105,7 +110,7 @@ public class FrontControllerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
         processRequest(req, res);
-        
+
     }
 
     @Override
@@ -118,7 +123,10 @@ public class FrontControllerServlet extends HttpServlet {
         if ("Login".equals(logInCheck)) {
             boolean loginSuccess = authenticateAccount(request.getParameter("username"), request.getParameter("password"));
             if (loginSuccess) {
+                PTFMSBusinessLogic ptfmsBusinessLogic = new PTFMSBusinessLogic();
+                UsersDTO userDTO = ptfmsBusinessLogic.getUserByUsername(request.getParameter("username"));
                 HttpSession session = request.getSession(true);
+                session.setAttribute("userRole", userDTO.getRole());
                 session.setAttribute("username", request.getParameter("username"));
                 request.setAttribute("logInSuccessMsg", "Welcome back " + request.getParameter("username") + ".");
                 processRequest(request, response);

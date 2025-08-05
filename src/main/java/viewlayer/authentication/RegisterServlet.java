@@ -103,8 +103,10 @@ public class RegisterServlet extends HttpServlet {
         staff.setLastName(req.getParameter("lastname"));
         staff.setEmail(req.getParameter("email"));
         staff.setRole(req.getParameter("roleoptions"));
+
         user.setUsername(req.getParameter("username"));
         user.setPassword(req.getParameter("password"));
+        user.setRole(req.getParameter("roleoptions"));
 
         ptfmsBusinessLogic.addStaffUser(staff, user);
 
@@ -120,8 +122,10 @@ public class RegisterServlet extends HttpServlet {
         staff.setLastName(req.getParameter("lastname"));
         staff.setEmail(req.getParameter("email"));
         staff.setRole(req.getParameter("roleoptions"));
+
         user.setUsername(req.getParameter("username"));
         user.setPassword(req.getParameter("password"));
+        user.setRole(req.getParameter("roleoptions"));
 
         boolean staffExists = ptfmsBusinessLogic.checkStaffTaken(staff);
         boolean userExists = ptfmsBusinessLogic.checkUserTaken(user);

@@ -1,5 +1,8 @@
 package transferobjects.staff;
 
+/**
+ * Author: Lily S.
+ */
 public class StaffDTO {
     private String firstName;
     private String lastName;

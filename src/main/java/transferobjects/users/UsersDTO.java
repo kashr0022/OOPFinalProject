@@ -1,9 +1,12 @@
 package transferobjects.users;
 
+/**
+ * author: Lily S.
+ */
 public class UsersDTO {
     private String username;
     private String password;
-
+    private String role;
     public String getUsername() {
         return username;
     }
@@ -19,4 +22,13 @@ public class UsersDTO {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
 }

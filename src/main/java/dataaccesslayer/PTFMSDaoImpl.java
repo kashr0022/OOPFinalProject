@@ -57,16 +57,45 @@ public class PTFMSDaoImpl implements PTFMSDao {
                 staffStmt.executeUpdate();
             }
 
-            String userQuery = "INSERT INTO Users (Username, Password, StaffID) VALUES (?, ?, LAST_INSERT_ID())";
+            String userQuery = "INSERT INTO Users (Username, Password, Role, StaffID) VALUES (?, ?, ?, LAST_INSERT_ID())";
             try (PreparedStatement userStmt = connection.prepareStatement(userQuery)) {
                 userStmt.setString(1, user.getUsername());
                 userStmt.setString(2, user.getPassword());
+                userStmt.setString(3, user.getRole());
                 userStmt.executeUpdate();
             }
 
         } catch (SQLException e) {
             Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE, null, e);
         }
+    }
+
+    @Override
+    public UsersDTO getUserByUsername(String userIn) {
+        Connection connection = null;
+        String query = "SELECT * FROM Users WHERE Username = ?";
+        UsersDTO userDTO = new UsersDTO();
+        connection = DataSource.getConnection();
+
+        try (PreparedStatement prepState = connection.prepareStatement(query)) {
+
+            prepState.setString(1, userIn);
+
+            try (ResultSet resultSet = prepState.executeQuery()) {
+                if (resultSet.next()) {
+                    userDTO.setUsername(resultSet.getString("Username"));
+                    userDTO.setPassword(resultSet.getString("Password"));
+                    userDTO.setRole(resultSet.getString("Role"));
+                    return userDTO;
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+
+        return userDTO;
     }
 
     @Override
@@ -138,6 +167,31 @@ public class PTFMSDaoImpl implements PTFMSDao {
         } catch (SQLException e) {
             Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE, "SQL Exception occured when adding new vehicle to db.", e);
         }
+    }
+
+    @Override
+    public boolean checkVehicleTaken(Vehicle vehicle) {
+        Connection connection = null;
+        String query = "SELECT * FROM Vehicles WHERE VehicleNumber = ?";
+
+        connection = DataSource.getConnection();
+        try (
+                PreparedStatement prepState = connection.prepareStatement(query)) {
+
+            prepState.setString(1, vehicle.getVehicleNumber());
+
+            try (ResultSet resultSet = prepState.executeQuery()) {
+                if (resultSet.next()) {
+                    return true;
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE,
+                    "Exception caught related to vehicle exist check functionality. (" + vehicle.getVehicleNumber() + ").", ex);
+            return false;
+        }
+        return false;
     }
 
     public List<FuelReportDTO> getFuelReport() {
@@ -362,5 +416,4 @@ public class PTFMSDaoImpl implements PTFMSDao {
         }
         return results;
     }
-
 }

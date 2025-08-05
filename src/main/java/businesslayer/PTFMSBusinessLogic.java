@@ -14,6 +14,11 @@ import transferobjects.vehicles.VehicleDTO;
 
 import java.util.List;
 
+/**
+ *  author: Lily S.
+ * 	@version 1.0
+ *  @since JDK 21.0.4
+ */
 public class PTFMSBusinessLogic {
     private static PTFMSDao ptfmsDao = null;
 
@@ -47,7 +52,17 @@ public class PTFMSBusinessLogic {
 
         ptfmsDao.registerVehicle(vehicle);
     }
-
+    public boolean checkVehicleTaken(VehicleDTO vehicleDTO) {
+        Vehicle vehicle = SimpleVehicleFactory.createVehicle(
+                vehicleDTO.getVehicleNumber(),
+                vehicleDTO.getVehicleType(),
+                vehicleDTO.getConsumptionRate(),
+                vehicleDTO.getConsumptionUnit(),
+                vehicleDTO.getMaxPassengers(),
+                vehicleDTO.getActiveRoute()
+        );
+        return ptfmsDao.checkVehicleTaken(vehicle);
+    }
     public List<FuelReportDTO> getFuelReport(){
         return ptfmsDao.getFuelReport();
     };
@@ -60,4 +75,7 @@ public class PTFMSBusinessLogic {
     public List<OperatorPerformanceDTO> getOperatorPerformance(){
         return ptfmsDao.getOperatorPerformance();
     };
+    public UsersDTO getUserByUsername(String userIn) {
+        return ptfmsDao.getUserByUsername(userIn);
+    }
 }

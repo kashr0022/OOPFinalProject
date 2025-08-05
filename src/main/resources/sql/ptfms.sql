@@ -17,6 +17,7 @@ CREATE TABLE Users
 (
     Username VARCHAR(20),
     Password VARCHAR(20),
+    Role ENUM('Operator', 'TransitManager') NOT NULL,
     StaffID  INT NOT NULL PRIMARY KEY,
     FOREIGN KEY (StaffID) REFERENCES Staff (StaffID)
 );
@@ -62,7 +63,7 @@ CREATE TABLE GPS
     GPSID         INT      NOT NULL AUTO_INCREMENT PRIMARY KEY,
     StaffID       INT      NOT NULL,
     VehicleID INT      NOT NULL,
-    StartingLocation VARCHAR(100), 
+    StartingLocation VARCHAR(100),
     StartTime     DATETIME NOT NULL,
     EndTime       DATETIME NOT NULL,
     EndingLocation VARCHAR(100),
@@ -114,38 +115,38 @@ CREATE TABLE FuelRates (
 -- FOR TESTING Staff INSERT
 INSERT INTO Staff (FirstName, LastName, Email, Role)
 VALUES ('cst8288', 'cst8288', 'cst8288@gmail.com', 'TransitManager');
-INSERT INTO Users (Username, Password, StaffID)
-VALUES ('cst8288', 'cst8288', LAST_INSERT_ID());
+INSERT INTO Users (Username, Password, Role, StaffID)
+VALUES ('cst8288', 'cst8288', 'TransitManager', LAST_INSERT_ID());
 
 -- Staff INSERTS (Separated to include corresponding user inserts, matching IDs)
 INSERT INTO Staff (FirstName, LastName, Email, Role)
 VALUES ('Bruce', 'Wayne', 'bruce.wayne@gothamtransit.com', 'TransitManager');
-INSERT INTO Users (Username, Password, StaffID)
-VALUES ('Bruce', 'Wayne', LAST_INSERT_ID());
+INSERT INTO Users (Username, Password, Role, StaffID)
+VALUES ('Bruce', 'Wayne', 'TransitManager', LAST_INSERT_ID());
 
 -- Clark Kent insert block
 INSERT INTO Staff (FirstName, LastName, Email, Role)
 VALUES ('Clark', 'Kent', 'clark.kent@metropolistt.com', 'Operator');
-INSERT INTO Users (Username, Password, StaffID)
-VALUES ('Clark', 'Kent', LAST_INSERT_ID());
+INSERT INTO Users (Username, Password, Role, StaffID)
+VALUES ('Clark', 'Kent', 'Operator', LAST_INSERT_ID());
 
 -- Diana Prince insert block
 INSERT INTO Staff (FirstName, LastName, Email, Role)
 VALUES ('Diana', 'Prince', 'diana.prince@themysciranrail.com', 'TransitManager');
-INSERT INTO Users (Username, Password, StaffID)
-VALUES ('Diana', 'Prince', LAST_INSERT_ID());
+INSERT INTO Users (Username, Password, Role, StaffID)
+VALUES ('Diana', 'Prince','TransitManager', LAST_INSERT_ID());
 
 -- Barry Allen
 INSERT INTO Staff (FirstName, LastName, Email, Role)
 VALUES ('Barry', 'Allen', 'barry.allen@centralspeed.com', 'Operator');
-INSERT INTO Users (Username, Password, StaffID)
-VALUES ('Barry', 'Allen', LAST_INSERT_ID());
+INSERT INTO Users (Username, Password, Role, StaffID)
+VALUES ('Barry', 'Allen', 'Operator', LAST_INSERT_ID());
 
 -- Victor Stone
 INSERT INTO Staff (FirstName, LastName, Email, Role)
 VALUES ('Victor', 'Stone', 'victor.stone@techrail.com', 'Operator');
-INSERT INTO Users (Username, Password, StaffID)
-VALUES ('Victor', 'Stone', LAST_INSERT_ID());
+INSERT INTO Users (Username, Password, Role, StaffID)
+VALUES ('Victor', 'Stone', 'Operator', LAST_INSERT_ID());
 
 -- Vehicles INSERT
 INSERT INTO Vehicles (VehicleNumber, VehicleType, ConsumptionRate, ConsumptionUnit, MaxPassengers, ActiveRoute)
@@ -173,7 +174,7 @@ VALUES (1, '2025-07-28 08:00:00', '2025-07-28 16:00:00', 'Morning shift'),
 
 -- GPS INSERT
 INSERT INTO GPS (StaffID, VehicleID, StartingLocation, StartTime, EndTime, EndingLocation, ScheduledEndTime, Notes)
-VALUES 
+VALUES
 		(1, 1, 'Central Station', '2025-07-28 08:00:00', '2025-07-28 12:00:00', 'Downtown Terminal', '2025-07-28 12:00:00', 'Downtown route'),
 		(3, 3, 'East Side Depot', '2025-07-28 09:30:00', '2025-07-28 13:30:00', 'City Loop', '2025-07-28 13:30:00', 'City loop'),
 		(5, 5, 'North Station', '2025-07-28 10:00:00', '2025-07-28 14:00:00', 'East Terminal', '2025-07-28 14:00:00', 'Downtown to East'),
@@ -182,7 +183,7 @@ VALUES
 
 -- FuelReport INSERT
 INSERT INTO FuelReport (StaffID, VehicleID, UsageAmt, DistanceTraveled, FuelType, Date, Status)
-VALUES 
+VALUES
         (1, 1, 50.75, 100, 'Diesel', '2025-07-28 13:00:00', 'Approved'),
         (3, 2, 120.50, 200, 'Hybrid', '2025-07-28 14:30:00', 'Pending'),
         (5, 4, 80.00, 150, 'Hybrid', '2025-07-28 15:00:00', 'Approved'),
@@ -198,7 +199,7 @@ VALUES (2, 1, 1, 1, 50.00, '2025-07-28 16:00:00', 'Completed'),
        (2, 5, 5, 5, 25.00, '2025-07-29 11:00:00', 'Completed');
 
 -- Fuel Rates INSERT
-INSERT INTO FuelRates (FuelType, RatePerUnit) VALUES 
+INSERT INTO FuelRates (FuelType, RatePerUnit) VALUES
         ('Diesel', 1.50),
         ('Electric', 0.20),
         ('Hybrid', 1.10);

@@ -8,16 +8,16 @@ package transferobjects.staff;
  *
  * @author A
  */
-public class OperatorPerformanceDTO {
+public class OperatorHoursDTO {
     private String operatorName;
     private double hoursWorked;
     
-    public OperatorPerformanceDTO(String operatorName, double hoursWorked) {
+    public OperatorHoursDTO(String operatorName, double hoursWorked) {
         this.operatorName = operatorName;
         this.hoursWorked = hoursWorked;
     }
 
-    public OperatorPerformanceDTO() {
+    public OperatorHoursDTO() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     

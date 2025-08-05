@@ -5,7 +5,7 @@
 --%>
 
 <%@page import="transferobjects.reports.CostReportDTO"%>
-<%@page import="dataaccesslayer.FuelReportDao"%>
+<%@page import="dataaccesslayer.PTFMSDao"%>
 <%@page import="transferobjects.reports.MaintenanceLogDTO"%>
 <%@page import="transferobjects.reports.FuelReportDTO"%>
 <%@page import="transferobjects.reports.OperatorPerformanceDTO"%>

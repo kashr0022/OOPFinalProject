@@ -1,7 +1,7 @@
 
 package viewlayer;
 
-import dataaccesslayer.OperatorPerformanceDao;
+import businesslayer.PTFMSBusinessLogic;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -16,14 +16,15 @@ import transferobjects.reports.OperatorPerformanceDTO;
  * @author Khairunnisa Ashri
  */
 public class OperatorPerformanceServlet extends HttpServlet {
-    private OperatorPerformanceDao dao = new OperatorPerformanceDao();
+
     
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        PTFMSBusinessLogic ptfmsBusinessLogic = new PTFMSBusinessLogic();
         try {
-            List<OperatorPerformanceDTO> performanceList = dao.getOperatorPerformance();
+            List<OperatorPerformanceDTO> performanceList = ptfmsBusinessLogic.getOperatorPerformance();
             req.setAttribute("performanceList", performanceList);
             req.getRequestDispatcher("/dashboard.jsp").forward(req, res);
-        } catch (SQLException e) {
+        } catch (RuntimeException e) {
             throw new ServletException("Database error fetching operator performance", e);
         }
     }

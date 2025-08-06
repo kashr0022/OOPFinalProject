@@ -4,6 +4,8 @@ package transferobjects.reports;
 import java.time.LocalDateTime;
 
 /**
+ * Data Transfer Object (DTO) representing a fuel report.
+ * Contains details about fuel consumption, vehicle, and related metrics.
  *
  * @author Khairunnisa Ashri
  */

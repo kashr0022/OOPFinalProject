@@ -1,6 +1,7 @@
 package dataaccesslayer;
 
 import businesslayer.builder.vehicles.Vehicle;
+import businesslayer.observer.FuelReportSubject;
 import model.Staff;
 import transferobjects.reports.*;
 import transferobjects.staff.StaffDTO;
@@ -11,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +26,7 @@ import java.util.logging.Logger;
 public class PTFMSDaoImpl implements PTFMSDao {
 
     /**
-     * @author Lily S.
+     * @author Lily S., Khairunnisa Ashri
      * @return
      */
     @Override
@@ -85,6 +87,7 @@ public class PTFMSDaoImpl implements PTFMSDao {
 
     /**
      * author Lily S.
+     *
      * @param maintenance
      */
     @Override
@@ -111,6 +114,7 @@ public class PTFMSDaoImpl implements PTFMSDao {
 
     /**
      * author Lily S.
+     *
      * @param userIn
      * @return
      */
@@ -184,7 +188,7 @@ public class PTFMSDaoImpl implements PTFMSDao {
 
         connection = DataSource.getConnection();
         try (
-             PreparedStatement prepState = connection.prepareStatement(query)) {
+                PreparedStatement prepState = connection.prepareStatement(query)) {
 
             prepState.setString(1, staff.getFirstName());
             prepState.setString(2, staff.getLastName());
@@ -210,8 +214,8 @@ public class PTFMSDaoImpl implements PTFMSDao {
     @Override
     public void registerVehicle(Vehicle vehicle) {
         Connection connection = null;
-        String query = "INSERT INTO Vehicles (VehicleNumber, VehicleType, ConsumptionRate, ConsumptionUnit, MaxPassengers, ActiveRoute)\n" +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Vehicles (VehicleNumber, VehicleType, ConsumptionRate, ConsumptionUnit, MaxPassengers, ActiveRoute)\n"
+                + "VALUES (?, ?, ?, ?, ?, ?)";
 
         connection = DataSource.getConnection();
         try (PreparedStatement userStmt = connection.prepareStatement(query)) {
@@ -312,11 +316,52 @@ public class PTFMSDaoImpl implements PTFMSDao {
                 }
 
                 reports.add(report);
+
             }
         } catch (SQLException e) {
             Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE, "SQL Exception occured when getting fuel report.", e);
         }
         return reports;
+    }
+
+    /**
+     *
+     * @param report
+     */
+    @Override
+    public void updateFuelReport(FuelReportDTO report) {
+        String sql = """
+        UPDATE FuelReport SET
+            VehicleID = ?,
+            StaffID = ?,
+            FuelType = ?,
+            UsageAmt = ?,
+            DistanceTraveled = ?,
+            Date = ?,
+            Status = ?
+        WHERE ReportID = ?
+        """;
+
+        try (Connection conn = DataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, report.getVehicleID());
+            ps.setInt(2, report.getStaffID());
+            ps.setString(3, report.getFuelType());
+            ps.setDouble(4, report.getFuelConsumed());
+            ps.setDouble(5, report.getDistanceTraveled());
+            ps.setTimestamp(6, Timestamp.valueOf(report.getDate()));
+            ps.setString(7, report.getStatus());
+            ps.setInt(8, report.getReportID());
+
+            int rowsUpdated = ps.executeUpdate();
+
+            if (rowsUpdated == 0) {
+                throw new SQLException("Updating fuel report failed, no rows affected.");
+            }
+
+        } catch (SQLException e) {
+            Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE, "SQL Exception occurred when updating fuel report.", e);
+        }
     }
 
     /**
@@ -348,9 +393,7 @@ public class PTFMSDaoImpl implements PTFMSDao {
         """;
 
         // fuel
-        try (Connection con = DataSource.getConnection();
-             PreparedStatement ps = con.prepareStatement(fuel);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection con = DataSource.getConnection(); PreparedStatement ps = con.prepareStatement(fuel); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 CostReportDTO fcost = new CostReportDTO();
@@ -367,9 +410,7 @@ public class PTFMSDaoImpl implements PTFMSDao {
         }
 
         // maintenance
-        try (Connection con = DataSource.getConnection();
-             PreparedStatement ps = con.prepareStatement(maintenance);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection con = DataSource.getConnection(); PreparedStatement ps = con.prepareStatement(maintenance); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 CostReportDTO mcost = new CostReportDTO();
@@ -395,7 +436,7 @@ public class PTFMSDaoImpl implements PTFMSDao {
      * @author Lily S., Khairunnisa Ashri
      * @return
      */
-    public List<MaintenanceLogDTO> getAllLogs(){
+    public List<MaintenanceLogDTO> getAllLogs() {
         List<MaintenanceLogDTO> logs = new ArrayList<>();
 
         String sql = """
@@ -426,9 +467,7 @@ public class PTFMSDaoImpl implements PTFMSDao {
                      ORDER BY ml.Date DESC;
                      """;
 
-        try (Connection con = DataSource.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection con = DataSource.getConnection(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 MaintenanceLogDTO log = new MaintenanceLogDTO();
@@ -463,24 +502,37 @@ public class PTFMSDaoImpl implements PTFMSDao {
                          s.StaffID,
                          s.FirstName,
                          s.LastName,
-                         -- calculate on-time rate as a percentage (0 to 100)
                          IFNULL(
-                           100.0 * SUM(CASE WHEN gps.EndTime <= gps.ScheduledEndTime THEN 1 ELSE 0 END) / COUNT(gps.GPSID), 
-                           0
+                             100.0 * SUM(CASE WHEN gps.EndTime <= gps.ScheduledEndTime THEN 1 ELSE 0 END) / COUNT(gps.GPSID), 
+                             0
                          ) AS OnTimeRate,
                          IFNULL(AVG(TIMESTAMPDIFF(MINUTE, gps.StartTime, gps.EndTime)), 0) AS AvgRouteDuration,
-                         IFNULL(SUM(TIMESTAMPDIFF(HOUR, sl.StartTime, sl.EndTime)), 0) AS TotalHoursWorked
+                         IFNULL(SUM(TIMESTAMPDIFF(HOUR, sl.StartTime, sl.EndTime)), 0) AS TotalHoursWorked,
+                         
+                         -- status from BreakLog
+                         (
+                             SELECT 
+                                 CASE bl.Action
+                                     WHEN 'BREAK_START' THEN 'On Break'
+                                     WHEN 'BREAK_END' THEN 'Active'
+                                     WHEN 'CLOCK_OUT' THEN 'Clocked Out'
+                                     WHEN 'CLOCK_IN' THEN 'Active'
+                                     ELSE 'Unknown'
+                                 END
+                             FROM BreakLog bl
+                             WHERE bl.StaffID = s.StaffID
+                             ORDER BY bl.Timestamp DESC
+                             LIMIT 1
+                         ) AS Status
                      
                      FROM Staff s
                      LEFT JOIN GPS gps ON s.StaffID = gps.StaffID
                      LEFT JOIN StaffLog sl ON s.StaffID = sl.StaffID
                      WHERE s.Role = 'Operator'
-                     GROUP BY s.StaffID, s.FirstName, s.LastName;
+                     GROUP BY s.StaffID, s.FirstName, s.LastName;;
                      """;
 
-        try (Connection con = DataSource.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection con = DataSource.getConnection(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 OperatorPerformanceDTO op = new OperatorPerformanceDTO();
@@ -490,6 +542,7 @@ public class PTFMSDaoImpl implements PTFMSDao {
                 op.setOnTimeRate(rs.getDouble("OnTimeRate"));
                 op.setAvgRouteDuration(rs.getDouble("AvgRouteDuration"));
                 op.setTotalHoursWorked(rs.getDouble("TotalHoursWorked"));
+                op.setStatus(rs.getString("Status"));
                 results.add(op);
             }
         } catch (SQLException e) {
@@ -536,6 +589,7 @@ public class PTFMSDaoImpl implements PTFMSDao {
 
     /**
      * Lily S.
+     *
      * @return
      */
     @Override
@@ -571,6 +625,7 @@ public class PTFMSDaoImpl implements PTFMSDao {
 
     /**
      * Lily S.
+     *
      * @return
      */
     @Override
@@ -667,4 +722,101 @@ public class PTFMSDaoImpl implements PTFMSDao {
 
         return vehicleDTO;
     }
+
+    /**
+     *
+     * @param staffID
+     * @return
+     */
+    @Override
+    public List<BreakLogDTO> getBreakLogsByStaffID(int staffID) {
+        List<BreakLogDTO> logs = new ArrayList<>();
+        String sql = """
+                     SELECT bl.Action, bl.Timestamp
+                             FROM BreakLog bl
+                             WHERE bl.StaffID = ?
+                             ORDER BY bl.Timestamp ASC
+                     """;
+        try (Connection con = DataSource.getConnection(); PreparedStatement ps
+                = con.prepareStatement(sql)) {
+            ps.setInt(1, staffID);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    BreakLogDTO log = new BreakLogDTO();
+                    log.setAction(rs.getString("Action"));
+                    log.setTimestamp(rs.getTimestamp("Timestamp").toLocalDateTime());
+                    logs.add(log);
+                }
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE, "SQLException caught when trying to find staff by ID.", e);
+        }
+        return logs;
+    }
+
+    /**
+     *
+     * @param staffID
+     * @return
+     */
+    @Override
+    public StaffDTO getStaffByID(int staffID) {
+        String sql = "SELECT FirstName, LastName FROM Staff WHERE StaffID = ?";
+        try (Connection con = DataSource.getConnection(); PreparedStatement ps
+                = con.prepareStatement(sql)) {
+            ps.setInt(1, staffID);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    StaffDTO staff = new StaffDTO();
+                    staff.setFirstName(rs.getString("FirstName"));
+                    staff.setLastName(rs.getString("LastName"));
+                    return staff;
+                }
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE, "SQLException caught when fetching staff by ID.", e);
+        }
+        return null;
+    }
+
+    @Override
+    public void insertBreakLog(BreakLogDTO log) {
+        String sql = "INSERT INTO BreakLog (StaffID, Action, Timestamp) VALUES (?, ?, ?)";
+        try (Connection con = DataSource.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, log.getStaffID());
+            ps.setString(2, log.getAction());
+            ps.setTimestamp(3, Timestamp.valueOf(log.getTimestamp()));
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE, "Failed to insert break log.", e);
+        }
+    }
+
+    @Override
+    public StaffDTO getStaffByUsername(String username) {
+        StaffDTO staff = null;
+        String sql = "SELECT s.StaffID, s.FirstName, s.LastName, s.Email "
+                + "FROM Staff s INNER JOIN Users u ON s.StaffID = u.StaffID "
+                + "WHERE u.Username = ?";
+
+        try (Connection con = DataSource.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, username);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    staff = new StaffDTO();
+                    staff.setStaffId(rs.getInt("StaffID"));
+                    staff.setFirstName(rs.getString("FirstName"));
+                    staff.setLastName(rs.getString("LastName"));
+                    staff.setEmail(rs.getString("Email"));
+                }
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE, "Error fetching staff by username.", e);
+        }
+        return staff;
+    }
+
 }

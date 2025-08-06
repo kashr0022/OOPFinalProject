@@ -10,14 +10,16 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class FrontControllerServlet extends HttpServlet {
+
     /**
-     * author: Lily S.
+     * author: Lily S., Khairunnisa Ashri
+     *
      * @version 1.0
      * @since JDK 21.0.4
      */
     protected void processRequest(HttpServletRequest req, HttpServletResponse res)
             throws IOException {
-            HttpSession session = req.getSession(false);
+        HttpSession session = req.getSession(false);
         boolean loggedIn = (session != null && session.getAttribute("username") != null);
         res.setContentType("text/html;charset=UTF-8");
 
@@ -91,15 +93,29 @@ public class FrontControllerServlet extends HttpServlet {
                 out.print("</form>");
 
                 out.print("<form action=\"dashboard\" method=\"GET\">");
-                out.print("<button type=\"submit\" value=\"Dashboard\">Manager Dashboard</button>");
+                out.print("<button type=\"submit\" value=\"dashboard\">Dashboard</button>");
+                out.print("</form>");
+
+                out.print("<form action=\"breakHistory\" method=\"GET\">");
+                out.print("<button type=\"submit\" value=\"breakHistory\">Punch Clock</button>");
                 out.print("</form>");
 
                 out.print("</div>");
+                out.println("</center>");
+                out.println("</div>");
+                
+                // added fuel consumption alerts for managers K.A.
+                String userRole = (String) session.getAttribute("userRole");
+                if ("transitmanager".equalsIgnoreCase(userRole)) {
+                    out.println("<div class='alerts-ctr'>");;
 
+                    PTFMSBusinessLogic logic = new PTFMSBusinessLogic();
+                    int fuelAlerts = logic.getFuelAlertCount();
+                    out.println("<p>Fuel Alerts: " + fuelAlerts + "</p>");
+                    out.println("</div>");
+                } 
+               
             }
-
-            out.println("</center>");
-            out.println("</div>");
             out.println("</body></html>");
         }
     }
@@ -128,9 +144,19 @@ public class FrontControllerServlet extends HttpServlet {
             if (loginSuccess) {
                 PTFMSBusinessLogic ptfmsBusinessLogic = new PTFMSBusinessLogic();
                 UsersDTO userDTO = ptfmsBusinessLogic.getUserByUsername(request.getParameter("username"));
+                StaffDTO staffDTO = ptfmsBusinessLogic.getStaffByUsername(request.getParameter("username"));
+
                 HttpSession session = request.getSession(true);
+
+                // store role and  username in session
                 session.setAttribute("userRole", userDTO.getRole());
                 session.setAttribute("username", request.getParameter("username"));
+
+                // store staff id and name in session
+                if (staffDTO != null) {
+                    session.setAttribute("loggedStaffId", staffDTO.getStaffId());
+                    session.setAttribute("staffName", staffDTO.getFirstName() + " " + staffDTO.getLastName());
+                }
                 request.setAttribute("logInSuccessMsg", "Welcome back " + request.getParameter("username") + ".");
                 processRequest(request, response);
             } else {

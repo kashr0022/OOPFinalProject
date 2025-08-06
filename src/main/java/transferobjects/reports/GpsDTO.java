@@ -4,7 +4,9 @@ package transferobjects.reports;
 import java.time.LocalDateTime;
 
 /**
- *
+ * Data Transfer Object (DTO) representing GPS tracking information for a vehicle.
+ * Contains details about start and end locations, timestamps, related staff and vehicle IDs, and any additional notes.
+ * 
  * @author Khairunnisa Ashri, Lily S.
  */
 public class GpsDTO {

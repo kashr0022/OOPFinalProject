@@ -112,6 +112,19 @@ CREATE TABLE FuelRates (
                            RatePerUnit DECIMAL(10,2)
 );
 
+-- Operator Status
+CREATE TABLE OperatorStatus (
+    StatusID INT PRIMARY KEY AUTO_INCREMENT,
+    Status VARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE BreakLog (
+    LogID INT AUTO_INCREMENT PRIMARY KEY,
+    StaffID INT NOT NULL,
+    Action VARCHAR(20) NOT NULL,
+    Timestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (StaffID) REFERENCES Staff(StaffID)
+);
 
 -- FOR TESTING Staff INSERT
 INSERT INTO Staff (FirstName, LastName, Email, Role)
@@ -204,4 +217,28 @@ INSERT INTO FuelRates (FuelType, RatePerUnit) VALUES
                                                   ('Diesel', 1.50),
                                                   ('Electric', 0.20),
                                                   ('Hybrid', 1.10);
+
+-- Status INSERT
+INSERT INTO OperatorStatus (Status) VALUES
+('Active'),
+('On Break'),
+('Inactive');
+
+-- FOR TESTING
+-- Clark Kent (StaffID = 3) goes on break and returns
+INSERT INTO BreakLog (StaffID, Action, Timestamp) VALUES
+(3, 'BREAK_START', '2025-07-28 11:15:00'),
+(3, 'BREAK_END',   '2025-07-28 11:45:00');
+
+-- Barry Allen (StaffID = 5) goes on break and hasn't returned yet
+INSERT INTO BreakLog (StaffID, Action, Timestamp) VALUES
+(5, 'BREAK_START', '2025-07-28 14:10:00');
+
+-- Victor Stone (StaffID = 4) ends his shift
+INSERT INTO BreakLog (StaffID, Action, Timestamp) VALUES
+(4, 'CLOCK_OUT', '2025-07-28 19:00:00');
+
+-- Clark Kent ends his shift
+INSERT INTO BreakLog (StaffID, Action, Timestamp) VALUES
+(3, 'CLOCK_OUT', '2025-07-28 17:00:00');
 

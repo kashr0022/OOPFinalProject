@@ -4,7 +4,10 @@ package transferobjects.reports;
 import java.time.LocalDateTime;
 
 /**
- *
+ * Data Transfer Object (DTO) representing a cost report for a vehicle.
+ * Contains information about the vehicle, type of cost report, description,
+ * the associated cost amount, and the date of the report.
+ * 
  * @author Khairunnisa Ashri
  */
 public class CostReportDTO {

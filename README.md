@@ -156,4 +156,72 @@ Checks in database for duplicate username/first+last combo prevention during reg
    </td>
   <td>August 4th, 2025</td>
 </tr>
+  <tr>
+    <td><strong>3.0</strong></td>
+    <td><strong>Lily S.</strong></td>
+    <td>
+      <ul>
+        <li>Cleaned up data access folder; removed unused Dao files, moved everything into PTFMSDao alongside implementing required methods into parent interface.</li>
+        <li>Deleted other DAOs once merged, renamed all references to those DAOs and implemented calls to them in the business logic.</li>
+        <li>Fixed crash bug related to DAO files.</li>
+        <li>Removed all direct DAO calls in servlet code, replaced with business logic calls.</li>
+      </ul>
+    </td>
+    <td><strong>August 4th, 2025</strong></td>
+  </tr>
+    <tr>
+    <td><strong>3.1</strong></td>
+    <td><strong>Lily S.</strong></td>
+    <td>
+      <ul>
+        <li>Added role based access through session storage of logged in user roles; vehicle registration denies operators from accessing it.</li>
+        <li>Implemented duplicate check prevention for vehicle number on vehicle registration page.</li>
+        <li>DB adjustments for better info access.</li>
+      </ul>
+    </td>
+    <td><strong>August 4th, 2025</strong></td>
+  </tr>
+    <tr>
+    <td><strong>3.2</strong></td>
+    <td><strong>Lily S.</strong></td>
+    <td>
+      <ul>
+        <li><strong>Component Maintenance Servlet + all logic added (FR-05)</strong></li>
+        <li>Role based access hides all scheduling buttons if user is not manager.</li>
+        <li>
+          <strong>Add maintenance scheduling page added + all logic (FR-05)</strong>
+          <ul>
+            <li>Button to this servlet only appears if repairs are needed for a component.</li>
+            <li>Passes vehicle/component data from component page to auto-populate forms.</li>
+          </ul>
+        </li>
+        <li>
+          <strong>DB script updated</strong>
+          <ul>
+            <li>New notes column for maintenance.</li>
+            <li>Auto default date to current time added for maintenance table.</li>
+            <li>New note inserts for maintenance test data.</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Observer pattern implemented to track # of components that need maintenance (FR-05)</strong>
+          <ul>
+            <li>Displayed on component page in red.</li>
+          </ul>
+        </li>
+        <li>
+          <strong>New DAO methods (with respective business logic calls)</strong>
+          <ul>
+            <li>Get All Components, Get All GPS, Get All Staff, Get Component by ID, Get Vehicle by ID</li>
+          </ul>
+        </li>
+        <li>Edited dashboard page + get all logs DAO method to include new notes column.</li>
+        <li>New Component DTO</li>
+        <li>Various fixes / restructuring</li>
+      </ul>
+    </td>
+    <td><strong>August 6th, 2025</strong></td>
+  </tr>
+</table>
+
 

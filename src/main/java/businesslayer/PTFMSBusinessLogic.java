@@ -1,8 +1,10 @@
 package businesslayer;
 
 import businesslayer.builder.vehicles.Vehicle;
+import businesslayer.observer.ConcreteFuelObserver;
 import businesslayer.observer.ConcreteMaintenanceCountObserver;
 import businesslayer.observer.CounterObserver;
+import businesslayer.observer.FuelReportSubject;
 import businesslayer.observer.Subject;
 import businesslayer.simplefactory.SimpleVehicleFactory;
 import dataaccesslayer.PTFMSDao;
@@ -16,11 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  author: Lily S.
- * 	@version 1.0
- *  @since JDK 21.0.4
+ * author: Lily S.
+ *
+ * @version 1.0
+ * @since JDK 21.0.4
  */
 public class PTFMSBusinessLogic {
+
     private static PTFMSDao ptfmsDao = null;
 
     /**
@@ -101,18 +105,40 @@ public class PTFMSBusinessLogic {
         );
         return ptfmsDao.checkVehicleTaken(vehicle);
     }
-    public List<FuelReportDTO> getFuelReport(){
+
+    public List<FuelReportDTO> getFuelReport() {
         return ptfmsDao.getFuelReport();
-    };
-    public List<CostReportDTO> getCostReport(){
+    }
+
+    public int getFuelAlertCount() {
+        FuelReportSubject sub = new FuelReportSubject();
+        ConcreteFuelObserver fuelAlert = new ConcreteFuelObserver();
+        sub.addObserver(fuelAlert);
+
+        List<FuelReportDTO> allFuelReports = ptfmsDao.getFuelReport();
+
+        for (FuelReportDTO report : allFuelReports) {
+            if (report.getFuelConsumed() > 100.0) {
+                sub.notifyObservers(report);
+            }
+        }
+
+        return fuelAlert.getAlertCount(); // Return the count
+    }
+
+    public List<CostReportDTO> getCostReport() {
         return ptfmsDao.getCostReport();
     }
-    public List<MaintenanceLogDTO> getAllLogs(){
+
+    public List<MaintenanceLogDTO> getAllLogs() {
         return ptfmsDao.getAllLogs();
     }
-    public List<OperatorPerformanceDTO> getOperatorPerformance(){
+
+    public List<OperatorPerformanceDTO> getOperatorPerformance() {
         return ptfmsDao.getOperatorPerformance();
-    };
+    }
+
+    ;
 
     /**
      * @author Lily S.
@@ -127,7 +153,7 @@ public class PTFMSBusinessLogic {
      * @author Lily S.
      * @return
      */
-    public List<ComponentDTO> getAllComponents(){
+    public List<ComponentDTO> getAllComponents() {
         return ptfmsDao.getAllComponents();
     }
 
@@ -137,7 +163,7 @@ public class PTFMSBusinessLogic {
         sub.addObserver(maintenanceCount);
         List<ComponentDTO> allComponents = new ArrayList<>();
         allComponents = ptfmsDao.getAllComponents();
-        for  (ComponentDTO component : allComponents) {
+        for (ComponentDTO component : allComponents) {
             if (component.getHoursUsed() > 800) {
                 sub.notifyObserver();
             }
@@ -183,7 +209,44 @@ public class PTFMSBusinessLogic {
      * @author Lily S.
      * @param maintenance
      */
-    public void addMaintenance(MaintenanceLogDTO maintenance){
+    public void addMaintenance(MaintenanceLogDTO maintenance) {
         ptfmsDao.addMaintenance(maintenance);
     }
+
+    /**
+     *
+     * @param staffID
+     * @return
+     */
+    public List<BreakLogDTO> getBreakLogsByStaffID(int staffID) {
+        return ptfmsDao.getBreakLogsByStaffID(staffID);
+    }
+
+    /**
+     *
+     * @param staffID
+     * @return
+     */
+    public StaffDTO getStaffByStaffID(int staffID) {
+        PTFMSDao dao = new PTFMSDaoImpl();
+        return dao.getStaffByID(staffID);
+    }
+
+    /**
+     *
+     * @param username
+     * @return
+     */
+    public StaffDTO getStaffByUsername(String username) {
+        return ptfmsDao.getStaffByUsername(username);
+    }
+
+    /**
+     *
+     * @param log
+     */
+    public void insertBreakLog(BreakLogDTO log) {
+        ptfmsDao.insertBreakLog(log);
+    }
+
 }

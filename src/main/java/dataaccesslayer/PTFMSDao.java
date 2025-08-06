@@ -6,12 +6,13 @@ import transferobjects.reports.*;
 import transferobjects.staff.StaffDTO;
 import transferobjects.users.UsersDTO;
 import transferobjects.vehicles.VehicleDTO;
+import transferobjects.reports.BreakLogDTO;
 
 import java.util.List;
 
 /**
- * interaface for DAOImpl, declares all the methods utilized in the web application, directly works with datasource to grab info (or add) from/to the PTFMS database
- * author: Lily S.
+ * interface for DAOImpl, declares all the methods utilized in the web application, directly works with datasource to grab info (or add) from/to the PTFMS database
+ * author: Lily S., Khairunnisa Ashri
  */
 public interface PTFMSDao {
 
@@ -24,6 +25,7 @@ public interface PTFMSDao {
     void registerVehicle(Vehicle vehicle);
     boolean checkVehicleTaken(Vehicle vehicle);
     List<FuelReportDTO> getFuelReport();
+    void updateFuelReport(FuelReportDTO report);
     List<CostReportDTO> getCostReport();
     List<MaintenanceLogDTO> getAllLogs();
     List<OperatorPerformanceDTO> getOperatorPerformance();
@@ -32,5 +34,8 @@ public interface PTFMSDao {
     List<GpsDTO> getAllGps();
     ComponentDTO getComponentByID(int id);
     VehicleDTO getVehicleByID(int id);
-
+    List<BreakLogDTO> getBreakLogsByStaffID(int StaffID);
+    StaffDTO getStaffByID(int StaffID);
+    StaffDTO getStaffByUsername(String username);
+    void insertBreakLog(BreakLogDTO log);
 }

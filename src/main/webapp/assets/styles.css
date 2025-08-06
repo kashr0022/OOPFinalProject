@@ -270,3 +270,35 @@ button:hover {
     font-size: 14px;
     font-weight: bold;
 }
+
+.alert-link {
+    color: #a00;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.alert-row {
+    background-color: #ffcccc;  /* Light red background */
+    font-weight: bold;
+    color: #a00;
+}
+
+td.active {
+    color: green;
+    font-weight: bold;
+}
+
+td.onbreak {
+    color: blue;
+    font-weight: bold;
+}
+
+td.clockedout {
+    color: red;
+    font-weight: bold;
+}
+
+td.unknown {
+    color: gray;
+    font-style: italic;
+}

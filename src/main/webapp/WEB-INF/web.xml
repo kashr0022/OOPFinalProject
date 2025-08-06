@@ -56,5 +56,13 @@
         <servlet-name>ScheduleMaintenanceServlet</servlet-name>
         <url-pattern>/schedulemaintenance</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>BreakHistoryServlet</servlet-name>
+        <servlet-class>viewlayer.BreakHistoryServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BreakHistoryServlet</servlet-name>
+        <url-pattern>/breakHistory</url-pattern>
+    </servlet-mapping>
 </web-app>
 

@@ -4,7 +4,9 @@ package transferobjects.reports;
 import model.Role;
 
 /**
- *
+ * Data Transfer Object (DTO) representing the performance metrics of an operator.
+ * Includes personal details, role, punctuality, work duration, and current status.
+ * 
  * @author Khairunnisa Ashri
  */
 public class OperatorPerformanceDTO {
@@ -15,6 +17,7 @@ public class OperatorPerformanceDTO {
     private double onTimeRate;
     private double avgRouteDuration;
     private double totalHoursWorked;
+    private String status;
 
     
     /**
@@ -114,4 +117,20 @@ public class OperatorPerformanceDTO {
     public void setRole(Role role) {
         this.role = role;
     }
+
+    /**
+     * @return the status
+     */
+    public String getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+   
 }

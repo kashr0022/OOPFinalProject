@@ -4,7 +4,9 @@ package transferobjects.reports;
 import java.time.LocalDateTime;
 
 /**
- *
+ * Data Transfer Object (DTO) representing a staff log entry.
+ * Records staff work session timings and optional notes.
+ * 
  * @author Khairunnisa Ashri
  */
 public class StaffLogDTO {
@@ -15,7 +17,6 @@ public class StaffLogDTO {
     private String notes;
     
     public StaffLogDTO() {
-        
     }
 
     /**

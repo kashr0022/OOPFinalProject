@@ -15,7 +15,7 @@ import java.io.PrintWriter;
  * @version 1.0
  * @since JDK 21.0.4
  */
-public class vehicleRegistration extends HttpServlet {
+public class VehicleRegistration extends HttpServlet {
     protected void processRequest(HttpServletRequest req, HttpServletResponse res)
             throws IOException {
         res.setContentType("text/html;charset=UTF-8");

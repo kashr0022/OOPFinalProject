@@ -17,7 +17,7 @@ public class FrontControllerServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest req, HttpServletResponse res)
             throws IOException {
-        HttpSession session = req.getSession(false);
+            HttpSession session = req.getSession(false);
         boolean loggedIn = (session != null && session.getAttribute("username") != null);
         res.setContentType("text/html;charset=UTF-8");
 
@@ -84,7 +84,10 @@ public class FrontControllerServlet extends HttpServlet {
 
                 out.print("<form action=\"vehicleregistration\" method=\"GET\">");
                 out.print("<button type=\"submit\" value=\"Vehicle Registration\">Vehicle Registration</button>");
+                out.print("</form>");
 
+                out.print("<form action=\"componentmaintenance\" method=\"GET\">");
+                out.print("<button type=\"submit\" value=\"Component Maintenance\">Component Maintenance</button>");
                 out.print("</form>");
 
                 out.print("<form action=\"dashboard\" method=\"GET\">");

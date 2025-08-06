@@ -106,6 +106,8 @@
                     <th>Component</th>
                     <th>Usage Hours</th>
                     <th>Diagnostics</th>
+                    <%-- New heading added for Notes column - lily--%>
+                    <th>Notes</th>
                     <th>Action</th>
                     <th>Timestamp</th>
                 </tr>
@@ -121,6 +123,8 @@
                         <td><%= log.getComponentName()%></td>
                         <td><%= log.getUsageAmt()%></td>
                         <td><%= log.getDiagnostics()%></td>
+                        <%-- Another dto get added for Notes column - lily--%>
+                        <td><%= log.getNotes() %></td>
                         <td>
                             <% if ("ALERT".equalsIgnoreCase(log.getStatus())) {%>
                             <a href="scheduleMaintenance?logID=<%= log.getLogID()%>">Schedule</a>

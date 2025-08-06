@@ -26,7 +26,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>VehicleRegistrationServlet</servlet-name>
-        <servlet-class>viewlayer.vehicleRegistration</servlet-class>
+        <servlet-class>viewlayer.VehicleRegistration</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>VehicleRegistrationServlet</servlet-name>
@@ -39,6 +39,22 @@
     <servlet-mapping>
         <servlet-name>DashboardServlet</servlet-name>
         <url-pattern>/dashboard</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ComponentMaintenanceServlet</servlet-name>
+        <servlet-class>viewlayer.ComponentMaintenanceServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ComponentMaintenanceServlet</servlet-name>
+        <url-pattern>/componentmaintenance</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ScheduleMaintenanceServlet</servlet-name>
+        <servlet-class>viewlayer.ScheduleMaintenanceServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ScheduleMaintenanceServlet</servlet-name>
+        <url-pattern>/schedulemaintenance</url-pattern>
     </servlet-mapping>
 </web-app>
 

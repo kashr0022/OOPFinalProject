@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 /**
  *
- * @author Khairunnisa Asrhi
+ * @author Khairunnisa Asrhi, Lily S.
  */
 public class MaintenanceLogDTO {
     private int logID;
@@ -19,6 +19,24 @@ public class MaintenanceLogDTO {
     private LocalDateTime date;
     private String status;
     private double cost;
+
+    /**
+     *
+     * @return detailed notes of the required maintenance entry
+     */
+    public String getNotes() {
+        return notes;
+    }
+
+    /**
+     * update local field related to notes on maintenance entry
+     * @param notes
+     */
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    private String notes;
 
     /**
      * @return the logID

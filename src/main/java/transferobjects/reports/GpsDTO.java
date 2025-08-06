@@ -5,15 +5,50 @@ import java.time.LocalDateTime;
 
 /**
  *
- * @author Khairunnisa Ashri
+ * @author Khairunnisa Ashri, Lily S.
  */
 public class GpsDTO {
+
+    private String startingLocation;
+    private String endingLocation;
     private int gpsID;
     private int staffID;
     private int vehicleID;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String notes;
+
+    /**
+     *
+     * @return starting location of GPS route
+     */
+    public String getStartingLocation() {
+        return startingLocation;
+    }
+
+    /**
+     * take in startinglocation, set it to local field in the object
+     * @param startingLocation, location of GPS at start of route
+     */
+    public void setStartingLocation(String startingLocation) {
+        this.startingLocation = startingLocation;
+    }
+
+    /**
+     *
+     * @return ending location of GPS route
+     */
+    public String getEndingLocation() {
+        return endingLocation;
+    }
+
+    /**
+     * take in endinglocation, set it to local field in the object
+     * @param endingLocation, location of GPS at end of route
+     */
+    public void setEndingLocation(String endingLocation) {
+        this.endingLocation = endingLocation;
+    }
 
     /**
      * @return the gpsID

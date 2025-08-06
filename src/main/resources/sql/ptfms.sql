@@ -97,8 +97,9 @@ CREATE TABLE MaintenanceLog
     VehicleID INT            NOT NULL,
     ComponentID   INT            NOT NULL,
     UsageAmt      DECIMAL(10, 2) NOT NULL,
-    Date          DATETIME       NOT NULL,
+    Date          DATETIME       NOT NULL DEFAULT CURRENT_TIMESTAMP,
     Status        VARCHAR(20),
+    Notes         VARCHAR(200),
     FOREIGN KEY (GPSID) REFERENCES GPS (GPSID),
     FOREIGN KEY (StaffID) REFERENCES Staff (StaffID),
     FOREIGN KEY (VehicleID) REFERENCES Vehicles (VehicleID),
@@ -107,8 +108,8 @@ CREATE TABLE MaintenanceLog
 
 -- Fuel Rates Table
 CREATE TABLE FuelRates (
-    FuelType VARCHAR(50) PRIMARY KEY,
-    RatePerUnit DECIMAL(10,2)
+                           FuelType VARCHAR(50) PRIMARY KEY,
+                           RatePerUnit DECIMAL(10,2)
 );
 
 
@@ -175,32 +176,32 @@ VALUES (1, '2025-07-28 08:00:00', '2025-07-28 16:00:00', 'Morning shift'),
 -- GPS INSERT
 INSERT INTO GPS (StaffID, VehicleID, StartingLocation, StartTime, EndTime, EndingLocation, ScheduledEndTime, Notes)
 VALUES
-		(1, 1, 'Central Station', '2025-07-28 08:00:00', '2025-07-28 12:00:00', 'Downtown Terminal', '2025-07-28 12:00:00', 'Downtown route'),
-		(3, 3, 'East Side Depot', '2025-07-28 09:30:00', '2025-07-28 13:30:00', 'City Loop', '2025-07-28 13:30:00', 'City loop'),
-		(5, 5, 'North Station', '2025-07-28 10:00:00', '2025-07-28 14:00:00', 'East Terminal', '2025-07-28 14:00:00', 'Downtown to East'),
-		(1, 2, 'West Yard', '2025-07-29 08:00:00', '2025-07-29 12:00:00', 'Test Route End', '2025-07-29 12:00:00', 'Train Testing Route'),
-		(3, 4, 'City Core Start', '2025-07-29 13:00:00', '2025-07-29 17:00:00', 'Outskirts End', '2025-07-29 17:00:00', 'City Core to Outskirts');
+    (1, 1, 'Central Station', '2025-07-28 08:00:00', '2025-07-28 12:00:00', 'Downtown Terminal', '2025-07-28 12:00:00', 'Downtown route'),
+    (3, 3, 'East Side Depot', '2025-07-28 09:30:00', '2025-07-28 13:30:00', 'City Loop', '2025-07-28 13:30:00', 'City loop'),
+    (5, 5, 'North Station', '2025-07-28 10:00:00', '2025-07-28 14:00:00', 'East Terminal', '2025-07-28 14:00:00', 'Downtown to East'),
+    (1, 2, 'West Yard', '2025-07-29 08:00:00', '2025-07-29 12:00:00', 'Test Route End', '2025-07-29 12:00:00', 'Train Testing Route'),
+    (3, 4, 'City Core Start', '2025-07-29 12:00:00', '2025-07-29 17:00:00', 'Outskirts End', '2025-07-29 17:00:00', 'City Core to Outskirts');
 
 -- FuelReport INSERT
 INSERT INTO FuelReport (StaffID, VehicleID, UsageAmt, DistanceTraveled, FuelType, Date, Status)
 VALUES
-        (1, 1, 50.75, 100, 'Diesel', '2025-07-28 13:00:00', 'Approved'),
-        (3, 2, 120.50, 200, 'Hybrid', '2025-07-28 14:30:00', 'Pending'),
-        (5, 4, 80.00, 150, 'Hybrid', '2025-07-28 15:00:00', 'Approved'),
-        (2, 1, 45.25, 90, 'Diesel', '2025-07-29 11:00:00', 'Rejected'),
-        (4, 3, 100.00, 180, 'Electric', '2025-07-29 12:00:00', 'Approved');
+    (1, 1, 50.75, 100, 'Diesel', '2025-07-28 13:00:00', 'Approved'),
+    (3, 2, 120.50, 200, 'Hybrid', '2025-07-28 14:30:00', 'Pending'),
+    (5, 4, 80.00, 150, 'Hybrid', '2025-07-28 15:00:00', 'Approved'),
+    (2, 1, 45.25, 90, 'Diesel', '2025-07-29 11:00:00', 'Rejected'),
+    (4, 3, 100.00, 180, 'Electric', '2025-07-29 12:00:00', 'Approved');
 
 -- MaintenanceLog INSERT
-INSERT INTO MaintenanceLog (StaffID, GPSID, VehicleID, ComponentID, UsageAmt, Date, Status)
-VALUES (2, 1, 1, 1, 50.00, '2025-07-28 16:00:00', 'Completed'),
-       (4, 2, 2, 2, 30.00, '2025-07-28 17:00:00', 'In Progress'),
-       (2, 3, 3, 3, 20.00, '2025-07-28 18:00:00', 'Completed'),
-       (4, 4, 4, 4, 40.00, '2025-07-29 10:00:00', 'Pending'),
-       (2, 5, 5, 5, 25.00, '2025-07-29 11:00:00', 'Completed');
+INSERT INTO MaintenanceLog (StaffID, GPSID, VehicleID, ComponentID, UsageAmt, Date, Status, Notes)
+VALUES (2, 1, 1, 1, 50.00, '2025-07-28 16:00:00', 'Completed', 'Faulty fuel injector replaced'),
+       (4, 2, 2, 2, 30.00, '2025-07-28 17:00:00', 'In Progress', 'Broken power supply'),
+       (2, 3, 3, 3, 20.00, '2025-07-28 18:00:00', 'Completed', 'Replaced contact strip'),
+       (4, 4, 4, 4, 40.00, '2025-07-29 10:00:00', 'Pending', 'Electrical system diagnostics needed'),
+       (2, 5, 5, 5, 25.00, '2025-07-29 11:00:00', 'Completed','Brake pads replaced');
 
 -- Fuel Rates INSERT
 INSERT INTO FuelRates (FuelType, RatePerUnit) VALUES
-        ('Diesel', 1.50),
-        ('Electric', 0.20),
-        ('Hybrid', 1.10);
+                                                  ('Diesel', 1.50),
+                                                  ('Electric', 0.20),
+                                                  ('Hybrid', 1.10);
 

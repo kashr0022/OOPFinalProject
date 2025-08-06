@@ -1,24 +1,32 @@
 package dataaccesslayer;
 
 import businesslayer.builder.vehicles.Vehicle;
-import transferobjects.reports.CostReportDTO;
-import transferobjects.reports.FuelReportDTO;
-import transferobjects.reports.MaintenanceLogDTO;
-import transferobjects.reports.OperatorPerformanceDTO;
+import model.Staff;
+import transferobjects.reports.*;
 import transferobjects.staff.StaffDTO;
 import transferobjects.users.UsersDTO;
+import transferobjects.vehicles.VehicleDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * @author Lily S.
+ *
+ */
 public class PTFMSDaoImpl implements PTFMSDao {
 
+    /**
+     * @author Lily S.
+     * @return
+     */
     @Override
     public boolean checkCred(String userIn, String passIn) {
         Connection connection = null;
@@ -43,6 +51,11 @@ public class PTFMSDaoImpl implements PTFMSDao {
         return false;
     }
 
+    /**
+     * @author: Lily S.
+     * @param staff
+     * @param user
+     */
     @Override
     public void addStaffUser(StaffDTO staff, UsersDTO user) {
         Connection connection = DataSource.getConnection();
@@ -70,6 +83,37 @@ public class PTFMSDaoImpl implements PTFMSDao {
         }
     }
 
+    /**
+     * author Lily S.
+     * @param maintenance
+     */
+    @Override
+    public void addMaintenance(MaintenanceLogDTO maintenance) {
+        Connection connection = DataSource.getConnection();
+
+        try {
+            String query = "INSERT INTO MaintenanceLog (StaffId, GPSID, VehicleID, ComponentID, UsageAmt, Status, Notes) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement prepState = connection.prepareStatement(query)) {
+                prepState.setInt(1, maintenance.getStaffID());
+                prepState.setInt(2, maintenance.getGpsID());
+                prepState.setInt(3, maintenance.getVehicleID());
+                prepState.setInt(4, maintenance.getComponentID());
+                prepState.setDouble(5, maintenance.getUsageAmt());
+                prepState.setString(6, maintenance.getStatus());
+                prepState.setString(7, maintenance.getNotes());
+                prepState.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE, "Exception occurred relating to maintenance record add to db.", e);
+        }
+    }
+
+    /**
+     * author Lily S.
+     * @param userIn
+     * @return
+     */
     @Override
     public UsersDTO getUserByUsername(String userIn) {
         Connection connection = null;
@@ -98,6 +142,11 @@ public class PTFMSDaoImpl implements PTFMSDao {
         return userDTO;
     }
 
+    /**
+     * @author Lily S.
+     * @param user
+     * @return
+     */
     @Override
     public boolean checkUserTaken(UsersDTO user) {
         Connection connection = null;
@@ -123,6 +172,11 @@ public class PTFMSDaoImpl implements PTFMSDao {
         return false;
     }
 
+    /**
+     * @author Lily S.
+     * @param staff
+     * @return
+     */
     @Override
     public boolean checkStaffTaken(StaffDTO staff) {
         Connection connection = null;
@@ -149,6 +203,10 @@ public class PTFMSDaoImpl implements PTFMSDao {
         return false;
     }
 
+    /**
+     * @author Lily S.
+     * @param vehicle
+     */
     @Override
     public void registerVehicle(Vehicle vehicle) {
         Connection connection = null;
@@ -169,6 +227,11 @@ public class PTFMSDaoImpl implements PTFMSDao {
         }
     }
 
+    /**
+     * @author Lily S.
+     * @param vehicle
+     * @return
+     */
     @Override
     public boolean checkVehicleTaken(Vehicle vehicle) {
         Connection connection = null;
@@ -194,6 +257,10 @@ public class PTFMSDaoImpl implements PTFMSDao {
         return false;
     }
 
+    /**
+     * @author Khairunnisa Ashri, Lily S.
+     * @return
+     */
     public List<FuelReportDTO> getFuelReport() {
         List<FuelReportDTO> reports = new ArrayList<>();
         String sql = """
@@ -252,6 +319,10 @@ public class PTFMSDaoImpl implements PTFMSDao {
         return reports;
     }
 
+    /**
+     * @author Khairunnisa Ashri, Lily S.
+     * @return
+     */
     public List<CostReportDTO> getCostReport() {
         List<CostReportDTO> reportList = new ArrayList<>();
         // fuel cost query
@@ -320,6 +391,10 @@ public class PTFMSDaoImpl implements PTFMSDao {
         return reportList;
     }
 
+    /**
+     * @author Lily S., Khairunnisa Ashri
+     * @return
+     */
     public List<MaintenanceLogDTO> getAllLogs(){
         List<MaintenanceLogDTO> logs = new ArrayList<>();
 
@@ -342,7 +417,8 @@ public class PTFMSDaoImpl implements PTFMSDao {
                              WHEN ml.Status = 'Pending' THEN 'Schedule'
                              ELSE ml.Status
                          END AS Action,
-                         (ml.UsageAmt * c.HoursUsed) AS Cost
+                         (ml.UsageAmt * c.HoursUsed) AS Cost,
+                             ml.Notes as Notes
                      FROM
                          MaintenanceLog ml
                      JOIN Vehicles v ON ml.VehicleID = v.VehicleID
@@ -366,6 +442,7 @@ public class PTFMSDaoImpl implements PTFMSDao {
                 log.setStatus(rs.getString("Action"));
                 log.setDate(rs.getTimestamp("Timestamp").toLocalDateTime());
                 log.setCost(rs.getDouble("Cost"));
+                log.setNotes(rs.getString("Notes"));
                 logs.add(log);
             }
         } catch (SQLException e) {
@@ -375,6 +452,10 @@ public class PTFMSDaoImpl implements PTFMSDao {
         return logs;
     }
 
+    /**
+     * @author Lily S., Khairunnisa Ashri
+     * @return
+     */
     public List<OperatorPerformanceDTO> getOperatorPerformance() {
         List<OperatorPerformanceDTO> results = new ArrayList<>();
         String sql = """
@@ -415,5 +496,175 @@ public class PTFMSDaoImpl implements PTFMSDao {
             Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE, "SQL Exception occured when getting operator performances.", e);
         }
         return results;
+    }
+
+    /**
+     * @author Lily S.
+     * @return
+     */
+    @Override
+    public List<ComponentDTO> getAllComponents() {
+        Connection connection = null;
+        List<ComponentDTO> componentList = new ArrayList<>();
+        String query = "SELECT v.VehicleNumber, v.VehicleType, c.ComponentID, c.ComponentName, c.ComponentType, c.HoursUsed, c.VehicleID FROM Components c JOIN Vehicles v ON c.VehicleID = v.VehicleID ORDER BY c.HoursUsed DESC;";
+
+        connection = DataSource.getConnection();
+
+        try (PreparedStatement prepState = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = prepState.executeQuery()) {
+                while (resultSet.next()) {
+                    ComponentDTO component = new ComponentDTO();
+//                  Grab all fields from each row entry and assign to dto obj
+                    component.setVehicleId(resultSet.getInt("VehicleID"));
+                    component.setVehicleNum(resultSet.getString("VehicleNumber"));
+                    component.setVehicleType(resultSet.getString("VehicleType"));
+                    component.setComponentId(resultSet.getInt("ComponentID"));
+                    component.setComponentName(resultSet.getString("ComponentName"));
+                    component.setComponentType(resultSet.getString("ComponentType"));
+                    component.setHoursUsed(resultSet.getInt("HoursUsed"));
+
+                    componentList.add(component);
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return componentList;
+    }
+
+    /**
+     * Lily S.
+     * @return
+     */
+    @Override
+    public List<StaffDTO> getAllStaff() {
+        Connection connection = null;
+        List<StaffDTO> staffList = new ArrayList<>();
+        String query = "SELECT StaffID, FirstName, LastName, Email, Role FROM Staff ORDER BY StaffID DESC;";
+
+        connection = DataSource.getConnection();
+
+        try (PreparedStatement prepState = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = prepState.executeQuery()) {
+                while (resultSet.next()) {
+                    StaffDTO staff = new StaffDTO();
+
+//                  Grab all fields from each row entry and assign to dto obj
+                    staff.setStaffId(resultSet.getInt("StaffID"));
+                    staff.setRole(resultSet.getString("Role"));
+                    staff.setFirstName(resultSet.getString("FirstName"));
+                    staff.setLastName(resultSet.getString("LastName"));
+                    staff.setEmail(resultSet.getString("Email"));
+
+                    staffList.add(staff);
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE, "Occurred during getAllStaff() DAO method.", ex);
+        }
+
+        return staffList;
+    }
+
+    /**
+     * Lily S.
+     * @return
+     */
+    @Override
+    public List<GpsDTO> getAllGps() {
+        Connection connection = null;
+        List<GpsDTO> gpsList = new ArrayList<>();
+        String query = "SELECT GPSID, StaffID, VehicleID, StartingLocation, StartTime, EndTime, EndingLocation, Notes FROM GPS ORDER BY GPSID DESC;";
+
+        connection = DataSource.getConnection();
+
+        try (PreparedStatement prepState = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = prepState.executeQuery()) {
+                while (resultSet.next()) {
+                    GpsDTO gps = new GpsDTO();
+
+//                  Grab all fields from each row entry and assign to dto obj
+                    gps.setGpsID(resultSet.getInt("GPSID"));
+                    gps.setStaffID(resultSet.getInt("StaffID"));
+                    gps.setVehicleID(resultSet.getInt("VehicleID"));
+                    gps.setStartingLocation(resultSet.getString("StartingLocation"));
+                    gps.setStartTime(resultSet.getTimestamp("StartTime").toLocalDateTime());
+                    gps.setEndTime(resultSet.getTimestamp("EndTime").toLocalDateTime());
+                    gps.setEndingLocation(resultSet.getString("EndingLocation"));
+                    gps.setNotes(resultSet.getString("Notes"));
+
+                    gpsList.add(gps);
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE, "Occurred during getAllStaff() DAO method.", ex);
+        }
+
+        return gpsList;
+    }
+
+    @Override
+    public ComponentDTO getComponentByID(int id) {
+        Connection connection = null;
+        String query = "SELECT * FROM Components WHERE ComponentID = ?";
+        ComponentDTO componentDTO = new ComponentDTO();
+        connection = DataSource.getConnection();
+
+        try (PreparedStatement prepState = connection.prepareStatement(query)) {
+
+            prepState.setString(1, String.valueOf(id));
+
+            try (ResultSet resultSet = prepState.executeQuery()) {
+                if (resultSet.next()) {
+                    componentDTO.setComponentId(resultSet.getInt("ComponentID"));
+                    componentDTO.setVehicleId(resultSet.getInt("VehicleID"));
+                    componentDTO.setComponentName(resultSet.getString("ComponentName"));
+                    componentDTO.setComponentType(resultSet.getString("ComponentType"));
+                    componentDTO.setHoursUsed(resultSet.getInt("HoursUsed"));
+                    return componentDTO;
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE, "SQLException caught when trying to find component by ID.", ex);
+
+        }
+
+        return componentDTO;
+    }
+
+    @Override
+    public VehicleDTO getVehicleByID(int id) {
+        Connection connection = null;
+        String query = "SELECT * FROM Vehicles WHERE VehicleID = ?";
+        VehicleDTO vehicleDTO = new VehicleDTO();
+        connection = DataSource.getConnection();
+
+        try (PreparedStatement prepState = connection.prepareStatement(query)) {
+
+            prepState.setString(1, String.valueOf(id));
+
+            try (ResultSet resultSet = prepState.executeQuery()) {
+                if (resultSet.next()) {
+                    vehicleDTO.setVehicleNumber(resultSet.getString("VehicleNumber"));
+                    vehicleDTO.setVehicleType(resultSet.getString("VehicleType"));
+                    vehicleDTO.setConsumptionRate(resultSet.getDouble("ConsumptionRate"));
+                    vehicleDTO.setConsumptionUnit(resultSet.getString("ConsumptionUnit"));
+                    vehicleDTO.setMaxPassengers(resultSet.getInt("MaxPassengers"));
+                    vehicleDTO.setActiveRoute(resultSet.getString("ActiveRoute"));
+                    return vehicleDTO;
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE, "SQLException caught when trying to find vehicle by ID.", ex);
+
+        }
+
+        return vehicleDTO;
     }
 }

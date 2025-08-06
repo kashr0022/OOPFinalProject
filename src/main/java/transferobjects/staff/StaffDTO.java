@@ -4,10 +4,20 @@ package transferobjects.staff;
  * Author: Lily S.
  */
 public class StaffDTO {
+
+    private int staffId;
     private String firstName;
     private String lastName;
     private String email;
     private String Role;
+
+    public int getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(int staffId) {
+        this.staffId = staffId;
+    }
 
     public String getFirstName() {
         return firstName;

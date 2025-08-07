@@ -96,7 +96,7 @@ public class PTFMSDaoImpl implements PTFMSDao {
         Connection connection = DataSource.getConnection();
 
         try {
-            String query = "INSERT INTO MaintenanceLog (LogID, StaffID, GPSID, VehicleID, ComponentID, UsageAmt, Date, Status, Notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO MaintenanceLog (LogID, StaffID, GPSID, VehicleID, ComponentID, UsageAmt, Status, Notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement prepState = connection.prepareStatement(query)) {
                 prepState.setInt(1, maintenance.getLogID());
                 prepState.setInt(2, maintenance.getStaffID());
@@ -108,9 +108,8 @@ public class PTFMSDaoImpl implements PTFMSDao {
                 prepState.setInt(4, maintenance.getVehicleID());
                 prepState.setInt(5, maintenance.getComponentID());
                 prepState.setDouble(6, maintenance.getUsageAmt());
-                prepState.setTimestamp(7, Timestamp.valueOf(maintenance.getDate()));
-                prepState.setString(8, maintenance.getStatus());
-                prepState.setString(9, maintenance.getNotes());
+                prepState.setString(7, maintenance.getStatus());
+                prepState.setString(8, maintenance.getNotes());
 
                 prepState.executeUpdate();
             }
@@ -501,6 +500,7 @@ public class PTFMSDaoImpl implements PTFMSDao {
                      SELECT
                          ml.LogID,
                          ml.VehicleID,
+                         ml.StaffID,
                          v.VehicleType AS Type,
                          c.ComponentID AS ComponentID,
                          c.ComponentName AS ComponentName,
@@ -540,6 +540,7 @@ public class PTFMSDaoImpl implements PTFMSDao {
                 log.setDate(rs.getTimestamp("Timestamp").toLocalDateTime());
                 log.setCost(rs.getDouble("Cost"));
                 log.setNotes(rs.getString("Notes"));
+                log.setStaffID(rs.getInt("StaffID"));
                 logs.add(log);
             }
         } catch (SQLException e) {

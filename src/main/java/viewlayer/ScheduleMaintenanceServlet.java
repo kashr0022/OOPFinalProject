@@ -177,6 +177,7 @@ public class ScheduleMaintenanceServlet extends HttpServlet {
         maintenance.setUsageAmt(Double.parseDouble(req.getParameter("usageamt")));
         maintenance.setStatus(req.getParameter("status"));
         maintenance.setNotes(req.getParameter("notes"));
+        maintenance.setComponentName(grabComponentName(Integer.parseInt(req.getParameter("componentid"))));
 
         ptfmsBusinessLogic.addMaintenance(maintenance);
 

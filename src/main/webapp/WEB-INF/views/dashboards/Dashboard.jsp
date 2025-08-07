@@ -3,6 +3,8 @@
 <%@ page import="transferobjects.reports.FuelReportDTO" %>
 <%@ page import="transferobjects.reports.OperatorPerformanceDTO" %>
 <%@ page import="java.util.List" %>
+<%@ page import="businesslayer.PTFMSBusinessLogic" %>
+<%@ page import="transferobjects.staff.StaffDTO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
@@ -17,8 +19,9 @@
             // get staff name and user role from session if available
             String staffName = (session != null) ? (String) session.getAttribute("staffName") : null;
             String userRole = (session != null) ? (String) session.getAttribute("userRole") : null;
+            PTFMSBusinessLogic ptfmsBusinessLogic = new PTFMSBusinessLogic();
 
-            // retrieve data lists set as request attributes by servlet
+                    // retrieve data lists set as request attributes by servlet
             List<MaintenanceLogDTO> logs = (List<MaintenanceLogDTO>) request.getAttribute("maintenanceLogs");
             List<OperatorPerformanceDTO> operatorPerformance = (List<OperatorPerformanceDTO>) request.getAttribute("operatorPerformance");
             List<FuelReportDTO> fuelReports = (List<FuelReportDTO>) request.getAttribute("fuelReports");
@@ -29,6 +32,7 @@
 
             // flag for user role check
             boolean isTransitManager = "transitmanager".equalsIgnoreCase(userRole);
+
         %>
 
         <!-- navigation bar with home button -->
@@ -162,6 +166,7 @@
                     <th>Component</th>
                     <th>Usage Hours</th>
                     <th>Diagnostics</th>
+                    <th>Assigned Staff</th>
                     <th>Notes</th>
                     <th>Action</th>
                     <th>Timestamp</th>
@@ -171,6 +176,13 @@
                             for (MaintenanceLogDTO log : logs) {
                                 // apply alert-row css if transit manager and status is 'Schedule'
                                 String rowClass = (isTransitManager && "Schedule".equalsIgnoreCase(log.getStatus())) ? "alert-row" : "";
+                                String maintenanceStaffName = "Unknown Staff";
+
+//                              grab staff name for use in table since ML table only stores staff ID - lily
+                                StaffDTO staff = ptfmsBusinessLogic.getStaffByStaffID(log.getStaffID());
+                                maintenanceStaffName = staff.getFirstName() + " " + staff.getLastName();
+
+
                     %>
                     <tr class="<%= rowClass%>">
                         <td><%= log.getLogID()%></td>
@@ -179,6 +191,7 @@
                         <td><%= log.getComponentName()%></td>
                         <td><%= log.getUsageAmt()%></td>
                         <td><%= log.getDiagnostics()%></td>
+                        <td><%= maintenanceStaffName %></td>
                         <td><%= log.getNotes()%></td>
                         <td>
                             <% if ("Schedule".equalsIgnoreCase(log.getStatus()) && isTransitManager) { %>

@@ -282,9 +282,6 @@ public class PTFMSBusinessLogic {
         if(maintenance.getGpsID()<0 ){
             throw new ValidationException("Invalid GPS ID");
         }
-        if(maintenance.getCost()<=0 ){
-            throw new ValidationException("Invalid Cost");
-        }
         if(maintenance.getStatus()==null || maintenance.getStatus().isBlank()){
             throw new ValidationException("Status of maintenance must be filled");
         }

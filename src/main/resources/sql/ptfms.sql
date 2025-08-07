@@ -93,7 +93,7 @@ CREATE TABLE MaintenanceLog
 (
     LogID         INT            NOT NULL AUTO_INCREMENT PRIMARY KEY,
     StaffID       INT            NOT NULL,
-    GPSID         INT            NOT NULL,
+    GPSID         INT            NULL,
     VehicleID INT            NOT NULL,
     ComponentID   INT            NOT NULL,
     UsageAmt      DECIMAL(10, 2) NOT NULL,

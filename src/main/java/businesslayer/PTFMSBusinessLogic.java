@@ -172,7 +172,7 @@ public class PTFMSBusinessLogic {
     }
 
     /**
-     * Grabs user in db via uniqie username
+     * Grabs user in db via unique username
      * @author Lily S.
      * @param userIn, username of desired user
      * @return Found user in a UsersDTO object

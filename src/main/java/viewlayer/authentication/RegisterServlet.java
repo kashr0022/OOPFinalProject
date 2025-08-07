@@ -107,6 +107,12 @@ public class RegisterServlet extends HttpServlet {
         }
     }
 
+    /**
+     * commitNewRegister processes the user registration form data by creating StaffDTO and UsersDTO objects and calling business logic to add both staff and user entries to the database. Sets registerComplete flag upon successful completion.
+     * @author Lily S.
+     * @param req, request object containing registration form data
+     * @param res, response object
+     */
     protected void commitNewRegister(HttpServletRequest req, HttpServletResponse res) {
         PTFMSBusinessLogic ptfmsBusinessLogic = new PTFMSBusinessLogic();
         StaffDTO staff = new StaffDTO();
@@ -126,6 +132,14 @@ public class RegisterServlet extends HttpServlet {
         registerComplete = true;
 
     }
+
+    /**
+     * checkIfExists validates whether the entered username or staff first/last name combination already exists in the database. Sets appropriate error messages based on what conflicts are found.
+     * @author Lily S.
+     * @param req, request object containing registration form data
+     * @param res, response object
+     * @return boolean
+     */
     protected boolean checkIfExists(HttpServletRequest req, HttpServletResponse res) {
         PTFMSBusinessLogic ptfmsBusinessLogic = new PTFMSBusinessLogic();
         StaffDTO staff = new StaffDTO();
@@ -156,12 +170,29 @@ public class RegisterServlet extends HttpServlet {
             return false;
         }
     }
+
+    /**
+     * doGet, overridden method corresponding to HTTP GET, simply calls processRequest while feeding in parameters HTTPServletRequest req, HttpServletResponse res
+     * @author Lily S.
+     * @param req, request
+     * @param res, response
+     * @throws ServletException, servlet related errors
+     * @throws IOException, input-output related errors
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
         processRequest(req, res);
     }
 
+    /**
+     * doPost, overridden method corresponding to HTTP POST, handles user registration form submission by checking for existing users/staff and processing registration if valid.
+     * @author Lily S.
+     * @param req, request
+     * @param res, response
+     * @throws ServletException, servlet related errors
+     * @throws IOException, input-output related errors
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {

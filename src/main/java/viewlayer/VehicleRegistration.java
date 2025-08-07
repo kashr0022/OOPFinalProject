@@ -11,11 +11,20 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * author: Lily S.
+ * Vehicle registration servlet that handles new vehicle registration for the PTFMS system. Provides role-based access control allowing only transit managers to register vehicles.
+ * @author: Lily S.
  * @version 1.0
  * @since JDK 21.0.4
  */
 public class VehicleRegistration extends HttpServlet {
+
+    /**
+     * processRequest generates the vehicle registration form page with role-based access control. Shows registration form for transit managers and access denied message for operators.
+     * @author Lily S.
+     * @param req, request
+     * @param res, response
+     * @throws IOException, input-output related errors
+     */
     protected void processRequest(HttpServletRequest req, HttpServletResponse res)
             throws IOException {
         res.setContentType("text/html;charset=UTF-8");
@@ -114,6 +123,14 @@ public class VehicleRegistration extends HttpServlet {
 
 
     }
+
+    /**
+     * checkIfExists validates whether a vehicle with the provided identifier already exists in the system by creating a VehicleDTO object and calling business logic validation.
+     * @author Lily S.
+     * @param request, request object containing vehicle form data
+     * @param response, response object
+     * @return boolean, true if vehicle already exists, false if available
+     */
     protected boolean checkIfExists(HttpServletRequest request, HttpServletResponse response) {
         PTFMSBusinessLogic ptfmsBusinessLogic = new PTFMSBusinessLogic();
         VehicleDTO vehicleDTO = new VehicleDTO();
@@ -134,6 +151,12 @@ public class VehicleRegistration extends HttpServlet {
         return ptfmsBusinessLogic.checkVehicleTaken(vehicleDTO);
     }
 
+    /**
+     * registerVehicle processes new vehicle registration by creating a VehicleDTO object from form parameters and calling business logic registration method. Sets success message upon completion.
+     * @author Lily S.
+     * @param request, request object containing vehicle form data
+     * @param response, response object
+     */
     protected void registerVehicle(HttpServletRequest request, HttpServletResponse response) {
         VehicleDTO vehicleDTO = new VehicleDTO();
         PTFMSBusinessLogic ptfmsBusinessLogic = new PTFMSBusinessLogic();
@@ -155,9 +178,24 @@ public class VehicleRegistration extends HttpServlet {
         request.setAttribute("registrationSuccessMsg", "Registration of " + vehicleNumber + " successful.");
 
     }
+
+    /**
+     * doGet, overridden method corresponding to HTTP GET, simply calls processRequest while feeding in parameters HTTPServletRequest request, HttpServletResponse response
+     * @param request, request
+     * @param response, response
+     * @throws IOException, input-output related errors
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         processRequest(request, response);
     }
+
+    /**
+     * doPost, overridden method corresponding to HTTP POST, handles vehicle registration form submission by checking for duplicate vehicles and processing registration if valid.
+     * @author Lily S.
+     * @param request, request
+     * @param response, response
+     * @throws IOException, input-output related errors
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (!checkIfExists(request, response)) {
             registerVehicle(request, response);

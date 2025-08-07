@@ -222,6 +222,19 @@ Checks in database for duplicate username/first+last combo prevention during reg
     </td>
     <td><strong>August 6th, 2025</strong></td>
   </tr>
+       <tr>
+  <td>3.3</td>
+  <td>Khairunnisa Ashri</td>
+  <td>
+     <ul>
+        <li>Completed FR04</li>
+        <li>Added break log</li>
+        <li>Observer on fuel report + alert on main page if logged in as a manager</li>
+        <li>Role-based access implemented on dashboard</li>
+        <li>Script, business logic, dao and daoimpl updated</li>
+   </td>
+  <td>August 4th, 2025</td>
+</tr>
 </table>
 
 

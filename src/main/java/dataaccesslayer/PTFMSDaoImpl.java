@@ -87,7 +87,7 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
-     * author Lily S., Khairunnisa edited to make logs as soon as a vehicle is registered
+     * author Lily S.
      *
      * @param maintenance
      */

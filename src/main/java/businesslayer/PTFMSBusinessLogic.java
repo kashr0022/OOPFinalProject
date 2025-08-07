@@ -116,7 +116,7 @@ public class PTFMSBusinessLogic {
             throw new ValidationException("Vehicle number cannot be empty");
         }
         String type = vehicleDTO.getVehicleType();
-        if (!List.of("DieselBus","DieselElectricTrain","ElectricalLightRail").contains(type)){
+        if (!List.of("DieselBus","DieselElectricTrain","ElectricLightRail").contains(type)){
             throw new ValidationException("Vehicle type is not supported : " + type);
         }
         if(vehicleDTO.getMaxPassengers() <= 0){

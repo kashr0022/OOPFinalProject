@@ -5,7 +5,7 @@ import businesslayer.builder.vehicles.DieselBus;
 
 /**
  * Builder class for the electric light rail vehicle that implements builder interface.
- * author: Lily S.
+ * @author: Lily S.
  * @version 1.0
  * @since JDK 21.0.4
  */

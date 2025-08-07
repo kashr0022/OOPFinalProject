@@ -1,8 +1,6 @@
 package dataaccesslayer;
 
 import businesslayer.builder.vehicles.Vehicle;
-import businesslayer.observer.FuelReportSubject;
-import model.Staff;
 import transferobjects.reports.*;
 import transferobjects.staff.StaffDTO;
 import transferobjects.users.UsersDTO;
@@ -13,7 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -86,7 +83,7 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
-     * author Lily S.
+     * @author Lily S.
      *
      * @param maintenance
      */

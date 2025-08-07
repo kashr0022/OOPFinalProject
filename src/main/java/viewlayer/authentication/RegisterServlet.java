@@ -9,9 +9,23 @@ import businesslayer.PTFMSBusinessLogic;
 import transferobjects.staff.StaffDTO;
 import transferobjects.users.UsersDTO;
 
+/**
+ * Servlet responsible for the Register page. Allows users to interact with a GUI form in order to register a new user/staff with the DB.
+ * @author Lily S.
+ * @version 1.0
+ * @since JDK 21.0.4
+ */
 public class RegisterServlet extends HttpServlet {
+
     private boolean registerComplete;
 
+    /**
+     * processRequest() holds the main printwriter prints displaying all the GUI to the user. Contains input forms for user to enter information. Messages appear if username during register already exists or firstname/lastname combo exists.
+     * @author Lily S.
+     * @param req, webapp request
+     * @param res, webapp response
+     * @throws IOException, input-output error
+     */
     protected void processRequest(HttpServletRequest req, HttpServletResponse res)
             throws IOException {
         res.setContentType("text/html;charset=UTF-8");
@@ -22,6 +36,7 @@ public class RegisterServlet extends HttpServlet {
             out.println("</head><body>");
             out.println("<center>");
 
+            // display message if username/first+last exists
             String alreadyExistsMsg = (String) req.getAttribute("alreadyExistsMsg");
             if (alreadyExistsMsg != null) {
                 out.println("<center>");
@@ -30,6 +45,7 @@ public class RegisterServlet extends HttpServlet {
                 alreadyExistsMsg = null;
             }
             out.println("<div class=\"border-white\">");
+//          change GUI display if registration completed
             if (registerComplete) {
                 out.println("<p>Register complete, please log in with the username & password.</p>");
                 out.println("</form>");
@@ -85,10 +101,7 @@ public class RegisterServlet extends HttpServlet {
                 out.println("</div>");
             }
 
-
-
             out.println("</div>");
-
             out.println("</center>");
             out.println("</body></html>");
         }

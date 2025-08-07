@@ -9,16 +9,24 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * Front controller of the web app. Contains log-in screen and navigation to every other page. Acts as a traffic controller.
+ * @author: Lily S., Khairunnisa Ashri
+ * @version 1.0
+ * @since JDK 21.0.4
+ */
 public class FrontControllerServlet extends HttpServlet {
 
     /**
-     * author: Lily S., Khairunnisa Ashri
-     *
-     * @version 1.0
-     * @since JDK 21.0.4
+     * processRequest holds all the main html being output to the screen via the printwriter. Content such as navigation, log-in inputs are shown.
+     * @author Lily S., Khairunnisa Ashri
+     * @param req, request
+     * @param res, response
+     * @throws IOException, input-output related errors
      */
     protected void processRequest(HttpServletRequest req, HttpServletResponse res)
             throws IOException {
+        // false to prevent a new session from being created if none exist
         HttpSession session = req.getSession(false);
         boolean loggedIn = (session != null && session.getAttribute("username") != null);
         res.setContentType("text/html;charset=UTF-8");
@@ -46,6 +54,7 @@ public class FrontControllerServlet extends HttpServlet {
 
             out.println("<div class=\"con\">");
 
+//          display register button if user is not logged in
             if (!loggedIn) {
                 out.println("<div class=\"corner-btn\">");
                 out.println("<form action=\"register\" method=\"GET\">");
@@ -78,7 +87,7 @@ public class FrontControllerServlet extends HttpServlet {
             }
 
             out.print("<br>");
-
+//          nav section, only display if logged in
             if (loggedIn) {
                 out.print("<hr class=\"line\">");
                 out.println("<h2 class=\"subtitle\">Navigation</h2>");
@@ -120,11 +129,25 @@ public class FrontControllerServlet extends HttpServlet {
         }
     }
 
+    /**
+     * call business logic . checkCred method to validate user's entered credentials with the DB via BusinessLogic -> DAO -> DataSource -> DB chain
+     * @author Lily S.
+     * @param userIn, passed in username from the input field in processRequest()
+     * @param passIn, passed in password from the input field in proccessRequest()
+     * @return boolean, status if credentials are valid or not
+     */
     protected boolean authenticateAccount(String userIn, String passIn) {
         PTFMSBusinessLogic ptfmsBusinessLogic = new PTFMSBusinessLogic();
         return ptfmsBusinessLogic.checkCred(userIn, passIn);
     }
 
+    /**
+     * doGet, overridden method corresponding to HTTP GET, simply calls processRequest while feeding in parameters HTTPServletRequest request (req), HttpServletResponse response (res)
+     * @param req, request
+     * @param res, response
+     * @throws ServletException, servlet related errors
+     * @throws IOException, input-output related errors
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
@@ -132,6 +155,14 @@ public class FrontControllerServlet extends HttpServlet {
 
     }
 
+    /**
+     * doPost, overridden method corresponding to HTTP POST, this holds the majority of the logic behind login check, login validation, logout, and putting user cred + role into sesh storage.
+     * @author Lily S.
+     * @param request
+     * @param response
+     * @throws ServletException, servlet related errors
+     * @throws IOException, input-output related errors
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

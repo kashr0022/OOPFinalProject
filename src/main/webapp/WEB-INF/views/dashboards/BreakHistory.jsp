@@ -6,6 +6,12 @@
     // get staff name and id from request attributes
     String staffName = (String) request.getAttribute("staffName");
     Integer staffID = (Integer) request.getAttribute("staffID");
+
+    // flag to check if request came from manager dashboard
+    Boolean fromDashboard = (Boolean) request.getAttribute("fromDashboard");
+    if (fromDashboard == null) {
+        fromDashboard = false;
+    }
 %>
 
 <!DOCTYPE html>
@@ -28,7 +34,8 @@
             <h2>Name: <%= staffName%></h2>
             <h2>Staff ID: <%= staffID%></h2>
 
-            <!-- form for submitting break actions -->
+            <!-- form for submitting break actions available only for user's own log -->
+            <% if (fromDashboard) {%>
             <form method="post" action="${pageContext.request.contextPath}/breakHistory">
                 <input type="hidden" name="staffID" value="<%= staffID%>">
                 <button type="submit" name="action" value="CLOCK_IN">Clock In</button>
@@ -36,6 +43,8 @@
                 <button type="submit" name="action" value="BREAK_END">End Break</button>
                 <button type="submit" name="action" value="CLOCK_OUT">Clock Out</button>
             </form>
+            <% } %>
+
         </div>
 
         <hr class="line-page">

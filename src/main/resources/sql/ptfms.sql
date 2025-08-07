@@ -241,4 +241,3 @@ INSERT INTO BreakLog (StaffID, Action, Timestamp) VALUES
 -- Clark Kent ends his shift
 INSERT INTO BreakLog (StaffID, Action, Timestamp) VALUES
 (3, 'CLOCK_OUT', '2025-07-28 17:00:00');
-

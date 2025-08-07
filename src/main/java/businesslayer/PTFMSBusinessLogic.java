@@ -75,7 +75,7 @@ public class PTFMSBusinessLogic {
      * @author Lily S.
      * @param vehicleDTO
      */
-    public void registerVehicle(VehicleDTO vehicleDTO) {
+    public int registerVehicle(VehicleDTO vehicleDTO) {
 
         Vehicle vehicle = SimpleVehicleFactory.createVehicle(
                 vehicleDTO.getVehicleNumber(),
@@ -86,7 +86,9 @@ public class PTFMSBusinessLogic {
                 vehicleDTO.getActiveRoute()
         );
 
-        ptfmsDao.registerVehicle(vehicle);
+        // get generated id
+        return ptfmsDao.registerVehicle(vehicle);
+        
     }
 
     /**
@@ -248,15 +250,20 @@ public class PTFMSBusinessLogic {
     public void insertBreakLog(BreakLogDTO log) {
         ptfmsDao.insertBreakLog(log);
     }
-    
-     public List<GpsDTO> getDetailedGps() {
+
+    public List<GpsDTO> getDetailedGps() {
         return ptfmsDao.getDetailedGps();
     }
 
     public void registerGps(GpsDTO g) {
 
-
         ptfmsDao.registerGps(g);
     }
+
+    public List<ComponentDTO> getComponentsByVehicleId(int vehicleId) {
+        return ptfmsDao.getComponentsByVehicleId(vehicleId);
+    }
+    
+    
 
 }

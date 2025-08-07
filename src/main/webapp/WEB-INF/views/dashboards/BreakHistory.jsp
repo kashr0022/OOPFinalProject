@@ -27,8 +27,12 @@
             <h1>Viewing Operator Break Log </h1>
             <h2>Name: <%= staffName%></h2>
             <h2>Staff ID: <%= staffID%></h2>
-
-            <!-- form for submitting break actions -->
+            
+            <%
+                // hide if coming from dashboard
+                Boolean showBreakActions = (Boolean) request.getAttribute("showBreakActions");
+                if (showBreakActions != null && showBreakActions) {
+            %>
             <form method="post" action="${pageContext.request.contextPath}/breakHistory">
                 <input type="hidden" name="staffID" value="<%= staffID%>">
                 <button type="submit" name="action" value="CLOCK_IN">Clock In</button>
@@ -36,6 +40,11 @@
                 <button type="submit" name="action" value="BREAK_END">End Break</button>
                 <button type="submit" name="action" value="CLOCK_OUT">Clock Out</button>
             </form>
+            <%
+                }  // else no buttons shown
+            %>
+
+
         </div>
 
         <hr class="line-page">

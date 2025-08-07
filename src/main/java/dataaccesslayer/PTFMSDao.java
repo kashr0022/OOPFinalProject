@@ -23,7 +23,7 @@ public interface PTFMSDao {
     UsersDTO getUserByUsername(String userIn);
     boolean checkUserTaken(UsersDTO user);
     boolean checkStaffTaken(StaffDTO staff);
-    void registerVehicle(Vehicle vehicle);
+    int registerVehicle(Vehicle vehicle);
     boolean checkVehicleTaken(Vehicle vehicle);
     List<FuelReportDTO> getFuelReport();
     void updateFuelReport(FuelReportDTO report);
@@ -41,4 +41,5 @@ public interface PTFMSDao {
     StaffDTO getStaffByID(int StaffID);
     StaffDTO getStaffByUsername(String username);
     void insertBreakLog(BreakLogDTO log);
+    List<ComponentDTO> getComponentsByVehicleId(int vehicleId);
 }

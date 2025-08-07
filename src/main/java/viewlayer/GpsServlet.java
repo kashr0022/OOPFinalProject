@@ -19,7 +19,7 @@ import transferobjects.reports.MaintenanceLogDTO;
 
 /**
  *
- * @author Francesca Parent
+ * @author Francesca Parent.
  */
 public class GpsServlet extends HttpServlet {
 

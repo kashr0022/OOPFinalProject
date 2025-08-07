@@ -3,7 +3,7 @@ package businesslayer.observer;
 import transferobjects.reports.FuelReportDTO;
 
 /**
- * Concrete implementation of the {@link FuelReportObserver} interface
+ * Concrete implementation of the FuelReportObserver interface
  * that monitors fuel reports and tracks the number of alerts for high fuel consumption.
  * 
  * Triggers an alert when fuel consumed exceeds 100 units

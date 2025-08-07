@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 public class PTFMSDaoImpl implements PTFMSDao {
 
     /**
-     * @author Lily S., Khairunnisa Ashri
+     * @author Lily S.
      * @return
      */
     @Override
@@ -817,6 +817,70 @@ public class PTFMSDaoImpl implements PTFMSDao {
             Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE, "Error fetching staff by username.", e);
         }
         return staff;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public List<GpsDTO> getDetailedGps() {
+        List<GpsDTO> results = new ArrayList<>();
+        String selectQuery = """
+                     SELECT 
+                         g.GPSID,
+                         g.StaffID,
+                             g.VehicleID,
+                             g.StartingLocation,
+                             g.StartTime,
+                             g.EndTime,
+                             g.EndingLocation,
+                             g.ScheduledEndTime,
+                             g.Notes
+                     
+                     FROM GPS g
+                     """;
+        try (Connection con = DataSource.getConnection(); PreparedStatement ps = con.prepareStatement(selectQuery); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                GpsDTO g = new GpsDTO();
+                g.setGpsID(rs.getInt("GPSID"));
+                g.setStaffID(rs.getInt("StaffID"));
+                g.setVehicleID(rs.getInt("VehicleID"));
+                g.setStartingLocation(rs.getString("StartingLocation"));
+                g.setStartTime(rs.getTimestamp("StartTime").toLocalDateTime());
+                g.setEndTime(rs.getTimestamp("EndTime").toLocalDateTime());
+                g.setEndingLocation(rs.getString("EndingLocation"));
+                g.setScheduledEndTime(rs.getTimestamp("ScheduledEndTime").toLocalDateTime());
+                g.setNotes(rs.getString("Notes"));
+                results.add(g);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE, "SQL Exception occured when getting operator performances.", e);
+        }
+        return results;
+    }
+
+    @Override
+    public void registerGps(GpsDTO g) {
+        String query = """
+                       INSERT INTO GPS (StaffID, VehicleID, StartingLocation, StartTime, EndTime, EndingLocation, ScheduledEndTime, Notes)
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?)""";
+
+        try (Connection connection = DataSource.getConnection(); PreparedStatement userStmt = connection.prepareStatement(query)) {
+            userStmt.setInt(1, g.getStaffID());
+            userStmt.setInt(2, g.getVehicleID());
+            userStmt.setString(3, g.getStartingLocation());
+            userStmt.setTimestamp(4, Timestamp.valueOf(g.getStartTime()));
+            userStmt.setTimestamp(5, Timestamp.valueOf(g.getEndTime()));
+            userStmt.setString(6, g.getEndingLocation());
+            userStmt.setTimestamp(7, Timestamp.valueOf(g.getScheduledEndTime()));
+            userStmt.setString(8, g.getNotes());
+            userStmt.executeUpdate();
+        } catch (SQLException e) {
+            Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE,
+                    "SQL Exception occured when adding new GPS data to db.", e);
+            e.printStackTrace();
+        }
     }
 
 }

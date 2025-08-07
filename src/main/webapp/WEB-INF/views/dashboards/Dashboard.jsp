@@ -36,6 +36,13 @@
             <form action="${pageContext.request.contextPath}/controller" method="GET">
                 <button type="submit">Home</button>
             </form>
+            <!-- This button goes to the GPS tracking page -->
+            <% if (isTransitManager) { %>
+            <form action="${pageContext.request.contextPath}/gps" method="GET">
+                <button type="submit">GPS Tracking Data</button>
+            </form>
+            <% }%>
+
         </nav>
 
         <div class="container">

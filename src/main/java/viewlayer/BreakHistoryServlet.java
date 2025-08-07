@@ -20,7 +20,6 @@ import java.util.List;
  * Handles GET to show break logs and POST to record new break actions.
  * 
  * Author: Khairunnisa Ashri
- * Modified by: [Your Name] - added role-based access control for viewing break logs
  */
 public class BreakHistoryServlet extends HttpServlet {
 

@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * author: Lily S.
- *
+ * business logic for ptfms application. holds all calls to the data layer (dao). middle class between presentation and data
+ * @author: Lily S.
  * @version 1.0
  * @since JDK 21.0.4
  */
@@ -28,6 +28,7 @@ public class PTFMSBusinessLogic {
     private static PTFMSDao ptfmsDao = null;
 
     /**
+     * Public constructor
      * @author Lily S.
      */
     public PTFMSBusinessLogic() {
@@ -35,48 +36,54 @@ public class PTFMSBusinessLogic {
     }
 
     /**
+     * checks login credentials if valid or not
      * @author Lily S.
-     * @param userIn
-     * @param passIn
-     * @return
+     * @param userIn, passed in username set in presentation layer servlet input field
+     * @param passIn, passed in password set in presentation layer servlet input field
+     * @return boolean, if credentials valid
      */
     public boolean checkCred(String userIn, String passIn) {
         return ptfmsDao.checkCred(userIn, passIn);
     }
 
     /**
+     * checks if a username has been taken, used during account registration step
      * @author Lily S.
-     * @param user
-     * @return
+     * @param user, UserDTO object
+     * @return boolean, status if take or not
      */
     public boolean checkUserTaken(UsersDTO user) {
         return ptfmsDao.checkUserTaken(user);
     }
 
     /**
+     * Check if a staff combo (first and last) is already taken in the db
      * @author Lily S.
-     * @param staff
-     * @return
+     * @param staff, StaffDTO object
+     * @return boolean, status if taken or not
      */
     public boolean checkStaffTaken(StaffDTO staff) {
         return ptfmsDao.checkStaffTaken(staff);
     }
 
     /**
+     * Add a staff and user to database
      * @author Lily S.
-     * @param staff
-     * @param user
+     * @param staff, StaffDTO
+     * @param user, UsersDTO
      */
     public void addStaffUser(StaffDTO staff, UsersDTO user) {
         ptfmsDao.addStaffUser(staff, user);
     }
 
     /**
+     * Adds a vehicle entry to the db
      * @author Lily S.
-     * @param vehicleDTO
+     * @param vehicleDTO, VehicleDTO object
      */
     public void registerVehicle(VehicleDTO vehicleDTO) {
 
+//      call simple factory idiom with builder
         Vehicle vehicle = SimpleVehicleFactory.createVehicle(
                 vehicleDTO.getVehicleNumber(),
                 vehicleDTO.getVehicleType(),
@@ -90,9 +97,10 @@ public class PTFMSBusinessLogic {
     }
 
     /**
+     * Check if vehicle entry exists with the same identifier in db
      * @author Lily S.
-     * @param vehicleDTO
-     * @return
+     * @param vehicleDTO, VehicleDTO object
+     * @return boolean, value if taken or not
      */
     public boolean checkVehicleTaken(VehicleDTO vehicleDTO) {
         Vehicle vehicle = SimpleVehicleFactory.createVehicle(
@@ -106,10 +114,20 @@ public class PTFMSBusinessLogic {
         return ptfmsDao.checkVehicleTaken(vehicle);
     }
 
+    /**
+     * grabs all fuel reports
+     * @author Lily S., Khairunnisa Ashri
+     * @return List containing all fuel report DTOs
+     */
     public List<FuelReportDTO> getFuelReport() {
         return ptfmsDao.getFuelReport();
     }
 
+    /**
+     * Utilizes observer pattern to create an alert counter system baseed on fuel stats
+     * @author Lily S., Khairunnisa Ashri
+     * @return int of alert counter
+     */
     public int getFuelAlertCount() {
         FuelReportSubject sub = new FuelReportSubject();
         ConcreteFuelObserver fuelAlert = new ConcreteFuelObserver();
@@ -126,37 +144,57 @@ public class PTFMSBusinessLogic {
         return fuelAlert.getAlertCount(); // Return the count
     }
 
+    /**
+     * get all cost reports
+     * @author Lily S., Khairunnisa Ashri
+     * @return List consisting of CostReportDTOs
+     */
     public List<CostReportDTO> getCostReport() {
         return ptfmsDao.getCostReport();
     }
 
+    /**
+     * get all logs
+     * @author lily S., Khairunnisa Ashri
+     * @return List consisting of MaintenanceLogDTOs
+     */
     public List<MaintenanceLogDTO> getAllLogs() {
         return ptfmsDao.getAllLogs();
     }
 
+    /**
+     * get all operator performances
+     * @author Lily S., Khairunnisa Ashri
+     * @return List consisting of Operator performance DTOs
+     */
     public List<OperatorPerformanceDTO> getOperatorPerformance() {
         return ptfmsDao.getOperatorPerformance();
     }
 
-    ;
-
     /**
+     * Grabs user in db via uniqie username
      * @author Lily S.
-     * @param userIn
-     * @return
+     * @param userIn, username of desired user
+     * @return Found user in a UsersDTO object
      */
     public UsersDTO getUserByUsername(String userIn) {
         return ptfmsDao.getUserByUsername(userIn);
     }
 
     /**
+     * Gets all components from db
      * @author Lily S.
-     * @return
+     * @return List consisting of ComponentDTOs
      */
     public List<ComponentDTO> getAllComponents() {
         return ptfmsDao.getAllComponents();
     }
 
+    /**
+     * Utilizes observer pattern to create an alert counter system baseed on component hour usage
+     * @author Lily S.
+     * @return int, counter value from observer pattern
+     */
     public int getMaintenanceAlertCount() {
         Subject sub = new Subject();
         CounterObserver maintenanceCount = new ConcreteMaintenanceCountObserver();
@@ -172,42 +210,47 @@ public class PTFMSBusinessLogic {
     }
 
     /**
+     * Grabs component in DB via specific ID passed in
      * @author Lily S.
-     * @param id
-     * @return
+     * @param id, id of desired component
+     * @return ComponentDTO, specified component in DTO form to store all characteristics
      */
     public ComponentDTO getComponentByID(int id) {
         return ptfmsDao.getComponentByID(id);
     }
 
     /**
+     * Grabs vehicle in DB via specific ID passed in
      * @author Lily S.
-     * @param id
-     * @return
+     * @param id, id of desired vehicle
+     * @return VehicleDTO, specified vehicle in DTO form to store all characteristics
      */
     public VehicleDTO getVehicleByID(int id) {
         return ptfmsDao.getVehicleByID(id);
     }
 
     /**
+     * Get all staff from db
      * @author Lily S.
-     * @return
+     * @return List consisting of each staff entry as a StaffDTO
      */
     public List<StaffDTO> getAllStaff() {
         return ptfmsDao.getAllStaff();
     }
 
     /**
+     * Get all gps from db
      * @author Lily S.
-     * @return
+     * @return List consisting of each gps entry as a GpsDTO
      */
     public List<GpsDTO> getAllGps() {
         return ptfmsDao.getAllGps();
     }
 
     /**
+     * Add a maintenance entry to the database
      * @author Lily S.
-     * @param maintenance
+     * @param maintenance, MaintenanceLogDTO that holds all needed characteristics for a db insert
      */
     public void addMaintenance(MaintenanceLogDTO maintenance) {
         ptfmsDao.addMaintenance(maintenance);
@@ -215,6 +258,7 @@ public class PTFMSBusinessLogic {
 
     /**
      *
+     * @author Khairunnisa Ashri
      * @param staffID
      * @return
      */
@@ -224,6 +268,7 @@ public class PTFMSBusinessLogic {
 
     /**
      *
+     * @author Khairunnisa Ashri
      * @param staffID
      * @return
      */
@@ -234,6 +279,7 @@ public class PTFMSBusinessLogic {
 
     /**
      *
+     * @author Khairunnisa Ashri
      * @param username
      * @return
      */
@@ -243,6 +289,7 @@ public class PTFMSBusinessLogic {
 
     /**
      *
+     * @author Khairunnisa Ashri
      * @param log
      */
     public void insertBreakLog(BreakLogDTO log) {

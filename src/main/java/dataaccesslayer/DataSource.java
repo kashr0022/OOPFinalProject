@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 /**
  *	data source that follows Singleton pattern.
  *  Grabs connection credentials from properties file. private data source constructor
- *  Note: Login auth not implemented yet.
  *	@author Lily Schmeer
  *	@version 1.0
  *	@since JDK 21.0.4
@@ -31,6 +30,10 @@ public class DataSource {
 
     }
 
+    /**
+     * public connection method, only allows one connection method to exist at a time. synchronized keyword to enforce thread safety
+     * @return Connection object to the db
+     */
     public static synchronized Connection getConnection() {
         try {
             if (connection == null || connection.isClosed()) {

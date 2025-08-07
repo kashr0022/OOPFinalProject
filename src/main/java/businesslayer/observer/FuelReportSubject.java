@@ -6,13 +6,10 @@ import transferobjects.reports.FuelReportDTO;
 
 /**
  * Subject class in the Observer pattern that manages and notifies
- * registered {@link FuelReportObserver} instances about updates
+ * registered FuelReportObserver instances about updates
  * in fuel reports.
- * 
  * Observers can be added to this subject and will be notified
- * whenever a new {@link FuelReportDTO} is available.
- * 
- * 
+ * whenever a new FuelReportDTO is available.
  * @author Khairunnisa Ashri
  */
 public class FuelReportSubject {
@@ -24,7 +21,7 @@ public class FuelReportSubject {
     /**
      * Registers a new observer to receive updates.
      * 
-     * @param observer the {@link FuelReportObserver} to add
+     * @param observer the FuelReportObserver to add
      */
     public void addObserver(FuelReportObserver observer) {
         observers.add(observer);
@@ -33,7 +30,7 @@ public class FuelReportSubject {
     /**
      * Notifies all registered observers with the provided fuel report.
      * 
-     * @param report the {@link FuelReportDTO} containing the updated fuel information
+     * @param report the FuelReportDTO containing the updated fuel information
      */
     public void notifyObservers(FuelReportDTO report) {
         for (FuelReportObserver o : observers) {

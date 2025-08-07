@@ -41,6 +41,12 @@ public class PTFMSBusinessLogic {
      * @return
      */
     public boolean checkCred(String userIn, String passIn) {
+        if (userIn == null || userIn.isBlank() ){
+            throw new ValidationException("Username cannot be empty ");}
+        if (passIn ==null || passIn.length() <4){
+            throw new ValidationException("password cannot be empty or less than 4 characters");
+        }
+
         return ptfmsDao.checkCred(userIn, passIn);
     }
 
@@ -68,6 +74,31 @@ public class PTFMSBusinessLogic {
      * @param user
      */
     public void addStaffUser(StaffDTO staff, UsersDTO user) {
+        // staff validation
+        if (staff == null) { throw new ValidationException("Staff must not be null");}
+        if (staff.getFirstName() == null || staff.getFirstName().isBlank()) {
+            throw new ValidationException("Staff first name is required");
+        }
+        if (staff.getLastName() == null || staff.getLastName().isBlank()) {
+            throw new ValidationException("Staff last name is required");
+        }
+        if (staff.getEmail() == null || staff.getEmail().isBlank()) {
+            throw new ValidationException("Staff email is required");
+        }
+        if (!staff.getEmail().contains("@")) {
+            throw new ValidationException("Staff email must contain '@'");
+        }
+        // user validation
+        if (user == null) {throw new ValidationException("User must not be null");}
+        if (user.getUsername() == null || user.getUsername().isBlank()) {
+            throw new ValidationException("Username is required");
+        }
+        if (user.getPassword() == null || user.getPassword().length() < 4) {
+            throw new ValidationException("Password must be at least 4 characters");
+        }
+        if (user.getRole() == null || user.getRole().isBlank()) {
+            throw new ValidationException("User role is required");
+        }
         ptfmsDao.addStaffUser(staff, user);
     }
 
@@ -76,6 +107,27 @@ public class PTFMSBusinessLogic {
      * @param vehicleDTO
      */
     public int registerVehicle(VehicleDTO vehicleDTO) {
+
+        //validation
+        if (vehicleDTO.getConsumptionRate() < 0 ){
+            throw new ValidationException("Consumption rate cannot be less than 0");
+        }
+        if (vehicleDTO.getVehicleNumber() == null || vehicleDTO.getVehicleNumber().isBlank()){
+            throw new ValidationException("Vehicle number cannot be empty");
+        }
+        String type = vehicleDTO.getVehicleType();
+        if (!List.of("DieselBus","DieselElectricTrain","ElectricalLightRail").contains(type)){
+            throw new ValidationException("Vehicle type is not supported : " + type);
+        }
+        if(vehicleDTO.getMaxPassengers() <= 0){
+            throw new ValidationException("Max Passengers cannot be less than 0");
+        }
+        if(vehicleDTO.getConsumptionUnit() ==null || vehicleDTO.getConsumptionUnit().isBlank()){
+            throw new ValidationException("Consumption unit cannot be empty");
+        }
+        if (vehicleDTO.getActiveRoute() ==null || vehicleDTO.getActiveRoute().isBlank()){
+            throw new ValidationException("Cannot Register a vehicle with blank active Route ");
+        }
 
         Vehicle vehicle = SimpleVehicleFactory.createVehicle(
                 vehicleDTO.getVehicleNumber(),
@@ -148,6 +200,9 @@ public class PTFMSBusinessLogic {
      * @return
      */
     public UsersDTO getUserByUsername(String userIn) {
+        if (userIn == null || userIn.isBlank() ){
+            throw new ValidationException("Username cannot be empty");
+        }
         return ptfmsDao.getUserByUsername(userIn);
     }
 
@@ -212,6 +267,27 @@ public class PTFMSBusinessLogic {
      * @param maintenance
      */
     public void addMaintenance(MaintenanceLogDTO maintenance) {
+        if (maintenance.getComponentName()==null || maintenance.getComponentName().isBlank()){
+            throw new ValidationException("Component name cannot be empty");
+        }
+        if(maintenance.getNotes()==null || maintenance.getNotes().isBlank()){
+            throw new ValidationException("Notes of maintenance must be filled");
+        }
+        if(maintenance.getVehicleID()<=0 ){
+            throw new ValidationException("Invalid Vehicle ID");
+        }
+        if(maintenance.getStaffID()<0 ){
+            throw new ValidationException("Invalid Staff ID");
+        }
+        if(maintenance.getGpsID()<0 ){
+            throw new ValidationException("Invalid GPS ID");
+        }
+        if(maintenance.getCost()<=0 ){
+            throw new ValidationException("Invalid Cost");
+        }
+        if(maintenance.getStatus()==null || maintenance.getStatus().isBlank()){
+            throw new ValidationException("Status of maintenance must be filled");
+        }
         ptfmsDao.addMaintenance(maintenance);
     }
 
@@ -256,6 +332,24 @@ public class PTFMSBusinessLogic {
     }
 
     public void registerGps(GpsDTO g) {
+        if (g.getGpsID() <= 0) {
+            throw new ValidationException("Invalid GPS ID");
+        }
+        if (g.getStaffID() <=0){
+            throw new ValidationException("Invalid Staff ID");
+        }
+        if (g.getVehicleID() <=0){
+            throw new ValidationException("Invalid Vehicle ID");
+        }
+        if (g.getStartTime() ==null ){
+            throw new ValidationException("Start Time Must be Filled ");
+        }
+        if (g.getStartingLocation() ==null || g.getStartingLocation().isBlank()){
+            throw new ValidationException("Start Location Must be Filled ");
+        }
+        if (g.getEndingLocation() ==null || g.getEndingLocation().isBlank()){
+            throw new ValidationException("End Location Must be Filled ");
+        }
 
         ptfmsDao.registerGps(g);
     }

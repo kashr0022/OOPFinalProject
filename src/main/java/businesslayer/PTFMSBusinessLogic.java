@@ -288,6 +288,9 @@ public class PTFMSBusinessLogic {
         if(maintenance.getStatus()==null || maintenance.getStatus().isBlank()){
             throw new ValidationException("Status of maintenance must be filled");
         }
+        if(maintenance == null){
+            throw new ValidationException("Maintenance cannot be empty");
+        }
         ptfmsDao.addMaintenance(maintenance);
     }
 

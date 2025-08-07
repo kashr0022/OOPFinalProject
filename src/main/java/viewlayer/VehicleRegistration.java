@@ -155,29 +155,7 @@ public class VehicleRegistration extends HttpServlet {
         vehicleDTO.setMaxPassengers(maxPassengers);
         vehicleDTO.setActiveRoute(activeRoute);
 
-        // get vehicle id after registration
-        int vehicleId = ptfmsBusinessLogic.registerVehicle(vehicleDTO);
-
-        // get components for this vehicleId
-        List<ComponentDTO> components = ptfmsBusinessLogic.getComponentsByVehicleId(vehicleId);
-        
-        // make initial maintenance log for vehicle
-        for (ComponentDTO comp : components) {
-            MaintenanceLogDTO log = new MaintenanceLogDTO();
-            log.setVehicleID(vehicleId);
-            log.setComponentID(comp.getComponentId());
-            log.setUsageAmt(0);
-            log.setStatus("Pending");
-            log.setDate(java.time.LocalDateTime.now());
-            // id from session
-            log.setStaffID((Integer) request.getSession().getAttribute("loggedStaffId"));
-
-            // optional
-            log.setGpsID(0); 
-            log.setNotes("Initial maintenance log created after vehicle registration");
-
-            ptfmsBusinessLogic.addMaintenance(log);
-        }
+        ptfmsBusinessLogic.registerVehicle(vehicleDTO);
 
         request.setAttribute("registrationSuccessMsg", "Registration of " + vehicleNumber + " successful.");
     }

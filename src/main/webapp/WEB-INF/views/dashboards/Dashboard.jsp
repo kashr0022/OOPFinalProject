@@ -75,6 +75,7 @@
         <% if (isTransitManager) { %>
         <div class="container">
             <h2>Operator Performance</h2>
+            <p>Overview of staff performance and status.</p>
             <table border="1">
                 <thead>
                     <tr>
@@ -122,6 +123,7 @@
         <!-- fuel report table -->
         <div class="container">
             <h2>Fuel Report</h2>
+            <p>Table shows a history of fuel reports.</p>
             <table border="1">
                 <thead>
                     <tr>
@@ -158,6 +160,7 @@
         <!-- maintenance log table -->
         <div class="container">
             <h2>Maintenance Log</h2>
+            <p>Table shows existing maintenance records. Vehicles have to be scheduled for maintenance to appear.</p>
             <table border="1">
                 <tr>
                     <th>Log ID</th>
@@ -218,6 +221,7 @@
         <% if (isTransitManager) { %>
         <div class="container">
             <h2>Cost Report</h2>
+            <p>Table shows a history of cost reports.</p>
             <table border="1">
                 <tr>
                     <th>Vehicle ID</th>

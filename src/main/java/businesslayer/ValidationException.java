@@ -1,13 +1,27 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package businesslayer;
 
 /**
- *
- * @author khair
+ * Thrown when a business‐rule check fails (invalid input, missing data, etc.).
+ * @author oussema
  */
-public class ValidationException {
-    
+public class ValidationException extends RuntimeException {
+    /** No‐arg constructor */
+    public ValidationException() {
+        super();
+    }
+
+    /** Message‐only constructor */
+    public ValidationException(String message) {
+        super(message);
+    }
+
+    /** Message + cause */
+    public ValidationException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    /** Cause‐only constructor */
+    public ValidationException(Throwable cause) {
+        super(cause);
+    }
 }

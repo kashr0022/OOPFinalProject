@@ -199,8 +199,8 @@ public class PTFMSDaoImpl implements PTFMSDao {
         try (
                 PreparedStatement prepState = connection.prepareStatement(query)) {
 
-            prepState.setString(1, staff.getFirstName());
-            prepState.setString(2, staff.getLastName());
+            prepState.setString(1, staff.getFirstName().trim()); //added trim() for testing reason , a problen occured while testing this method
+            prepState.setString(2, staff.getLastName().trim());
 
             try (ResultSet resultSet = prepState.executeQuery()) {
                 if (resultSet.next()) {

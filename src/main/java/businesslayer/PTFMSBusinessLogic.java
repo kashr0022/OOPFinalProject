@@ -248,5 +248,15 @@ public class PTFMSBusinessLogic {
     public void insertBreakLog(BreakLogDTO log) {
         ptfmsDao.insertBreakLog(log);
     }
+    
+     public List<GpsDTO> getDetailedGps() {
+        return ptfmsDao.getDetailedGps();
+    }
+
+    public void registerGps(GpsDTO g) {
+
+
+        ptfmsDao.registerGps(g);
+    }
 
 }

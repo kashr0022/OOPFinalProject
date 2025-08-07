@@ -6,7 +6,7 @@ import transferobjects.reports.FuelReportDTO;
  * Observer interface for receiving updates about fuel reports.
  * 
  * Implementations of this interface define actions to be taken
- * when a new {@link FuelReportDTO} is received.
+ * when a new FuelReportDTO is received.
  * 
  * @author Khairunnisa Ashri
  */

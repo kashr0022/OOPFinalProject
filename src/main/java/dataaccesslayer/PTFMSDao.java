@@ -7,6 +7,7 @@ import transferobjects.staff.StaffDTO;
 import transferobjects.users.UsersDTO;
 import transferobjects.vehicles.VehicleDTO;
 import transferobjects.reports.BreakLogDTO;
+import transferobjects.reports.GpsDTO;
 
 import java.util.List;
 
@@ -32,6 +33,8 @@ public interface PTFMSDao {
     List<ComponentDTO> getAllComponents();
     List<StaffDTO> getAllStaff();
     List<GpsDTO> getAllGps();
+    List<GpsDTO> getDetailedGps();
+    void registerGps(GpsDTO g);
     ComponentDTO getComponentByID(int id);
     VehicleDTO getVehicleByID(int id);
     List<BreakLogDTO> getBreakLogsByStaffID(int StaffID);

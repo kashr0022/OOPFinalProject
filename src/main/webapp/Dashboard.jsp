@@ -168,6 +168,9 @@
                     %>
                 </tbody>
             </table>
-        </div>
+                </div> <!-- This button goes to the GPS tracking page -->
+                <form action="${pageContext.request.contextPath}/GpsServlet" method="GET">
+                <button type="submit">GPS Tracking Data</button>
+            </form>
     </body>
 </html>

@@ -10,6 +10,7 @@ import transferobjects.staff.StaffDTO;
 import transferobjects.users.UsersDTO;
 
 import java.util.List;
+import transferobjects.reports.GpsDTO;
 
 /**
  * author: Lily S.
@@ -26,4 +27,6 @@ public interface PTFMSDao {
     List<CostReportDTO> getCostReport();
     List<MaintenanceLogDTO> getAllLogs();
     List<OperatorPerformanceDTO> getOperatorPerformance();
+    List<GpsDTO> getGps();
+    void registerGps(GpsDTO g);
 }

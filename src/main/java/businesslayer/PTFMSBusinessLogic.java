@@ -13,6 +13,7 @@ import transferobjects.users.UsersDTO;
 import transferobjects.vehicles.VehicleDTO;
 
 import java.util.List;
+import transferobjects.reports.GpsDTO;
 
 /**
  *  author: Lily S.
@@ -77,5 +78,14 @@ public class PTFMSBusinessLogic {
     };
     public UsersDTO getUserByUsername(String userIn) {
         return ptfmsDao.getUserByUsername(userIn);
+    }
+    public List<GpsDTO> getGps() {
+        return ptfmsDao.getGps();
+    }
+    
+    public void registerGps(GpsDTO g) {
+
+       
+        ptfmsDao.registerGps(g);
     }
 }

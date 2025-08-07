@@ -11,9 +11,36 @@ public class GpsDTO {
     private int gpsID;
     private int staffID;
     private int vehicleID;
+    private String startLocation;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    private String endLocation;
+    private LocalDateTime scheduledEndTime;
     private String notes;
+
+    public String getStartLocation() {
+        return startLocation;
+    }
+
+    public void setStartLocation(String startLocation) {
+        this.startLocation = startLocation;
+    }
+
+    public String getEndLocation() {
+        return endLocation;
+    }
+
+    public void setEndLocation(String endLocation) {
+        this.endLocation = endLocation;
+    }
+
+    public LocalDateTime getScheduledEndTime() {
+        return scheduledEndTime;
+    }
+
+    public void setScheduledEndTime(LocalDateTime scheduledEndTime) {
+        this.scheduledEndTime = scheduledEndTime;
+    }
 
     /**
      * @return the gpsID

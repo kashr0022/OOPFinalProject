@@ -20,7 +20,7 @@ public class FuelReportSubject {
     /**
      * Registers a new observer to receive updates.
      * 
-     * @param observer the {@link FuelReportObserver} to add
+     * @param observer to add
      */
     public void addObserver(FuelReportObserver observer) {
         observers.add(observer);
@@ -29,7 +29,7 @@ public class FuelReportSubject {
     /**
      * Notifies all registered observers with the provided fuel report.
      * 
-     * @param report the {@link FuelReportDTO} containing the updated fuel information
+     * @param report containing the updated fuel information
      */
     public void notifyObservers(FuelReportDTO report) {
         for (FuelReportObserver o : observers) {

@@ -9,13 +9,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+import transferobjects.reports.ComponentDTO;
+import transferobjects.reports.MaintenanceLogDTO;
 
 /**
  * author: Lily S.
+ *
  * @version 1.0
  * @since JDK 21.0.4
  */
 public class VehicleRegistration extends HttpServlet {
+
     protected void processRequest(HttpServletRequest req, HttpServletResponse res)
             throws IOException {
         res.setContentType("text/html;charset=UTF-8");
@@ -27,7 +32,6 @@ public class VehicleRegistration extends HttpServlet {
             out.println("<link rel='stylesheet' href='assets/styles.css'>");
             out.println("</head><body>");
             out.println("<center>");
-
 
             String registrationSuccessMsg = (String) req.getAttribute("registrationSuccessMsg");
             String alreadyExistsMsg = (String) req.getAttribute("alreadyExistsMsg");
@@ -112,16 +116,16 @@ public class VehicleRegistration extends HttpServlet {
             out.println("</body></html>");
         }
 
-
     }
+
     protected boolean checkIfExists(HttpServletRequest request, HttpServletResponse response) {
         PTFMSBusinessLogic ptfmsBusinessLogic = new PTFMSBusinessLogic();
         VehicleDTO vehicleDTO = new VehicleDTO();
         String vehicleNumber = request.getParameter("vehiclenumber");
         String vehicleType = request.getParameter("vehicletype");
-        double consumptionRate =  Double.parseDouble(request.getParameter("consumptionrate"));
+        double consumptionRate = Double.parseDouble(request.getParameter("consumptionrate"));
         String consumptionUnit = request.getParameter("consumptionunit");
-        int  maxPassengers = Integer.parseInt(request.getParameter("maxpassengers"));
+        int maxPassengers = Integer.parseInt(request.getParameter("maxpassengers"));
         String activeRoute = request.getParameter("activeroute");
 
         vehicleDTO.setVehicleNumber(vehicleNumber);
@@ -139,9 +143,9 @@ public class VehicleRegistration extends HttpServlet {
         PTFMSBusinessLogic ptfmsBusinessLogic = new PTFMSBusinessLogic();
         String vehicleNumber = request.getParameter("vehiclenumber");
         String vehicleType = request.getParameter("vehicletype");
-        double consumptionRate =  Double.parseDouble(request.getParameter("consumptionrate"));
+        double consumptionRate = Double.parseDouble(request.getParameter("consumptionrate"));
         String consumptionUnit = request.getParameter("consumptionunit");
-        int  maxPassengers = Integer.parseInt(request.getParameter("maxpassengers"));
+        int maxPassengers = Integer.parseInt(request.getParameter("maxpassengers"));
         String activeRoute = request.getParameter("activeroute");
 
         vehicleDTO.setVehicleNumber(vehicleNumber);
@@ -151,13 +155,37 @@ public class VehicleRegistration extends HttpServlet {
         vehicleDTO.setMaxPassengers(maxPassengers);
         vehicleDTO.setActiveRoute(activeRoute);
 
-        ptfmsBusinessLogic.registerVehicle(vehicleDTO);
-        request.setAttribute("registrationSuccessMsg", "Registration of " + vehicleNumber + " successful.");
+        // get vehicle id after registration
+        int vehicleId = ptfmsBusinessLogic.registerVehicle(vehicleDTO);
 
+        // get components for this vehicleId
+        List<ComponentDTO> components = ptfmsBusinessLogic.getComponentsByVehicleId(vehicleId);
+        
+        // make initial maintenance log for vehicle
+        for (ComponentDTO comp : components) {
+            MaintenanceLogDTO log = new MaintenanceLogDTO();
+            log.setVehicleID(vehicleId);
+            log.setComponentID(comp.getComponentId());
+            log.setUsageAmt(0);
+            log.setStatus("Pending");
+            log.setDate(java.time.LocalDateTime.now());
+            // id from session
+            log.setStaffID((Integer) request.getSession().getAttribute("loggedStaffId"));
+
+            // optional
+            log.setGpsID(0); 
+            log.setNotes("Initial maintenance log created after vehicle registration");
+
+            ptfmsBusinessLogic.addMaintenance(log);
+        }
+
+        request.setAttribute("registrationSuccessMsg", "Registration of " + vehicleNumber + " successful.");
     }
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         processRequest(request, response);
     }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (!checkIfExists(request, response)) {
             registerVehicle(request, response);
@@ -166,4 +194,5 @@ public class VehicleRegistration extends HttpServlet {
         }
         processRequest(request, response);
     }
+
 }

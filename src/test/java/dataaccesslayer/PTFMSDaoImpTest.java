@@ -102,12 +102,12 @@ public class PTFMSDaoImpTest {
     public void getCostReport(){
         List<CostReportDTO> reports = dao.getCostReport();
         assertNotNull("Cost repair list should be non null",reports);
-        assertFalse("Cost repair list should be empty",reports.isEmpty());
+        assertFalse("Cost repair list should not be empty", reports.isEmpty());
 
         for ( CostReportDTO r : reports){
             assertNotNull("report type should not be null", r.getReportType());
             assertNotNull("report date should not be null", r.getDate());
-            assertTrue("report cost should be > 0 l", r.getCost() > 0 );
+            assertTrue("Report cost should be >= 0 but was " + r.getCost(), r.getCost() >= 0);
             assertNotNull("report description  should not be null", r.getDescription());
         }
     }

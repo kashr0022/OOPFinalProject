@@ -18,7 +18,7 @@ public class VehicleBuildTest {
         PTFMSDaoImpl dao = new PTFMSDaoImpl();
 
 
-        // 1) build a VehicleDTO
+        // 1) Build a VehicleDTO
         VehicleDTO dto = new VehicleDTO();
         dto.setVehicleNumber("DB004");
         // must match one of your factory’s types: “Diesel”, “Electric”, or “Hybrid”

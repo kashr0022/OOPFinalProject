@@ -91,7 +91,7 @@ public class GpsServlet extends HttpServlet {
 
         try {
             GpsDTO g = new GpsDTO();
-            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
             PTFMSBusinessLogic pbl = new PTFMSBusinessLogic();
             int sid = Integer.parseInt(req.getParameter("STAFFID"));
             int vid = Integer.parseInt(req.getParameter("VEHICLEID"));

@@ -5,6 +5,7 @@ import java.util.List;
 
 /**
  * Subject class for observer pattern related to monitoring components usages, grabbed from DB. Has a list of observers that it can notify when changes are caught
+ * 
  * @author Lily S.
  * @version 1.0
  * @since JDK 21.0.4

@@ -18,6 +18,7 @@ import java.util.List;
 
 /**
  * Schedule maintenance servlet that handles the creation and management of new maintenance schedules for vehicle components. Provides role-based access control and form processing for maintenance scheduling.
+ * 
  * @author Lily S.
  * @version 1.0
  * @since JDK 21.0.4

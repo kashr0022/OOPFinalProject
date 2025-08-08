@@ -83,11 +83,11 @@
                         </div>
                         <div class='form-con'>
                             <label class='form-label'>Start Time:</label>
-                            <input type='text' name='STARTTIME' placeholder='Use the format yyyy-MM-dd HH:mm:ss'>
+                            <input type='text' name='STARTTIME' placeholder='Use the format yyyy-MM-ddTHH:mm'>
                         </div>
                         <div class='form-con'>
                             <label class='form-label'>End Time:</label>
-                            <input type='text' name='ENDTIME' placeholder='Use the format yyyy-MM-dd HH:mm:ss'>
+                            <input type='text' name='ENDTIME' placeholder='Use the format yyyy-MM-ddTHH:mm'>
                         </div>
                         <div class='form-con'>
                             <label class='form-label'>Ending Location:</label>
@@ -95,7 +95,7 @@
                         </div>
                         <div class='form-con'>
                             <label class='form-label'>Scheduled End Time:</label>
-                            <input type='text' name='SCHEDULEDENDTIME' placeholder='Use the format yyyy-MM-dd HH:mm:ss'>
+                            <input type='text' name='SCHEDULEDENDTIME' placeholder='Use the format yyyy-MM-ddTHH:mm'>
                         </div>
                         <div class='form-con'>
                             <label class='form-label'>Notes:</label>

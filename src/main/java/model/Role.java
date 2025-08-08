@@ -1,12 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package model;
 
 /**
- *
- * @author A
+ * Defines the different roles available in the PTFMS system
+ * OPERATOR Standard user responsible for operating vehicles
+ * TRANSIT_MANAGER Administrative user responsible for overseeing operations, maintenance, and performance
+ * 
+ * @author Khairunnisa Ashri
  */
 public enum Role {
     OPERATOR,

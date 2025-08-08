@@ -3,24 +3,25 @@ package businesslayer.observer;
 import transferobjects.reports.FuelReportDTO;
 
 /**
- * Concrete implementation of the FuelReportObserver interface
- * that monitors fuel reports and tracks the number of alerts for high fuel consumption.
+ * Concrete implementation of the FuelReportObserver interface that monitors fuel reports and tracks the number of alerts for high fuel consumption
  * 
- * Triggers an alert when fuel consumed exceeds 100 units
+ * Method Triggers an alert when fuel consumed exceeds 100 units
  * 
  * @author Khairunnisa Ashri
+ * @version 1.0
+ * @since JDK 21.0.4
  */
 public class ConcreteFuelObserver implements FuelReportObserver {
+    
     /**
      * Counts the number of fuel consumption alerts detected.
      */
     private int alertCount = 0;
 
     /**
-     * Called when a new fuel report is received.
-     * Increments the alert count if the fuel consumed is equal to exceeds 100 units.
+     * Increments the alert count if the fuel consumed is equal to exceeds 100 units
      * 
-     * @param report The fuel report data transfer object containing fuel consumption details.
+     * @param report The fuel report data transfer object containing fuel consumption details
      */
     @Override
     public void update(FuelReportDTO report) {
@@ -32,7 +33,7 @@ public class ConcreteFuelObserver implements FuelReportObserver {
     }
 
     /**
-     * Returns the number of high fuel consumption alerts detected so far.
+     * Returns the number of high fuel consumption alerts detected so far
      * 
      * @return the alert count
      */

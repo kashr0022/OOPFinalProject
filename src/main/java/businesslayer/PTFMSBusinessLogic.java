@@ -441,18 +441,6 @@ public class PTFMSBusinessLogic {
         return ptfmsDao.getComponentsByVehicleId(vehicleId);
     }
 
-    /**
-     * Retrieves all components associated with a specific vehicle
-     *
-     * @param vehicleId, the unique identifier of the vehicle whose components
-     * are to be retrieved
-     * @return list of ComponentDTO objects representing the vehicle's
-     * components
-     */
-    public List<ComponentDTO> getComponentsByVehicleId(int vehicleId) {
-        return ptfmsDao.getComponentsByVehicleId(vehicleId);
-    }
-
     public List<GpsDTO> getDetailedGps() {
         return ptfmsDao.getDetailedGps();
     }

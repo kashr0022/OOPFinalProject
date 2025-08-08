@@ -18,8 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * business logic for ptfms application. holds all calls to the data layer (dao). middle class between presentation and data
- * @author: Lily S.
+ * Business logic for ptfms application. holds all calls to the data layer (dao). middle class between presentation and data
+ * 
+ * @author Lily S.
+ * @author Khairunnisa Ashri
  * @version 1.0
  * @since JDK 21.0.4
  */
@@ -37,6 +39,7 @@ public class PTFMSBusinessLogic {
 
     /**
      * checks login credentials if valid or not
+     * 
      * @author Lily S.
      * @param userIn, passed in username set in presentation layer servlet input field
      * @param passIn, passed in password set in presentation layer servlet input field
@@ -54,6 +57,7 @@ public class PTFMSBusinessLogic {
 
     /**
      * checks if a username has been taken, used during account registration step
+     * 
      * @author Lily S.
      * @param user, UserDTO object
      * @return boolean, status if take or not
@@ -64,6 +68,7 @@ public class PTFMSBusinessLogic {
 
     /**
      * Check if a staff combo (first and last) is already taken in the db
+     * 
      * @author Lily S.
      * @param staff, StaffDTO object
      * @return boolean, status if taken or not
@@ -74,6 +79,7 @@ public class PTFMSBusinessLogic {
 
     /**
      * Add a staff and user to database
+     * 
      * @author Lily S.
      * @param staff, StaffDTO
      * @param user, UsersDTO
@@ -109,6 +115,7 @@ public class PTFMSBusinessLogic {
 
     /**
      * Adds a vehicle entry to the db
+     * 
      * @author Lily S.
      * @param vehicleDTO, VehicleDTO object
      */
@@ -149,6 +156,7 @@ public class PTFMSBusinessLogic {
 
     /**
      * Check if vehicle entry exists with the same identifier in db
+     * 
      * @author Lily S.
      * @param vehicleDTO, VehicleDTO object
      * @return boolean, value if taken or not
@@ -166,8 +174,9 @@ public class PTFMSBusinessLogic {
     }
 
     /**
-     * grabs all fuel reports
-     * @author Lily S., Khairunnisa Ashri
+     * Retrieves all fuel reports from the database
+     * 
+     * @author Khairunnisa Ashri
      * @return List containing all fuel report DTOs
      */
     public List<FuelReportDTO> getFuelReport() {
@@ -175,8 +184,10 @@ public class PTFMSBusinessLogic {
     }
 
     /**
-     * Utilizes observer pattern to create an alert counter system baseed on fuel stats
-     * @author Lily S., Khairunnisa Ashri
+     * Utilizes observer pattern to create an alert counter system based on fuel stats
+     * 
+     * @author Khairunnisa Ashri
+     * @author Lily S.
      * @return int of alert counter
      */
     public int getFuelAlertCount() {
@@ -196,8 +207,9 @@ public class PTFMSBusinessLogic {
     }
 
     /**
-     * get all cost reports
-     * @author Lily S., Khairunnisa Ashri
+     * Retrieves all available cost reports from the database
+     * 
+     * @author Khairunnisa Ashri
      * @return List consisting of CostReportDTOs
      */
     public List<CostReportDTO> getCostReport() {
@@ -205,8 +217,9 @@ public class PTFMSBusinessLogic {
     }
 
     /**
-     * get all logs
-     * @author lily S., Khairunnisa Ashri
+     * Retrieves all available cost reports from the database
+     * 
+     * @author Khairunnisa Ashri
      * @return List consisting of MaintenanceLogDTOs
      */
     public List<MaintenanceLogDTO> getAllLogs() {
@@ -214,8 +227,9 @@ public class PTFMSBusinessLogic {
     }
 
     /**
-     * get all operator performances
-     * @author Lily S., Khairunnisa Ashri
+     * Retrieves all operator performance records from the database
+     * 
+     * @author Khairunnisa Ashri
      * @return List consisting of Operator performance DTOs
      */
     public List<OperatorPerformanceDTO> getOperatorPerformance() {
@@ -224,6 +238,7 @@ public class PTFMSBusinessLogic {
 
     /**
      * Grabs user in db via unique username
+     * 
      * @author Lily S.
      * @param userIn, username of desired user
      * @return Found user in a UsersDTO object
@@ -237,6 +252,7 @@ public class PTFMSBusinessLogic {
 
     /**
      * Gets all components from db
+     * 
      * @author Lily S.
      * @return List consisting of ComponentDTOs
      */
@@ -246,6 +262,7 @@ public class PTFMSBusinessLogic {
 
     /**
      * Utilizes observer pattern to create an alert counter system baseed on component hour usage
+     * 
      * @author Lily S.
      * @return int, counter value from observer pattern
      */
@@ -265,6 +282,7 @@ public class PTFMSBusinessLogic {
 
     /**
      * Grabs component in DB via specific ID passed in
+     * 
      * @author Lily S.
      * @param id, id of desired component
      * @return ComponentDTO, specified component in DTO form to store all characteristics
@@ -275,6 +293,7 @@ public class PTFMSBusinessLogic {
 
     /**
      * Grabs vehicle in DB via specific ID passed in
+     * 
      * @author Lily S.
      * @param id, id of desired vehicle
      * @return VehicleDTO, specified vehicle in DTO form to store all characteristics
@@ -285,6 +304,7 @@ public class PTFMSBusinessLogic {
 
     /**
      * Get all staff from db
+     * 
      * @author Lily S.
      * @return List consisting of each staff entry as a StaffDTO
      */
@@ -294,6 +314,7 @@ public class PTFMSBusinessLogic {
 
     /**
      * Get all gps from db
+     * 
      * @author Lily S.
      * @return List consisting of each gps entry as a GpsDTO
      */
@@ -303,6 +324,7 @@ public class PTFMSBusinessLogic {
 
     /**
      * Add a maintenance entry to the database
+     * 
      * @author Lily S.
      * @param maintenance, MaintenanceLogDTO that holds all needed characteristics for a db insert
      */
@@ -332,20 +354,22 @@ public class PTFMSBusinessLogic {
     }
 
     /**
-     *
+     * Retrieves all break logs associated with a specific staff member
+     * 
      * @author Khairunnisa Ashri
-     * @param staffID
-     * @return
+     * @param staffID, the unique identifier of the staff member
+     * @return List of BreakLogDTO instances representing the staff member's break log
      */
     public List<BreakLogDTO> getBreakLogsByStaffID(int staffID) {
         return ptfmsDao.getBreakLogsByStaffID(staffID);
     }
 
     /**
-     *
+     * Retrieves a staff member's details by their unique staff ID
+     * 
      * @author Khairunnisa Ashri
-     * @param staffID
-     * @return
+     * @param staffID, the unique identifier of the staff member to retrieve
+     * @return staffDTO containing the details of the specified staff member
      */
     public StaffDTO getStaffByStaffID(int staffID) {
         PTFMSDao dao = new PTFMSDaoImpl();
@@ -353,22 +377,34 @@ public class PTFMSBusinessLogic {
     }
 
     /**
-     *
+     * Retrieves a staff member's details based on their username
+     * 
      * @author Khairunnisa Ashri
-     * @param username
-     * @return
+     * @param username of the staff member to retrieve
+     * @return a StaffDTO containing the staff member's details
      */
     public StaffDTO getStaffByUsername(String username) {
         return ptfmsDao.getStaffByUsername(username);
     }
 
     /**
-     *
+     * Inserts a new break log record into the database
+     * 
      * @author Khairunnisa Ashri
-     * @param log
+     * @param log the BreakLogDTO object containing the details of the break log to insert
      */
     public void insertBreakLog(BreakLogDTO log) {
         ptfmsDao.insertBreakLog(log);
+    }
+    
+    /**
+     * Retrieves all components associated with a specific vehicle
+     * 
+     * @param vehicleId, the unique identifier of the vehicle whose components are to be retrieved
+     * @return list of ComponentDTO objects representing the vehicle's components
+     */
+    public List<ComponentDTO> getComponentsByVehicleId(int vehicleId) {
+        return ptfmsDao.getComponentsByVehicleId(vehicleId);
     }
 
     public List<GpsDTO> getDetailedGps() {
@@ -376,9 +412,7 @@ public class PTFMSBusinessLogic {
     }
 
     public void registerGps(GpsDTO g) {
-        if (g.getGpsID() <= 0) {
-            throw new ValidationException("Invalid GPS ID");
-        }
+        
         if (g.getStaffID() <=0){
             throw new ValidationException("Invalid Staff ID");
         }
@@ -394,14 +428,6 @@ public class PTFMSBusinessLogic {
         if (g.getEndingLocation() ==null || g.getEndingLocation().isBlank()){
             throw new ValidationException("End Location Must be Filled ");
         }
-
         ptfmsDao.registerGps(g);
     }
-
-    public List<ComponentDTO> getComponentsByVehicleId(int vehicleId) {
-        return ptfmsDao.getComponentsByVehicleId(vehicleId);
-    }
-    
-    
-
 }

@@ -9,12 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
-import transferobjects.reports.ComponentDTO;
-import transferobjects.reports.MaintenanceLogDTO;
 
 /**
  * Vehicle registration servlet that handles new vehicle registration for the PTFMS system. Provides role-based access control allowing only transit managers to register vehicles.
+ * 
  * @author: Lily S.
  * @version 1.0
  * @since JDK 21.0.4

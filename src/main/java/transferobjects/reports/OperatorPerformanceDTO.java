@@ -4,8 +4,7 @@ package transferobjects.reports;
 import model.Role;
 
 /**
- * Data Transfer Object (DTO) representing the performance metrics of an operator.
- * Includes personal details, role, punctuality, work duration, and current status.
+ * DTO representing the performance metrics of an operator
  * 
  * @author Khairunnisa Ashri
  */

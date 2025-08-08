@@ -12,20 +12,17 @@ import javax.servlet.http.HttpSession;
 import transferobjects.reports.BreakLogDTO;
 
 /**
- * Servlet to handle break actions submitted by staff.
- * It records break start/end actions to the break log.
- * 
- * Expects a POST request with a parameter "action" indicating the break action.
- * Requires an active session with a loggedStaffId attribute.
- * On success, redirects to break history page for the staff.
+ * Servlet to handle break actions submitted by staff, records break start/end actions to the break log
  * 
  * @author Khairunnisa Ashri
+ * @version 1.0
+ * @since JDK 21.0.4
  */
 @WebServlet("/breakAction")
 public class BreakActionServlet extends HttpServlet {
 
     /**
-     * Handles POST requests to record a break action for the logged-in staff.
+     * Handles POST requests to record a break action for the logged-in staff
      * 
      * @param request the HttpServletRequest object containing client request
      * @param response the HttpServletResponse object for sending response
@@ -35,6 +32,7 @@ public class BreakActionServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
 
+        // requires active session
         if (session == null) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "No active session, please login.");
             return;
@@ -46,6 +44,7 @@ public class BreakActionServlet extends HttpServlet {
             return;
         }
 
+        // retireve action param from http request
         String action = request.getParameter("action");
         if (action == null || action.trim().isEmpty()) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing or empty action parameter");
@@ -66,6 +65,7 @@ public class BreakActionServlet extends HttpServlet {
             return;
         }
 
+        // on success, redirect to break history
         response.sendRedirect(request.getContextPath() + "/breakHistory?staffID=" + loggedStaffId);
     }
 }

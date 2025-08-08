@@ -1,10 +1,11 @@
 package transferobjects.users;
 
 /**
- * Data transfer object of User records from the PTFMS db. Contains private fields for each
+ * DTO of User records from the PTFMS db. Contains private fields for each
  * characteristic, public getters and setters for data access & modification. enforces separation of
  * application layers. Used to pass information from presentation to business to data
- * @author: Lily S.
+ * 
+ * @author Lily S.
  */
 public class UsersDTO {
     private String username;

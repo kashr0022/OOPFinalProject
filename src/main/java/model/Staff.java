@@ -1,12 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package model;
 
 /**
- *
- * @author khair
+ * Represents a staff member in the PTFMS system. This abstract class serves as the base for different types of staff roles,
+ * storing common attributes and behaviors shared by all staff members
+ * 
+ * @author Khairunnisa Ashri
  */
 public abstract class Staff {
     

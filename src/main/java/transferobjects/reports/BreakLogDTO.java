@@ -3,8 +3,7 @@ package transferobjects.reports;
 import java.time.LocalDateTime;
 
 /**
- * Data Transfer Object (DTO) representing a break log entry for a staff member.
- * It contains details about the break action and the timestamp when it occurred.
+ * DTO representing a break log entry for a staff member, contains details about the break action
  * 
  * @author Khairunnisa Ashri
  */

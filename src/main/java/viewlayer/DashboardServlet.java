@@ -11,22 +11,21 @@ import transferobjects.reports.MaintenanceLogDTO;
 import transferobjects.reports.OperatorPerformanceDTO;
 
 /**
- * Servlet that loads dashboard data and renders the manager dashboard view.
+ * Servlet that loads dashboard data and renders the manager dashboard view
  * 
  * Access control is enforced based on the user role stored in the session:
- * - Only users with role "transitmanager" can access full dashboard with operator performance data.
- * - Other logged-in users receive a limited dashboard view without operator performance data.
- * - Unauthenticated users receive an HTTP 401 Unauthorized response.
- * 
- * Retrieves data via {@link PTFMSBusinessLogic} and forwards to the Dashboard JSP for rendering.
- * 
- * Author: Khairunnisa Ashri
+ * TRANSIT_MANAGERS can access full dashboard with operator performance data
+ * other users receive a limited dashboard view without operator performance data
+ *
+ * @author Khairunnisa Ashri
+ * @version 1.0
+ * @since JDK 21.0.4
  */
 public class DashboardServlet extends HttpServlet {
 
     /**
-     * Handles HTTP GET requests for the dashboard.
-     * Checks session and user role, then loads relevant data accordingly.
+     * Handles HTTP GET requests for the dashboard
+     * Checks session and user role, then loads relevant data accordingly
      * 
      * @param req the HttpServletRequest
      * @param res the HttpServletResponse
@@ -99,8 +98,7 @@ public class DashboardServlet extends HttpServlet {
     }
 
     /**
-     * Helper method to get the count of fuel alerts.
-     * Uses the business logic layer to retrieve the count.
+     * Helper method to get the count of fuel alerts
      *
      * @return the number of fuel alerts
      */

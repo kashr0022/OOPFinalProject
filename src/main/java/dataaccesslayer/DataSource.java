@@ -11,11 +11,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *	data source that follows Singleton pattern.
+ *  Data source that follows Singleton pattern.
  *  Grabs connection credentials from properties file. private data source constructor
- *	@author Lily Schmeer
- *	@version 1.0
- *	@since JDK 21.0.4
+ *  @author Lily Schmeer
+ *  @version 1.0
+ *  @since JDK 21.0.4
  */
 public class DataSource {
     private static Connection connection = null;

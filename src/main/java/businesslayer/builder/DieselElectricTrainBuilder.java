@@ -2,6 +2,7 @@
 package businesslayer.builder;
 
 import businesslayer.builder.vehicles.DieselBus;
+import businesslayer.builder.vehicles.DieselElectricTrain;
 
 /**
  * Builder class for the Diesel Electric train vehicle that implements builder interface.
@@ -81,7 +82,7 @@ public class DieselElectricTrainBuilder implements BuilderInterface {
      * constructor for diesel electric train
      * @return constructed vehicle object
      */
-    public DieselBus build() {
-        return new DieselBus(vehicleNumber, vehicleType, consumptionRate, consumptionUnit, maxPassengers, activeRoute);
+    public DieselElectricTrain build() {
+        return new DieselElectricTrain(vehicleNumber, vehicleType, consumptionRate, consumptionUnit, maxPassengers, activeRoute);
     }
 }

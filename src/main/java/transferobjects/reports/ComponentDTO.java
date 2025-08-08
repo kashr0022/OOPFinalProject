@@ -2,6 +2,7 @@ package transferobjects.reports;
 
 /**
  * Data transfer object of component records from the PTFMS db. Contains private fields for each characteristic, public getters and setters for data access & modification. enforces separation of application layers. Used to pass information from presentation to business to data
+ * 
  * @author Lily S.
  */
 public class ComponentDTO {

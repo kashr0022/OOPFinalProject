@@ -3,11 +3,11 @@ package transferobjects.reports;
 import java.time.LocalDateTime;
 
 /**
- * Data Transfer Object (DTO) representing a maintenance log entry.
- * Contains information about maintenance activities for a vehicle component,
+ * Data Transfer Object (DTO) representing a maintenance log entry, contains information about maintenance activities for a vehicle component,
  * including diagnostics, usage, cost, and status.
  * 
- * @author Khairunnisa Asrhi, Lily S.
+ * @author Khairunnisa Asrhi
+ * @author Lily S.
  */
 public class MaintenanceLogDTO {
     private int logID;

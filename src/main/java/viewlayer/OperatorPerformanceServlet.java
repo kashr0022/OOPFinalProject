@@ -11,19 +11,17 @@ import transferobjects.reports.OperatorPerformanceDTO;
 
 /**
  * Servlet responsible for retrieving operator performance data
- * from the business layer and forwarding it to the dashboard JSP
- * for display.
  * 
- * Handles HTTP GET requests to fetch the list of {@link OperatorPerformanceDTO}.
+ * Handles HTTP GET requests to fetch the list of OperatorPerformanceDTO
  * 
  * @author Khairunnisa Ashri
+ * @version 1.0
+ * @since JDK 21.0.4
  */
 public class OperatorPerformanceServlet extends HttpServlet {
 
     /**
-     * Handles the HTTP GET request to retrieve operator performance data.
-     * Calls business logic to fetch a list of operator performance DTOs,
-     * sets it as a request attribute, and forwards the request to the dashboard JSP.
+     * Handles the HTTP GET request to retrieve operator performance data
      *
      * @param req the HttpServletRequest
      * @param res the HttpServletResponse

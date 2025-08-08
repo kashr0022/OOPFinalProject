@@ -19,7 +19,8 @@ public class FrontControllerServlet extends HttpServlet {
 
     /**
      * processRequest holds all the main html being output to the screen via the printwriter. Content such as navigation, log-in inputs are shown.
-     * @author Lily S., Khairunnisa Ashri
+     * @author Lily S.
+     * @author Khairunnisa Ashri
      * @param req, request
      * @param res, response
      * @throws IOException, input-output related errors
@@ -167,6 +168,7 @@ public class FrontControllerServlet extends HttpServlet {
     /**
      * doPost, overridden method corresponding to HTTP POST, this holds the majority of the logic behind login check, login validation, logout, and putting user cred + role into sesh storage.
      * @author Lily S.
+     * @auhtor Khairunnisa Ashri
      * @param request
      * @param response
      * @throws ServletException, servlet related errors

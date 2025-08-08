@@ -1,8 +1,6 @@
 package dataaccesslayer;
 
 import businesslayer.builder.vehicles.Vehicle;
-import businesslayer.observer.FuelReportSubject;
-import model.Staff;
 import transferobjects.reports.*;
 import transferobjects.staff.StaffDTO;
 import transferobjects.users.UsersDTO;
@@ -14,21 +12,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * @author Lily S.
- *
+ * Implementation of PTFMSDao interface, directly works with datasource to grab info (or add) from/to the PTFMS database
+ * @author Lily S., Khairunnisa Ashri
  */
 public class PTFMSDaoImpl implements PTFMSDao {
 
     /**
-     * @author Lily S.
-     * @return
+     * Checks login credentials if valid or not
+     * @author Lily S., Khairunnisa Ashri
+     * @param userIn, passed in username set in presentation layer servlet input field
+     * @param passIn, passed in password set in presentation layer servlet input field
+     * @return boolean, if credentials valid
      */
     @Override
     public boolean checkCred(String userIn, String passIn) {
@@ -55,9 +55,10 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
-     * @author: Lily S.
-     * @param staff
-     * @param user
+     * Add a staff and user to database
+     * @author Lily S.
+     * @param staff, StaffDTO
+     * @param user, UsersDTO
      */
     @Override
     public void addStaffUser(StaffDTO staff, UsersDTO user) {
@@ -87,9 +88,9 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
-     * author Lily S.
-     *
-     * @param maintenance
+     * Add a maintenance entry to the database
+     * @author Lily S.
+     * @param maintenance, MaintenanceLogDTO that holds all needed characteristics for a db insert
      */
     @Override
     public void addMaintenance(MaintenanceLogDTO maintenance) {
@@ -121,10 +122,10 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
-     * author Lily S.
-     *
-     * @param userIn
-     * @return
+     * Grabs user in db via unique username
+     * @author Lily S.
+     * @param userIn, username of desired user
+     * @return Found user in a UsersDTO object
      */
     @Override
     public UsersDTO getUserByUsername(String userIn) {
@@ -155,9 +156,10 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
+     * Checks if a username has been taken, used during account registration step
      * @author Lily S.
-     * @param user
-     * @return
+     * @param user, UserDTO object
+     * @return boolean, status if take or not
      */
     @Override
     public boolean checkUserTaken(UsersDTO user) {
@@ -185,9 +187,10 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
+     * Check if a staff combo (first and last) is already taken in the db
      * @author Lily S.
-     * @param staff
-     * @return
+     * @param staff, StaffDTO object
+     * @return boolean, status if taken or not
      */
     @Override
     public boolean checkStaffTaken(StaffDTO staff) {
@@ -216,8 +219,9 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
+     * Adds a vehicle entry to the db
      * @author Lily S.
-     * @param vehicle
+     * @param vehicle, Vehicle object
      */
     @Override
     public int registerVehicle(Vehicle vehicle) {
@@ -289,9 +293,10 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
+     * Check if vehicle entry exists with the same identifier in db
      * @author Lily S.
-     * @param vehicle
-     * @return
+     * @param vehicle, Vehicle object
+     * @return boolean, value if taken or not
      */
     @Override
     public boolean checkVehicleTaken(Vehicle vehicle) {
@@ -319,8 +324,9 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
+     * Grabs all fuel reports
      * @author Khairunnisa Ashri, Lily S.
-     * @return
+     * @return List containing all fuel report DTOs
      */
     public List<FuelReportDTO> getFuelReport() {
         List<FuelReportDTO> reports = new ArrayList<>();
@@ -382,8 +388,9 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
-     *
-     * @param report
+     * Update fuel report
+     * @author Khairunnisa Ashri
+     * @param report, FuelReportDTO object to update
      */
     @Override
     public void updateFuelReport(FuelReportDTO report) {
@@ -422,8 +429,9 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
+     * Get all cost reports
      * @author Khairunnisa Ashri, Lily S.
-     * @return
+     * @return List consisting of CostReportDTOs
      */
     public List<CostReportDTO> getCostReport() {
         List<CostReportDTO> reportList = new ArrayList<>();
@@ -490,8 +498,9 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
+     * Get all logs
      * @author Lily S., Khairunnisa Ashri
-     * @return
+     * @return List consisting of MaintenanceLogDTOs
      */
     public List<MaintenanceLogDTO> getAllLogs() {
         List<MaintenanceLogDTO> logs = new ArrayList<>();
@@ -551,8 +560,9 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
+     * Get all operator performances
      * @author Lily S., Khairunnisa Ashri
-     * @return
+     * @return List consisting of Operator performance DTOs
      */
     public List<OperatorPerformanceDTO> getOperatorPerformance() {
         List<OperatorPerformanceDTO> results = new ArrayList<>();
@@ -611,8 +621,9 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
+     * Gets all components from db
      * @author Lily S.
-     * @return
+     * @return List consisting of ComponentDTOs
      */
     @Override
     public List<ComponentDTO> getAllComponents() {
@@ -647,9 +658,9 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
-     * Lily S.
-     *
-     * @return
+     * Get all staff from db
+     * @author Lily S.
+     * @return List consisting of each staff entry as a StaffDTO
      */
     @Override
     public List<StaffDTO> getAllStaff() {
@@ -683,9 +694,9 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
-     * Lily S.
-     *
-     * @return
+     * Get all gps from db
+     * @author Lily S.
+     * @return List consisting of each gps entry as a GpsDTO
      */
     @Override
     public List<GpsDTO> getAllGps() {
@@ -721,6 +732,12 @@ public class PTFMSDaoImpl implements PTFMSDao {
         return gpsList;
     }
 
+    /**
+     * Grabs component in DB via specific ID passed in
+     * @author Lily S.
+     * @param id, id of desired component
+     * @return ComponentDTO, specified component in DTO form to store all characteristics
+     */
     @Override
     public ComponentDTO getComponentByID(int id) {
         Connection connection = null;
@@ -751,6 +768,12 @@ public class PTFMSDaoImpl implements PTFMSDao {
         return componentDTO;
     }
 
+    /**
+     * Grabs vehicle in DB via specific ID passed in
+     * @author Lily S.
+     * @param id, id of desired vehicle
+     * @return VehicleDTO, specified vehicle in DTO form to store all characteristics
+     */
     @Override
     public VehicleDTO getVehicleByID(int id) {
         Connection connection = null;
@@ -783,9 +806,10 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
-     *
-     * @param staffID
-     * @return
+     * Get break logs by staff ID
+     * @author Khairunnisa Ashri
+     * @param staffID, staff ID to filter break logs
+     * @return List of BreakLogDTOs for the specified staff member
      */
     @Override
     public List<BreakLogDTO> getBreakLogsByStaffID(int staffID) {
@@ -814,9 +838,10 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
-     *
-     * @param staffID
-     * @return
+     * Get staff by staff ID
+     * @author Khairunnisa Ashri
+     * @param staffID, staff ID to retrieve
+     * @return StaffDTO object for the specified staff ID
      */
     @Override
     public StaffDTO getStaffByID(int staffID) {
@@ -838,6 +863,11 @@ public class PTFMSDaoImpl implements PTFMSDao {
         return null;
     }
 
+    /**
+     * Insert break log entry
+     * @author Khairunnisa Ashri
+     * @param log, BreakLogDTO containing break log information to insert
+     */
     @Override
     public void insertBreakLog(BreakLogDTO log) {
         String sql = "INSERT INTO BreakLog (StaffID, Action, Timestamp) VALUES (?, ?, ?)";
@@ -853,6 +883,12 @@ public class PTFMSDaoImpl implements PTFMSDao {
         }
     }
 
+    /**
+     * Get staff by username
+     * @author Khairunnisa Ashri
+     * @param username, username to retrieve staff information
+     * @return StaffDTO object for the specified username
+     */
     @Override
     public StaffDTO getStaffByUsername(String username) {
         StaffDTO staff = null;

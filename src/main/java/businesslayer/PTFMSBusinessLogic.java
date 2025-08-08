@@ -195,6 +195,7 @@ public class PTFMSBusinessLogic {
     ;
 
     /**
+     * Grabs user in db via unique username
      * @author Lily S.
      * @param userIn
      * @return

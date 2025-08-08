@@ -17,9 +17,19 @@ import java.io.PrintWriter;
 import java.util.List;
 
 /**
+ * Schedule maintenance servlet that handles the creation and management of new maintenance schedules for vehicle components. Provides role-based access control and form processing for maintenance scheduling.
  * @author Lily S.
+ * @version 1.0
+ * @since JDK 21.0.4
  */
 public class ScheduleMaintenanceServlet extends HttpServlet {
+
+    /**
+     * processRequest generates the maintenance scheduling form page with role-based access control. Shows scheduling form for transit managers with component and vehicle details, staff selection, and maintenance parameters.
+     * @author Lily S.
+     * @param request, request
+     * @param response, response
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession(false);
@@ -138,9 +148,10 @@ public class ScheduleMaintenanceServlet extends HttpServlet {
     }
 
     /**
+     * grabVehicleName retrieves the vehicle number/name from the database using the provided vehicle ID via business logic layer.
      * @author Lily S.
-     * @param id
-     * @return
+     * @param id, vehicle ID to look up
+     * @return String, vehicle number/name from the database
      */
     protected String grabVehicleName(int id) {
         VehicleDTO vehicleDTO =  new VehicleDTO();
@@ -150,9 +161,10 @@ public class ScheduleMaintenanceServlet extends HttpServlet {
     }
 
     /**
+     * grabComponentName retrieves the component name from the database using the provided component ID via business logic layer.
      * @author Lily S.
-     * @param id
-     * @return
+     * @param id, component ID to look up
+     * @return String, component name from the database
      */
     protected String grabComponentName(int id) {
         ComponentDTO componentDTO = new ComponentDTO();
@@ -162,9 +174,10 @@ public class ScheduleMaintenanceServlet extends HttpServlet {
     }
 
     /**
+     * commitNewMaintenance processes the maintenance scheduling form data by creating a MaintenanceLogDTO object and calling business logic to add the maintenance entry to the database.
      * @author Lily S.
-     * @param req
-     * @param res
+     * @param req, request object containing maintenance form data
+     * @param res, response object
      */
     protected void commitNewMaintenance(HttpServletRequest req, HttpServletResponse res) {
         PTFMSBusinessLogic ptfmsBusinessLogic = new PTFMSBusinessLogic();
@@ -187,23 +200,25 @@ public class ScheduleMaintenanceServlet extends HttpServlet {
     }
 
     /**
+     * doGet, overridden method corresponding to HTTP GET, simply calls processRequest while feeding in parameters HTTPServletRequest req, HttpServletResponse res
      * @author Lily S.
-     * @param req
-     * @param res
-     * @throws ServletException
-     * @throws IOException
+     * @param req, request
+     * @param res, response
+     * @throws ServletException, servlet related errors
+     * @throws IOException, input-output related errors
      */
-        @Override
+    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         processRequest(req, res);
     }
 
     /**
+     * doPost, overridden method corresponding to HTTP POST, handles maintenance scheduling form submission by checking for commit action and processing new maintenance entries.
      * @author Lily S.
-     * @param req
-     * @param res
-     * @throws ServletException
-     * @throws IOException
+     * @param req, request
+     * @param res, response
+     * @throws ServletException, servlet related errors
+     * @throws IOException, input-output related errors
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {

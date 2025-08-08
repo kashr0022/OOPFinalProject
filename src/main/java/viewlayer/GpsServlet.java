@@ -38,7 +38,7 @@ public class GpsServlet extends HttpServlet {
 
     /**
      * 
-     * @param req
+     * @param req an HttpServletRequest
      * @param res
      * @throws ServletException
      * @throws IOException 

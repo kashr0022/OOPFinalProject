@@ -250,7 +250,7 @@ public class PTFMSDaoImpl implements PTFMSDao {
             userStmt.setString(2, vehicle.getVehicleType());
             userStmt.setDouble(3, vehicle.getConsumptionRate());
             userStmt.setString(4, vehicle.getConsumptionUnit());
-            userStmt.setDouble(5, vehicle.getMaxPassengers());
+            userStmt.setInt(5, vehicle.getMaxPassengers());
             userStmt.setString(6, vehicle.getActiveRoute());
 
             int affectedRows = userStmt.executeUpdate();
@@ -264,10 +264,13 @@ public class PTFMSDaoImpl implements PTFMSDao {
                         insertDefaultComponents(connection, vehicleId, vehicle.getVehicleType());
 
                         return vehicleId;
+                    } else {
+                        System.err.println("No ID obtained from insert");
                     }
                 }
+            } else {
+                System.err.println("Insert failed, 0 rows affected");
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -999,6 +1002,7 @@ public class PTFMSDaoImpl implements PTFMSDao {
 
         try (Connection connection = DataSource.getConnection(); 
                 PreparedStatement userStmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+
             userStmt.setInt(1, g.getStaffID());
             userStmt.setInt(2, g.getVehicleID());
             userStmt.setString(3, g.getStartingLocation());

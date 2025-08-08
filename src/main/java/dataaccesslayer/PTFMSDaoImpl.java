@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,20 +97,27 @@ public class PTFMSDaoImpl implements PTFMSDao {
         Connection connection = DataSource.getConnection();
 
         try {
-            String query = "INSERT INTO MaintenanceLog (StaffId, GPSID, VehicleID, ComponentID, UsageAmt, Status, Notes) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO MaintenanceLog (LogID, StaffID, GPSID, VehicleID, ComponentID, UsageAmt, Status, Notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement prepState = connection.prepareStatement(query)) {
-                prepState.setInt(1, maintenance.getStaffID());
-                prepState.setInt(2, maintenance.getGpsID());
-                prepState.setInt(3, maintenance.getVehicleID());
-                prepState.setInt(4, maintenance.getComponentID());
-                prepState.setDouble(5, maintenance.getUsageAmt());
-                prepState.setString(6, maintenance.getStatus());
-                prepState.setString(7, maintenance.getNotes());
+                prepState.setInt(1, maintenance.getLogID());
+                prepState.setInt(2, maintenance.getStaffID());
+                if (maintenance.getGpsID() > 0) {
+                    prepState.setInt(3, maintenance.getGpsID());
+                } else {
+                    prepState.setNull(3, java.sql.Types.INTEGER);
+                }
+                prepState.setInt(4, maintenance.getVehicleID());
+                prepState.setInt(5, maintenance.getComponentID());
+                prepState.setDouble(6, maintenance.getUsageAmt());
+                prepState.setString(7, maintenance.getStatus());
+                prepState.setString(8, maintenance.getNotes());
+
                 prepState.executeUpdate();
             }
 
         } catch (SQLException e) {
             Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE, "Exception occurred relating to maintenance record add to db.", e);
+            throw new RuntimeException("Failed to insert maintenance log", e);
         }
     }
 
@@ -193,8 +201,8 @@ public class PTFMSDaoImpl implements PTFMSDao {
         try (
                 PreparedStatement prepState = connection.prepareStatement(query)) {
 
-            prepState.setString(1, staff.getFirstName());
-            prepState.setString(2, staff.getLastName());
+            prepState.setString(1, staff.getFirstName().trim()); //added trim() for testing reason , a problen occured while testing this method
+            prepState.setString(2, staff.getLastName().trim());
 
             try (ResultSet resultSet = prepState.executeQuery()) {
                 if (resultSet.next()) {
@@ -216,23 +224,72 @@ public class PTFMSDaoImpl implements PTFMSDao {
      * @param vehicle, Vehicle object
      */
     @Override
-    public void registerVehicle(Vehicle vehicle) {
-        Connection connection = null;
-        String query = "INSERT INTO Vehicles (VehicleNumber, VehicleType, ConsumptionRate, ConsumptionUnit, MaxPassengers, ActiveRoute)\n"
+    public int registerVehicle(Vehicle vehicle) {
+        String query = "INSERT INTO Vehicles (VehicleNumber, VehicleType, ConsumptionRate, ConsumptionUnit, MaxPassengers, ActiveRoute) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
 
-        connection = DataSource.getConnection();
-        try (PreparedStatement userStmt = connection.prepareStatement(query)) {
+        try (Connection connection = DataSource.getConnection(); PreparedStatement userStmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+
             userStmt.setString(1, vehicle.getVehicleNumber());
             userStmt.setString(2, vehicle.getVehicleType());
             userStmt.setDouble(3, vehicle.getConsumptionRate());
             userStmt.setString(4, vehicle.getConsumptionUnit());
             userStmt.setDouble(5, vehicle.getMaxPassengers());
             userStmt.setString(6, vehicle.getActiveRoute());
-            userStmt.executeUpdate();
+
+            int affectedRows = userStmt.executeUpdate();
+
+            if (affectedRows > 0) {
+                try (ResultSet keys = userStmt.getGeneratedKeys()) {
+                    if (keys.next()) {
+                        int vehicleId = keys.getInt(1);
+
+                        // insert components based on vehicle type
+                        insertDefaultComponents(connection, vehicleId, vehicle.getVehicleType());
+
+                        return vehicleId;
+                    }
+                }
+            }
+
         } catch (SQLException e) {
-            Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE, "SQL Exception occured when adding new vehicle to db.", e);
+            e.printStackTrace();
         }
+        return -1;
+    }
+
+    /**
+     * helper method
+     *
+     * @param connection
+     * @param vehicleId
+     * @param vehicleType
+     * @throws SQLException
+     */
+    private void insertDefaultComponents(Connection connection, int vehicleId, String vehicleType) throws SQLException {
+        String sql = "INSERT INTO Components (VehicleID, ComponentName, ComponentType, HoursUsed) VALUES (?, ?, ?, ?)";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            // vehicle-specific component
+            if ("Diesel".equalsIgnoreCase(vehicleType)) {
+                insertComponent(stmt, vehicleId, "Diesel Engine", "Diesel");
+            } else if ("Electric".equalsIgnoreCase(vehicleType)) {
+                insertComponent(stmt, vehicleId, "Battery System", "Electric");
+            } else if ("Hybrid".equalsIgnoreCase(vehicleType)) {
+                insertComponent(stmt, vehicleId, "Hybrid Drive Unit", "Hybrid");
+            }
+
+            // shared component
+            insertComponent(stmt, vehicleId, "Brake Pads", "Hybrid");
+        }
+    }
+
+    private void insertComponent(PreparedStatement stmt, int vehicleId, String name, String type) throws SQLException {
+        stmt.setInt(1, vehicleId);
+        stmt.setString(2, name);
+        stmt.setString(3, type);
+        stmt.setDouble(4, 0);
+        stmt.executeUpdate();
     }
 
     /**
@@ -452,6 +509,7 @@ public class PTFMSDaoImpl implements PTFMSDao {
                      SELECT
                          ml.LogID,
                          ml.VehicleID,
+                         ml.StaffID,
                          v.VehicleType AS Type,
                          c.ComponentID AS ComponentID,
                          c.ComponentName AS ComponentName,
@@ -491,6 +549,7 @@ public class PTFMSDaoImpl implements PTFMSDao {
                 log.setDate(rs.getTimestamp("Timestamp").toLocalDateTime());
                 log.setCost(rs.getDouble("Cost"));
                 log.setNotes(rs.getString("Notes"));
+                log.setStaffID(rs.getInt("StaffID"));
                 logs.add(log);
             }
         } catch (SQLException e) {
@@ -853,6 +912,93 @@ public class PTFMSDaoImpl implements PTFMSDao {
             Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE, "Error fetching staff by username.", e);
         }
         return staff;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public List<GpsDTO> getDetailedGps() {
+        List<GpsDTO> results = new ArrayList<>();
+        String selectQuery = """
+                     SELECT 
+                         g.GPSID,
+                         g.StaffID,
+                             g.VehicleID,
+                             g.StartingLocation,
+                             g.StartTime,
+                             g.EndTime,
+                             g.EndingLocation,
+                             g.ScheduledEndTime,
+                             g.Notes
+                     
+                     FROM GPS g
+                     """;
+        try (Connection con = DataSource.getConnection(); PreparedStatement ps = con.prepareStatement(selectQuery); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                GpsDTO g = new GpsDTO();
+                g.setGpsID(rs.getInt("GPSID"));
+                g.setStaffID(rs.getInt("StaffID"));
+                g.setVehicleID(rs.getInt("VehicleID"));
+                g.setStartingLocation(rs.getString("StartingLocation"));
+                g.setStartTime(rs.getTimestamp("StartTime").toLocalDateTime());
+                g.setEndTime(rs.getTimestamp("EndTime").toLocalDateTime());
+                g.setEndingLocation(rs.getString("EndingLocation"));
+                g.setScheduledEndTime(rs.getTimestamp("ScheduledEndTime").toLocalDateTime());
+                g.setNotes(rs.getString("Notes"));
+                results.add(g);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE, "SQL Exception occured when getting operator performances.", e);
+        }
+        return results;
+    }
+
+    @Override
+    public void registerGps(GpsDTO g) {
+        String query = """
+                       INSERT INTO GPS (StaffID, VehicleID, StartingLocation, StartTime, EndTime, EndingLocation, ScheduledEndTime, Notes)
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?)""";
+
+        try (Connection connection = DataSource.getConnection(); PreparedStatement userStmt = connection.prepareStatement(query)) {
+            userStmt.setInt(1, g.getStaffID());
+            userStmt.setInt(2, g.getVehicleID());
+            userStmt.setString(3, g.getStartingLocation());
+            userStmt.setTimestamp(4, Timestamp.valueOf(g.getStartTime()));
+            userStmt.setTimestamp(5, Timestamp.valueOf(g.getEndTime()));
+            userStmt.setString(6, g.getEndingLocation());
+            userStmt.setTimestamp(7, Timestamp.valueOf(g.getScheduledEndTime()));
+            userStmt.setString(8, g.getNotes());
+            userStmt.executeUpdate();
+        } catch (SQLException e) {
+            Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE,
+                    "SQL Exception occured when adding new GPS data to db.", e);
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<ComponentDTO> getComponentsByVehicleId(int vehicleId) {
+        List<ComponentDTO> components = new ArrayList<>();
+        String sql = "SELECT * FROM Components WHERE VehicleID = ?";
+        try (Connection conn = DataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, vehicleId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    ComponentDTO comp = new ComponentDTO();
+                    comp.setComponentId(rs.getInt("ComponentID"));
+                    comp.setVehicleId(rs.getInt("VehicleID"));
+                    comp.setComponentName(rs.getString("ComponentName"));
+                    comp.setComponentType(rs.getString("ComponentType"));
+                    comp.setHoursUsed(rs.getDouble("HoursUsed"));
+                    components.add(comp);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return components;
     }
 
 }

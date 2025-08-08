@@ -93,7 +93,7 @@ CREATE TABLE MaintenanceLog
 (
     LogID         INT            NOT NULL AUTO_INCREMENT PRIMARY KEY,
     StaffID       INT            NOT NULL,
-    GPSID         INT            NOT NULL,
+    GPSID         INT            NULL,
     VehicleID INT            NOT NULL,
     ComponentID   INT            NOT NULL,
     UsageAmt      DECIMAL(10, 2) NOT NULL,
@@ -214,9 +214,9 @@ VALUES (2, 1, 1, 1, 50.00, '2025-07-28 16:00:00', 'Completed', 'Faulty fuel inje
 
 -- Fuel Rates INSERT
 INSERT INTO FuelRates (FuelType, RatePerUnit) VALUES
-                                                  ('Diesel', 1.50),
-                                                  ('Electric', 0.20),
-                                                  ('Hybrid', 1.10);
+    ('Diesel', 1.50),
+    ('Electric', 0.20),
+    ('Hybrid', 1.10);
 
 -- Status INSERT
 INSERT INTO OperatorStatus (Status) VALUES

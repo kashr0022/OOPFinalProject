@@ -64,5 +64,13 @@
         <servlet-name>BreakHistoryServlet</servlet-name>
         <url-pattern>/breakHistory</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>GpsServlet</servlet-name>
+        <servlet-class>viewlayer.GpsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GpsServlet</servlet-name>
+        <url-pattern>/gps</url-pattern>
+    </servlet-mapping>
 </web-app>
 

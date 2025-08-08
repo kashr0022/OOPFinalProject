@@ -6,6 +6,7 @@ import transferobjects.staff.StaffDTO;
 import transferobjects.users.UsersDTO;
 import transferobjects.vehicles.VehicleDTO;
 import transferobjects.reports.BreakLogDTO;
+import transferobjects.reports.GpsDTO;
 
 import java.util.List;
 
@@ -68,7 +69,7 @@ public interface PTFMSDao {
      * @author Lily S.
      * @param vehicle, Vehicle object
      */
-    void registerVehicle(Vehicle vehicle);
+     int registerVehicle(Vehicle vehicle);
 
     /**
      * Interface method to check if vehicle entry exists with the same identifier in db
@@ -180,4 +181,12 @@ public interface PTFMSDao {
      * @param log, BreakLogDTO containing break log information to insert
      */
     void insertBreakLog(BreakLogDTO log);
+
+    List<ComponentDTO> getComponentsByVehicleId(int vehicleId);
+    
+    List<GpsDTO> getDetailedGps();
+    
+    void registerGps(GpsDTO g);
 }
+
+    

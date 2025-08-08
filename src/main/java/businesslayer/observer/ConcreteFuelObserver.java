@@ -18,7 +18,7 @@ public class ConcreteFuelObserver implements FuelReportObserver {
 
     /**
      * Called when a new fuel report is received.
-     * Increments the alert count if the fuel consumed exceeds 100 units.
+     * Increments the alert count if the fuel consumed is equal to exceeds 100 units.
      * 
      * @param report The fuel report data transfer object containing fuel consumption details.
      */

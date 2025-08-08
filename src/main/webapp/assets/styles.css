@@ -278,24 +278,21 @@ button:hover {
 }
 
 .alert-row {
-    background-color: #ffcccc;  /* Light red background */
+    background-color: #ffcccc;
     font-weight: bold;
     color: #a00;
 }
 
 td.active {
     color: green;
-    font-weight: bold;
 }
 
 td.onbreak {
-    color: blue;
-    font-weight: bold;
+    color: yellow;
 }
 
 td.clockedout {
     color: red;
-    font-weight: bold;
 }
 
 td.unknown {

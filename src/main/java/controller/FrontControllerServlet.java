@@ -23,6 +23,8 @@ public class FrontControllerServlet extends HttpServlet {
      * @param req, request
      * @param res, response
      * @throws IOException, input-output related errors
+     * @version 1.0
+     * @since JDK 21.0.4
      */
     protected void processRequest(HttpServletRequest req, HttpServletResponse res)
             throws IOException {
@@ -101,18 +103,25 @@ public class FrontControllerServlet extends HttpServlet {
                 out.print("<button type=\"submit\" value=\"Component Maintenance\">Component Maintenance</button>");
                 out.print("</form>");
 
-                out.print("<form action=\"dashboard\" method=\"GET\">");
-                out.print("<button type=\"submit\" value=\"dashboard\">Dashboard</button>");
-                out.print("</form>");
-
                 out.print("<form action=\"breakHistory\" method=\"GET\">");
                 out.print("<button type=\"submit\" value=\"breakHistory\">Punch Clock</button>");
                 out.print("</form>");
 
                 out.print("</div>");
+
+                out.print("<div class=\"button-con\">");
+                out.print("<form action=\"dashboard\" method=\"GET\">");
+                out.print("<button type=\"submit\" value=\"dashboard\">Dashboard</button>");
+                out.print("</form>");
+
+                out.print("<form action=\"gps\" method=\"GET\">");
+                out.print("<button type=\"submit\" value=\"gps\">GPS</button>");
+                out.print("</form>");
+
+                out.print("</div>");
                 out.println("</center>");
                 out.println("</div>");
-                
+
                 // added fuel consumption alerts for managers K.A.
                 String userRole = (String) session.getAttribute("userRole");
                 if ("transitmanager".equalsIgnoreCase(userRole)) {
@@ -122,8 +131,8 @@ public class FrontControllerServlet extends HttpServlet {
                     int fuelAlerts = logic.getFuelAlertCount();
                     out.println("<p>Fuel Alerts: " + fuelAlerts + "</p>");
                     out.println("</div>");
-                } 
-               
+                }
+
             }
             out.println("</body></html>");
         }

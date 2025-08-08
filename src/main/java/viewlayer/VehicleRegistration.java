@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+import transferobjects.reports.ComponentDTO;
+import transferobjects.reports.MaintenanceLogDTO;
 
 /**
  * Vehicle registration servlet that handles new vehicle registration for the PTFMS system. Provides role-based access control allowing only transit managers to register vehicles.
@@ -36,7 +39,6 @@ public class VehicleRegistration extends HttpServlet {
             out.println("<link rel='stylesheet' href='assets/styles.css'>");
             out.println("</head><body>");
             out.println("<center>");
-
 
             String registrationSuccessMsg = (String) req.getAttribute("registrationSuccessMsg");
             String alreadyExistsMsg = (String) req.getAttribute("alreadyExistsMsg");
@@ -121,7 +123,6 @@ public class VehicleRegistration extends HttpServlet {
             out.println("</body></html>");
         }
 
-
     }
 
     /**
@@ -136,9 +137,9 @@ public class VehicleRegistration extends HttpServlet {
         VehicleDTO vehicleDTO = new VehicleDTO();
         String vehicleNumber = request.getParameter("vehiclenumber");
         String vehicleType = request.getParameter("vehicletype");
-        double consumptionRate =  Double.parseDouble(request.getParameter("consumptionrate"));
+        double consumptionRate = Double.parseDouble(request.getParameter("consumptionrate"));
         String consumptionUnit = request.getParameter("consumptionunit");
-        int  maxPassengers = Integer.parseInt(request.getParameter("maxpassengers"));
+        int maxPassengers = Integer.parseInt(request.getParameter("maxpassengers"));
         String activeRoute = request.getParameter("activeroute");
 
         vehicleDTO.setVehicleNumber(vehicleNumber);
@@ -162,9 +163,9 @@ public class VehicleRegistration extends HttpServlet {
         PTFMSBusinessLogic ptfmsBusinessLogic = new PTFMSBusinessLogic();
         String vehicleNumber = request.getParameter("vehiclenumber");
         String vehicleType = request.getParameter("vehicletype");
-        double consumptionRate =  Double.parseDouble(request.getParameter("consumptionrate"));
+        double consumptionRate = Double.parseDouble(request.getParameter("consumptionrate"));
         String consumptionUnit = request.getParameter("consumptionunit");
-        int  maxPassengers = Integer.parseInt(request.getParameter("maxpassengers"));
+        int maxPassengers = Integer.parseInt(request.getParameter("maxpassengers"));
         String activeRoute = request.getParameter("activeroute");
 
         vehicleDTO.setVehicleNumber(vehicleNumber);
@@ -175,8 +176,8 @@ public class VehicleRegistration extends HttpServlet {
         vehicleDTO.setActiveRoute(activeRoute);
 
         ptfmsBusinessLogic.registerVehicle(vehicleDTO);
-        request.setAttribute("registrationSuccessMsg", "Registration of " + vehicleNumber + " successful.");
 
+        request.setAttribute("registrationSuccessMsg", "Registration of " + vehicleNumber + " successful.");
     }
 
     /**
@@ -188,6 +189,7 @@ public class VehicleRegistration extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         processRequest(request, response);
     }
+
 
     /**
      * doPost, overridden method corresponding to HTTP POST, handles vehicle registration form submission by checking for duplicate vehicles and processing registration if valid.
@@ -204,4 +206,6 @@ public class VehicleRegistration extends HttpServlet {
         }
         processRequest(request, response);
     }
+
 }
+

@@ -11,46 +11,15 @@ import java.time.LocalDateTime;
  */
 public class GpsDTO {
 
-    private String startingLocation;
-    private String endingLocation;
     private int gpsID;
     private int staffID;
     private int vehicleID;
+    private String startingLocation;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    private String endingLocation;
+    private LocalDateTime scheduledEndTime;
     private String notes;
-
-    /**
-     *
-     * @return starting location of GPS route
-     */
-    public String getStartingLocation() {
-        return startingLocation;
-    }
-
-    /**
-     * take in startinglocation, set it to local field in the object
-     * @param startingLocation, location of GPS at start of route
-     */
-    public void setStartingLocation(String startingLocation) {
-        this.startingLocation = startingLocation;
-    }
-
-    /**
-     *
-     * @return ending location of GPS route
-     */
-    public String getEndingLocation() {
-        return endingLocation;
-    }
-
-    /**
-     * take in endinglocation, set it to local field in the object
-     * @param endingLocation, location of GPS at end of route
-     */
-    public void setEndingLocation(String endingLocation) {
-        this.endingLocation = endingLocation;
-    }
 
     /**
      * @return the gpsID
@@ -95,6 +64,20 @@ public class GpsDTO {
     }
 
     /**
+     * @return the startingLocation
+     */
+    public String getStartingLocation() {
+        return startingLocation;
+    }
+
+    /**
+     * @param startingLocation the startingLocation to set
+     */
+    public void setStartingLocation(String startingLocation) {
+        this.startingLocation = startingLocation;
+    }
+
+    /**
      * @return the startTime
      */
     public LocalDateTime getStartTime() {
@@ -123,6 +106,34 @@ public class GpsDTO {
     }
 
     /**
+     * @return the endingLocation
+     */
+    public String getEndingLocation() {
+        return endingLocation;
+    }
+
+    /**
+     * @param endingLocation the endingLocation to set
+     */
+    public void setEndingLocation(String endingLocation) {
+        this.endingLocation = endingLocation;
+    }
+
+    /**
+     * @return the scheduledEndTime
+     */
+    public LocalDateTime getScheduledEndTime() {
+        return scheduledEndTime;
+    }
+
+    /**
+     * @param scheduledEndTime the scheduledEndTime to set
+     */
+    public void setScheduledEndTime(LocalDateTime scheduledEndTime) {
+        this.scheduledEndTime = scheduledEndTime;
+    }
+
+    /**
      * @return the notes
      */
     public String getNotes() {
@@ -135,6 +146,5 @@ public class GpsDTO {
     public void setNotes(String notes) {
         this.notes = notes;
     }
-
-
+    
 }

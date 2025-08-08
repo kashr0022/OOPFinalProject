@@ -18,9 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Business logic for ptfms application. holds all calls to the data layer
- * (dao). middle class between presentation and data
- *
+ * Business logic for ptfms application. holds all calls to the data layer (dao). middle class between presentation and data
+ * 
  * @author Lily S.
  * @author Khairunnisa Ashri
  * @version 1.0
@@ -41,7 +40,7 @@ public class PTFMSBusinessLogic {
 
     /**
      * checks login credentials if valid or not
-     *
+     * 
      * @author Lily S.
      * @param userIn, passed in username set in presentation layer servlet input
      * field
@@ -61,8 +60,7 @@ public class PTFMSBusinessLogic {
     }
 
     /**
-     * checks if a username has been taken, used during account registration
-     * step
+     * checks if a username has been taken, used during account registration step
      *
      * @author Lily S.
      * @param user, UserDTO object
@@ -74,7 +72,7 @@ public class PTFMSBusinessLogic {
 
     /**
      * Check if a staff combo (first and last) is already taken in the db
-     *
+     * 
      * @author Lily S.
      * @param staff, StaffDTO object
      * @return boolean, status if taken or not
@@ -85,7 +83,7 @@ public class PTFMSBusinessLogic {
 
     /**
      * Add a staff and user to database
-     *
+     * 
      * @author Lily S.
      * @param staff, StaffDTO
      * @param user, UsersDTO
@@ -180,7 +178,7 @@ public class PTFMSBusinessLogic {
 
     /**
      * Check if vehicle entry exists with the same identifier in db
-     *
+     * 
      * @author Lily S.
      * @param vehicleDTO, VehicleDTO object
      * @return boolean, value if taken or not
@@ -208,9 +206,8 @@ public class PTFMSBusinessLogic {
     }
 
     /**
-     * Utilizes observer pattern to create an alert counter system based on fuel
-     * stats
-     *
+     * Utilizes observer pattern to create an alert counter system based on fuel stats
+     * 
      * @author Khairunnisa Ashri
      * @author Lily S.
      * @return int of alert counter
@@ -286,9 +283,8 @@ public class PTFMSBusinessLogic {
     }
 
     /**
-     * Utilizes observer pattern to create an alert counter system baseed on
-     * component hour usage
-     *
+     * Utilizes observer pattern to create an alert counter system baseed on component hour usage
+     * 
      * @author Lily S.
      * @return int, counter value from observer pattern
      */
@@ -389,6 +385,10 @@ public class PTFMSBusinessLogic {
      * @param staffID, the unique identifier of the staff member
      * @return List of BreakLogDTO instances representing the staff member's
      * break log
+     * 
+     * @author Khairunnisa Ashri
+     * @param staffID, the unique identifier of the staff member
+     * @return List of BreakLogDTO instances representing the staff member's break log
      */
     public List<BreakLogDTO> getBreakLogsByStaffID(int staffID) {
         return ptfmsDao.getBreakLogsByStaffID(staffID);
@@ -423,9 +423,22 @@ public class PTFMSBusinessLogic {
      * @author Khairunnisa Ashri
      * @param log the BreakLogDTO object containing the details of the break log
      * to insert
+     * 
+     * @author Khairunnisa Ashri
+     * @param log the BreakLogDTO object containing the details of the break log to insert
      */
     public void insertBreakLog(BreakLogDTO log) {
         ptfmsDao.insertBreakLog(log);
+    }
+    
+    /**
+     * Retrieves all components associated with a specific vehicle
+     * 
+     * @param vehicleId, the unique identifier of the vehicle whose components are to be retrieved
+     * @return list of ComponentDTO objects representing the vehicle's components
+     */
+    public List<ComponentDTO> getComponentsByVehicleId(int vehicleId) {
+        return ptfmsDao.getComponentsByVehicleId(vehicleId);
     }
 
     /**
@@ -445,8 +458,8 @@ public class PTFMSBusinessLogic {
     }
 
     public void registerGps(GpsDTO g) {
-
-        if (g.getStaffID() <= 0) {
+        
+        if (g.getStaffID() <=0){
             throw new ValidationException("Invalid Staff ID");
         }
         if (g.getVehicleID() <= 0) {

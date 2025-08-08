@@ -1000,7 +1000,9 @@ public class PTFMSDaoImpl implements PTFMSDao {
                        INSERT INTO GPS (StaffID, VehicleID, StartingLocation, StartTime, EndTime, EndingLocation, ScheduledEndTime, Notes)
                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)""";
 
-        try (Connection connection = DataSource.getConnection(); PreparedStatement userStmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = DataSource.getConnection(); 
+                PreparedStatement userStmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+
             userStmt.setInt(1, g.getStaffID());
             userStmt.setInt(2, g.getVehicleID());
             userStmt.setString(3, g.getStartingLocation());

@@ -17,4 +17,11 @@ public interface FuelReportObserver {
      * @param report the fuel report containing fuel consumption and related data
      */
     void update(FuelReportDTO report);
+    
+    /**
+     * Returns the number of high fuel consumption alerts detected so far
+     * 
+     * @return the alert count
+     */
+    int getAlertCount();
 }

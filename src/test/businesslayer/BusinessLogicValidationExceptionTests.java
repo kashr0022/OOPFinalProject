@@ -6,20 +6,30 @@ import transferobjects.reports.MaintenanceLogDTO;
 import java.time.LocalDateTime;
 
 /**
- * Verifies that addMaintenance throws ValidationException
- * for each invalid‐input scenario.
+ * Unit tests for PTFMSBusinessLogic that verify
+ * Each test creates a baseline
+ * and then alters one field to simulate
+ * an invalid scenario before calling
+ * @author oussema
  */
 public class BusinessLogicValidationExceptionTests {
 
+    /** Instance of the business logic layer to test. */
     private final PTFMSBusinessLogic logic = new PTFMSBusinessLogic();
-    /**
-    // 1) Null DTO  ->  this  exception was not the one created  via validationexception  , but java exception was thrown instead
+
+    /*
+    // 1) Null DTO
+    // Disabled because a standard Java exception (NullPointerException)
+    // is thrown instead of a ValidationException.
     @Test(expected = ValidationException.class)
     public void nullMaintenance_throws() {
         logic.addMaintenance(null);
     }
     */
-    // 2) Invalid staff ID
+
+    /**
+     * Verifies that a staff ID of zero triggers a {@link ValidationException}.
+     */
     @Test(expected = ValidationException.class)
     public void invalidStaffId_throws() {
         MaintenanceLogDTO m = makeBaseLog();
@@ -27,7 +37,9 @@ public class BusinessLogicValidationExceptionTests {
         logic.addMaintenance(m);
     }
 
-    // 3) Invalid vehicle ID
+    /**
+     * Verifies that a vehicle ID of zero triggers a {@link ValidationException}.
+     */
     @Test(expected = ValidationException.class)
     public void invalidVehicleId_throws() {
         MaintenanceLogDTO m = makeBaseLog();
@@ -35,7 +47,9 @@ public class BusinessLogicValidationExceptionTests {
         logic.addMaintenance(m);
     }
 
-    // 4) Invalid component ID
+    /**
+     * Verifies that a component ID of zero triggers a {@link ValidationException}.
+     */
     @Test(expected = ValidationException.class)
     public void invalidComponentId_throws() {
         MaintenanceLogDTO m = makeBaseLog();
@@ -43,7 +57,9 @@ public class BusinessLogicValidationExceptionTests {
         logic.addMaintenance(m);
     }
 
-    // 5) Negative usage amount
+    /**
+     * Verifies that a negative usage amount triggers a {@link ValidationException}.
+     */
     @Test(expected = ValidationException.class)
     public void negativeUsageAmt_throws() {
         MaintenanceLogDTO m = makeBaseLog();
@@ -51,7 +67,9 @@ public class BusinessLogicValidationExceptionTests {
         logic.addMaintenance(m);
     }
 
-    // 6) Null date
+    /**
+     * Verifies that a {@code null} date triggers a {@link ValidationException}.
+     */
     @Test(expected = ValidationException.class)
     public void nullDate_throws() {
         MaintenanceLogDTO m = makeBaseLog();
@@ -59,7 +77,9 @@ public class BusinessLogicValidationExceptionTests {
         logic.addMaintenance(m);
     }
 
-    // 7) Blank status
+    /**
+     * Verifies that a blank status (only spaces) triggers a {@link ValidationException}.
+     */
     @Test(expected = ValidationException.class)
     public void blankStatus_throws() {
         MaintenanceLogDTO m = makeBaseLog();
@@ -67,7 +87,9 @@ public class BusinessLogicValidationExceptionTests {
         logic.addMaintenance(m);
     }
 
-    // 8) Blank notes
+    /**
+     * Verifies that blank notes trigger a {@link ValidationException}.
+     */
     @Test(expected = ValidationException.class)
     public void blankNotes_throws() {
         MaintenanceLogDTO m = makeBaseLog();
@@ -75,7 +97,9 @@ public class BusinessLogicValidationExceptionTests {
         logic.addMaintenance(m);
     }
 
-    // 9) Negative cost
+    /**
+     * Verifies that a negative cost triggers a {@link ValidationException}.
+     */
     @Test(expected = ValidationException.class)
     public void negativeCost_throws() {
         MaintenanceLogDTO m = makeBaseLog();
@@ -84,7 +108,10 @@ public class BusinessLogicValidationExceptionTests {
     }
 
     /**
-     * Creating a baseline maintenance log
+     * Creates a valid {@link MaintenanceLogDTO} instance with all
+     * required fields set to acceptable values.
+     *
+     * @return a baseline maintenance log object with valid data
      */
     private MaintenanceLogDTO makeBaseLog() {
         MaintenanceLogDTO m = new MaintenanceLogDTO();

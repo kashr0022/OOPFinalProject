@@ -35,7 +35,7 @@ public class VehicleBuildTest {
 
         // 1) Build a VehicleDTO
         VehicleDTO dto = new VehicleDTO();
-        dto.setVehicleNumber("DB004");
+        dto.setVehicleNumber("DB009");
         // Must match one of the factory’s supported types: "Diesel", "Electric", or "Hybrid"
         dto.setVehicleType("DieselBus");
         dto.setConsumptionRate(12.34);
@@ -65,7 +65,7 @@ public class VehicleBuildTest {
 
         // 5) Fetch by ID and verify fields
         VehicleDTO fetched = dao.getVehicleByID(newId);
-        assertEquals("DB004", fetched.getVehicleNumber());
+        assertEquals("DB009", fetched.getVehicleNumber());
         assertEquals(dto.getVehicleType(), fetched.getVehicleType());
         assertEquals(dto.getMaxPassengers(), fetched.getMaxPassengers());
         assertEquals(dto.getActiveRoute(), fetched.getActiveRoute());

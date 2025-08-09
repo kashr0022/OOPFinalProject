@@ -22,6 +22,7 @@ import java.util.List;
  * 
  * @author Lily S.
  * @author Khairunnisa Ashri
+ * @author Francesca Parent
  * @version 1.0
  * @since JDK 21.0.4
  */
@@ -196,7 +197,7 @@ public class PTFMSBusinessLogic {
     }
 
     /**
-     * Retrieves all fuel reports from the database
+     * Gets all fuel reports from the database
      *
      * @author Khairunnisa Ashri
      * @return List containing all fuel report DTOs
@@ -229,7 +230,7 @@ public class PTFMSBusinessLogic {
     }
 
     /**
-     * Retrieves all available cost reports from the database
+     * Gets all available cost reports from the database
      *
      * @author Khairunnisa Ashri
      * @return List consisting of CostReportDTOs
@@ -239,7 +240,7 @@ public class PTFMSBusinessLogic {
     }
 
     /**
-     * Retrieves all available cost reports from the database
+     * Gets all available cost reports from the database
      *
      * @author Khairunnisa Ashri
      * @return List consisting of MaintenanceLogDTOs
@@ -249,7 +250,7 @@ public class PTFMSBusinessLogic {
     }
 
     /**
-     * Retrieves all operator performance records from the database
+     * Gets all operator performance records from the database
      *
      * @author Khairunnisa Ashri
      * @return List consisting of Operator performance DTOs
@@ -379,7 +380,7 @@ public class PTFMSBusinessLogic {
     }
 
     /**
-     * Retrieves all break logs associated with a specific staff member
+     * Gets all break logs associated with a specific staff member
      *
      * @author Khairunnisa Ashri
      * @param staffID, the unique identifier of the staff member
@@ -395,7 +396,7 @@ public class PTFMSBusinessLogic {
     }
 
     /**
-     * Retrieves a staff member's details by their unique staff ID
+     * Gets a staff member's details by their unique staff ID
      *
      * @author Khairunnisa Ashri
      * @param staffID, the unique identifier of the staff member to retrieve
@@ -407,7 +408,7 @@ public class PTFMSBusinessLogic {
     }
 
     /**
-     * Retrieves a staff member's details based on their username
+     * Gets a staff member's details based on their username
      *
      * @author Khairunnisa Ashri
      * @param username of the staff member to retrieve
@@ -432,8 +433,9 @@ public class PTFMSBusinessLogic {
     }
     
     /**
-     * Retrieves all components associated with a specific vehicle
+     * Gets all components associated with a specific vehicle
      * 
+     * @author Khairunnisa Ashri
      * @param vehicleId, the unique identifier of the vehicle whose components are to be retrieved
      * @return list of ComponentDTO objects representing the vehicle's components
      */
@@ -441,10 +443,23 @@ public class PTFMSBusinessLogic {
         return ptfmsDao.getComponentsByVehicleId(vehicleId);
     }
 
+    /**
+     * Gets a detailed list of GPS records
+     *
+     * @author Francesca Parent
+     * @return a list of  objects containing detailed GPS information
+     */
     public List<GpsDTO> getDetailedGps() {
         return ptfmsDao.getDetailedGps();
     }
 
+    /**
+     * Registers a new GPS record in the system after validating its data
+     *
+     * @author Francesca Parent
+     * @param g  object containing GPS details to be registered
+     * @throws ValidationException
+     */
     public void registerGps(GpsDTO g) {
         
         if (g.getStaffID() <=0){

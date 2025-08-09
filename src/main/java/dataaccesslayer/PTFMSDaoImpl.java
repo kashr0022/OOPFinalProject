@@ -23,6 +23,7 @@ import java.util.logging.Logger;
  *
  * @author Lily S.
  * @author Khairunnisa Ashri
+ * @author Francesca Parent
  */
 public class PTFMSDaoImpl implements PTFMSDao {
 
@@ -954,8 +955,10 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
-     *
-     * @return
+     * Displays the data in the GPS table in the database.
+     * 
+     * @author Francesca Parent
+     * @return A list of GpsDTO objects, each representing a row of the GPS table.
      */
     public List<GpsDTO> getDetailedGps() {
         List<GpsDTO> results = new ArrayList<>();
@@ -994,6 +997,13 @@ public class PTFMSDaoImpl implements PTFMSDao {
         return results;
     }
 
+    /**
+     * Inserts user-given input into the GPS database
+     * 
+     * @author Francesca Parent
+     * @author Khairunnisa Ashri
+     * @param g The GpsDTO object holding all the row data
+     */
     @Override
     public void registerGps(GpsDTO g) {
         String query = """
@@ -1019,7 +1029,7 @@ public class PTFMSDaoImpl implements PTFMSDao {
 
             try (ResultSet generatedKeys = userStmt.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    g.setGpsID(generatedKeys.getInt(1)); // Set generated GPS ID on DTO
+                    g.setGpsID(generatedKeys.getInt(1)); // set generated GPS ID on DTO
                 } else {
                     throw new SQLException("Creating GPS failed, no ID obtained.");
                 }
@@ -1032,8 +1042,9 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
-     * Retrieves all components associated with a specific vehicle
+     * Gets all components associated with a specific vehicle
      *
+     * @author Khairunnisa Ashri
      * @param vehicleId, the unique identifier of the vehicle whose components
      * are to be retrieved
      * @return list of ComponentDTO objects representing the vehicle's

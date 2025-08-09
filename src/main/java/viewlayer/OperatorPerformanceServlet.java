@@ -23,6 +23,7 @@ public class OperatorPerformanceServlet extends HttpServlet {
     /**
      * Handles the HTTP GET request to retrieve operator performance data
      *
+     * @author Khairunnisa Ashri
      * @param req the HttpServletRequest
      * @param res the HttpServletResponse
      * @throws ServletException if a servlet error occurs
@@ -34,7 +35,7 @@ public class OperatorPerformanceServlet extends HttpServlet {
         try {
             List<OperatorPerformanceDTO> performanceList = ptfmsBusinessLogic.getOperatorPerformance();
             req.setAttribute("performanceList", performanceList);
-            req.getRequestDispatcher("/dashboard.jsp").forward(req, res);
+            req.getRequestDispatcher("/WEB-INF/views/dashboards/Dashboard.jsp").forward(req, res);
         } catch (RuntimeException e) {
             throw new ServletException("Database error fetching operator performance", e);
         }

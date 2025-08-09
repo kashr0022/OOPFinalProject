@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,11 +17,20 @@ import transferobjects.reports.GpsDTO;
 import transferobjects.reports.MaintenanceLogDTO;
 
 /**
+ * The Servlet in charge of the GPS Tracking page.
  *
  * @author Francesca Parent.
  */
 public class GpsServlet extends HttpServlet {
-
+    
+    /**
+     * Writes the HTML code for the webpage. Prevents operators from viewing the page.
+     * 
+     * @param req HttpServletRequest
+     * @param res HttpServletResponse
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
@@ -61,6 +69,16 @@ public class GpsServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Writes the HTML for the webpage and obtains stats from the GPS table in
+     * the database. Prevents operators from viewing the page. Allows operators
+     * to fill in form data, adding a row to the GPS table in the database.
+     * 
+     * @param req HttpServletRequest
+     * @param res HttpServletResponse
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
@@ -132,7 +150,7 @@ public class GpsServlet extends HttpServlet {
                 req.setAttribute("maintenanceLogs", maintenanceLogs);
                 req.setAttribute("operatorPerformance", operatorPerformance);
                 req.setAttribute("costReports", costReports);
-                req.getRequestDispatcher("/Dashboard.jsp").forward(req, res);
+                req.getRequestDispatcher("/WEB-INF/views/dashboards/Dashboard.jsp").forward(req, res);
             } catch (RuntimeException e) {
                 throw new RuntimeException(e);
             }

@@ -2,7 +2,7 @@ package transferobjects.staff;
 
 /**
  * DTO of Staff records from the PTFMS db. Contains private fields for each
- * characteristic, public getters and setters for data access & modification. enforces separation of
+ * characteristic, public getters and setters for data access and modification. enforces separation of
  * application layers. Used to pass information from presentation to business to data
  * 
  * @author Lily S.

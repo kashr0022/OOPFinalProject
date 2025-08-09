@@ -5,8 +5,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
 /**
- *
- * @author 
+ * JakartaEE8Resource
+ * 
+ * @author n/a
  */
 @Path("rest")
 public class JakartaEE8Resource {

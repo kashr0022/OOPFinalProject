@@ -2,7 +2,7 @@ package businesslayer.builder.vehicles;
 
 /**
  * Diesel electric train class used to construct objects of that type via the simple factory + builder combo
- * @author: Lily S.
+ * @author Lily S.
  * @version 1.0
  * @since JDK 21.0.4
  */

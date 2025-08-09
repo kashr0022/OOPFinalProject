@@ -205,8 +205,8 @@ public class ScheduleMaintenanceServlet extends HttpServlet {
      * @author Lily S.
      * @param req, request
      * @param res, response
-     * @throws ServletException, servlet related errors
-     * @throws IOException, input-output related errors
+     * @throws ServletException servlet related errors
+     * @throws IOException input-output related errors
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -218,8 +218,8 @@ public class ScheduleMaintenanceServlet extends HttpServlet {
      * @author Lily S.
      * @param req, request
      * @param res, response
-     * @throws ServletException, servlet related errors
-     * @throws IOException, input-output related errors
+     * @throws ServletException servlet related errors
+     * @throws IOException input-output related errors
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {

@@ -1,7 +1,12 @@
 package transferobjects.vehicles;
 
 /**
- * @author 
+ * DTO of Vehicle records from the PTFMS db. Contains private fields for each
+ * characteristic, public getters and setters for data access & modification. enforces separation of
+ * application layers. Used to pass information from presentation to business to data
+ * 
+ * @author Lily S.
+ * @author Khairunnisa Ashri
  */
 public class VehicleDTO {
     private String vehicleNumber;

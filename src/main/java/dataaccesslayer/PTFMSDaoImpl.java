@@ -1,8 +1,6 @@
 package dataaccesslayer;
 
 import businesslayer.builder.vehicles.Vehicle;
-import businesslayer.observer.FuelReportSubject;
-import model.Staff;
 import transferobjects.reports.*;
 import transferobjects.staff.StaffDTO;
 import transferobjects.users.UsersDTO;
@@ -14,21 +12,29 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * @author Lily S.
+ * Implementation of PTFMSDao interface, directly works with datasource to grab
+ * info (or add) from/to the PTFMS database
  *
+ * @author Lily S.
+ * @author Khairunnisa Ashri
  */
 public class PTFMSDaoImpl implements PTFMSDao {
 
     /**
+     * Checks login credentials if valid or not
+     *
      * @author Lily S.
-     * @return
+     * @param userIn, passed in username set in presentation layer servlet input
+     * field
+     * @param passIn, passed in password set in presentation layer servlet input
+     * field
+     * @return boolean, if credentials valid
      */
     @Override
     public boolean checkCred(String userIn, String passIn) {
@@ -55,9 +61,11 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
-     * @author: Lily S.
-     * @param staff
-     * @param user
+     * Add a staff and user to database
+     *
+     * @author Lily S.
+     * @param staff, StaffDTO
+     * @param user, UsersDTO
      */
     @Override
     public void addStaffUser(StaffDTO staff, UsersDTO user) {
@@ -87,16 +95,19 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
-     * author Lily S., Khairunnisa edited to make logs as soon as a vehicle is registered
+     * Add a maintenance entry to the database
      *
-     * @param maintenance
+     * @author Lily S.
+     * @author Khairunnisa Ashri
+     * @param maintenance, MaintenanceLogDTO that holds all needed
+     * characteristics for a db insert
      */
     @Override
     public void addMaintenance(MaintenanceLogDTO maintenance) {
         Connection connection = DataSource.getConnection();
 
         try {
-            String query = "INSERT INTO MaintenanceLog (LogID, StaffID, GPSID, VehicleID, ComponentID, UsageAmt, Date, Status, Notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO MaintenanceLog (LogID, StaffID, GPSID, VehicleID, ComponentID, UsageAmt, Status, Notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement prepState = connection.prepareStatement(query)) {
                 prepState.setInt(1, maintenance.getLogID());
                 prepState.setInt(2, maintenance.getStaffID());
@@ -108,9 +119,8 @@ public class PTFMSDaoImpl implements PTFMSDao {
                 prepState.setInt(4, maintenance.getVehicleID());
                 prepState.setInt(5, maintenance.getComponentID());
                 prepState.setDouble(6, maintenance.getUsageAmt());
-                prepState.setTimestamp(7, Timestamp.valueOf(maintenance.getDate()));
-                prepState.setString(8, maintenance.getStatus());
-                prepState.setString(9, maintenance.getNotes());
+                prepState.setString(7, maintenance.getStatus());
+                prepState.setString(8, maintenance.getNotes());
 
                 prepState.executeUpdate();
             }
@@ -122,10 +132,11 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
-     * author Lily S.
+     * Grabs user in db via unique username
      *
-     * @param userIn
-     * @return
+     * @author Lily S.
+     * @param userIn, username of desired user
+     * @return Found user in a UsersDTO object
      */
     @Override
     public UsersDTO getUserByUsername(String userIn) {
@@ -156,9 +167,12 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
+     * Checks if a username has been taken, used during account registration
+     * step
+     *
      * @author Lily S.
-     * @param user
-     * @return
+     * @param user, UserDTO object
+     * @return boolean, status if take or not
      */
     @Override
     public boolean checkUserTaken(UsersDTO user) {
@@ -186,9 +200,11 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
+     * Check if a staff combo (first and last) is already taken in the db
+     *
      * @author Lily S.
-     * @param staff
-     * @return
+     * @param staff, StaffDTO object
+     * @return boolean, status if taken or not
      */
     @Override
     public boolean checkStaffTaken(StaffDTO staff) {
@@ -217,8 +233,11 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
+     * Adds a vehicle entry to the db
+     *
      * @author Lily S.
-     * @param vehicle
+     * @author Khairunnisa Ashri
+     * @param vehicle, Vehicle object
      */
     @Override
     public int registerVehicle(Vehicle vehicle) {
@@ -231,7 +250,7 @@ public class PTFMSDaoImpl implements PTFMSDao {
             userStmt.setString(2, vehicle.getVehicleType());
             userStmt.setDouble(3, vehicle.getConsumptionRate());
             userStmt.setString(4, vehicle.getConsumptionUnit());
-            userStmt.setDouble(5, vehicle.getMaxPassengers());
+            userStmt.setInt(5, vehicle.getMaxPassengers());
             userStmt.setString(6, vehicle.getActiveRoute());
 
             int affectedRows = userStmt.executeUpdate();
@@ -245,10 +264,13 @@ public class PTFMSDaoImpl implements PTFMSDao {
                         insertDefaultComponents(connection, vehicleId, vehicle.getVehicleType());
 
                         return vehicleId;
+                    } else {
+                        System.err.println("No ID obtained from insert");
                     }
                 }
+            } else {
+                System.err.println("Insert failed, 0 rows affected");
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -256,11 +278,13 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
-     * helper method
+     * Inserts default components for a newly added vehicle into the database
+     * This helper method adds vehicle-specific components based on the vehicle
+     * type
      *
-     * @param connection
-     * @param vehicleId
-     * @param vehicleType
+     * @param connection active database connection
+     * @param vehicleId, the unique identifier of the vehicle
+     * @param vehicleType, of the vehicle
      * @throws SQLException
      */
     private void insertDefaultComponents(Connection connection, int vehicleId, String vehicleType) throws SQLException {
@@ -290,9 +314,11 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
+     * Check if vehicle entry exists with the same identifier in db
+     *
      * @author Lily S.
-     * @param vehicle
-     * @return
+     * @param vehicle, Vehicle object
+     * @return boolean, value if taken or not
      */
     @Override
     public boolean checkVehicleTaken(Vehicle vehicle) {
@@ -320,8 +346,10 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
-     * @author Khairunnisa Ashri, Lily S.
-     * @return
+     * Grabs all fuel reports
+     *
+     * @author Khairunnisa Ashri
+     * @return List containing all fuel report DTOs
      */
     public List<FuelReportDTO> getFuelReport() {
         List<FuelReportDTO> reports = new ArrayList<>();
@@ -383,8 +411,10 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
+     * Update fuel report
      *
-     * @param report
+     * @author Khairunnisa Ashri
+     * @param report, FuelReportDTO object to update
      */
     @Override
     public void updateFuelReport(FuelReportDTO report) {
@@ -423,8 +453,10 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
-     * @author Khairunnisa Ashri, Lily S.
-     * @return
+     * Get all cost reports
+     *
+     * @author Khairunnisa Ashri
+     * @return List consisting of CostReportDTOs
      */
     public List<CostReportDTO> getCostReport() {
         List<CostReportDTO> reportList = new ArrayList<>();
@@ -491,8 +523,11 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
-     * @author Lily S., Khairunnisa Ashri
-     * @return
+     * Get all maintenance log records from the database
+     *
+     * @author Khairunnisa Ashri
+     * @author Lily S.
+     * @return List consisting of MaintenanceLogDTOs
      */
     public List<MaintenanceLogDTO> getAllLogs() {
         List<MaintenanceLogDTO> logs = new ArrayList<>();
@@ -501,6 +536,7 @@ public class PTFMSDaoImpl implements PTFMSDao {
                      SELECT
                          ml.LogID,
                          ml.VehicleID,
+                         ml.StaffID,
                          v.VehicleType AS Type,
                          c.ComponentID AS ComponentID,
                          c.ComponentName AS ComponentName,
@@ -522,7 +558,6 @@ public class PTFMSDaoImpl implements PTFMSDao {
                          MaintenanceLog ml
                      JOIN Vehicles v ON ml.VehicleID = v.VehicleID
                      JOIN Components c ON ml.ComponentID = c.ComponentID
-                     ORDER BY ml.Date DESC;
                      """;
 
         try (Connection con = DataSource.getConnection(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
@@ -540,6 +575,7 @@ public class PTFMSDaoImpl implements PTFMSDao {
                 log.setDate(rs.getTimestamp("Timestamp").toLocalDateTime());
                 log.setCost(rs.getDouble("Cost"));
                 log.setNotes(rs.getString("Notes"));
+                log.setStaffID(rs.getInt("StaffID"));
                 logs.add(log);
             }
         } catch (SQLException e) {
@@ -550,8 +586,11 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
-     * @author Lily S., Khairunnisa Ashri
-     * @return
+     * Get all operator performances
+     *
+     * @author Khairunnisa Ashri
+     * @author Lily S.
+     * @return List consisting of Operator performance DTOs
      */
     public List<OperatorPerformanceDTO> getOperatorPerformance() {
         List<OperatorPerformanceDTO> results = new ArrayList<>();
@@ -610,8 +649,10 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
+     * Gets all components from db
+     *
      * @author Lily S.
-     * @return
+     * @return List consisting of ComponentDTOs
      */
     @Override
     public List<ComponentDTO> getAllComponents() {
@@ -646,9 +687,10 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
-     * Lily S.
+     * Get all staff from db
      *
-     * @return
+     * @author Lily S.
+     * @return List consisting of each staff entry as a StaffDTO
      */
     @Override
     public List<StaffDTO> getAllStaff() {
@@ -682,9 +724,10 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
-     * Lily S.
+     * Get all gps from db
      *
-     * @return
+     * @author Lily S.
+     * @return List consisting of each gps entry as a GpsDTO
      */
     @Override
     public List<GpsDTO> getAllGps() {
@@ -720,6 +763,14 @@ public class PTFMSDaoImpl implements PTFMSDao {
         return gpsList;
     }
 
+    /**
+     * Grabs component in DB via specific ID passed in
+     *
+     * @author Lily S.
+     * @param id, id of desired component
+     * @return ComponentDTO, specified component in DTO form to store all
+     * characteristics
+     */
     @Override
     public ComponentDTO getComponentByID(int id) {
         Connection connection = null;
@@ -750,6 +801,14 @@ public class PTFMSDaoImpl implements PTFMSDao {
         return componentDTO;
     }
 
+    /**
+     * Grabs vehicle in DB via specific ID passed in
+     *
+     * @author Lily S.
+     * @param id, id of desired vehicle
+     * @return VehicleDTO, specified vehicle in DTO form to store all
+     * characteristics
+     */
     @Override
     public VehicleDTO getVehicleByID(int id) {
         Connection connection = null;
@@ -782,9 +841,11 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
+     * Get break logs by staff ID
      *
-     * @param staffID
-     * @return
+     * @author Khairunnisa Ashri
+     * @param staffID, staff ID to filter break logs
+     * @return List of BreakLogDTOs for the specified staff member
      */
     @Override
     public List<BreakLogDTO> getBreakLogsByStaffID(int staffID) {
@@ -813,9 +874,11 @@ public class PTFMSDaoImpl implements PTFMSDao {
     }
 
     /**
+     * Get staff by staff ID
      *
-     * @param staffID
-     * @return
+     * @author Khairunnisa Ashri
+     * @param staffID, staff ID to retrieve
+     * @return StaffDTO object for the specified staff ID
      */
     @Override
     public StaffDTO getStaffByID(int staffID) {
@@ -837,6 +900,12 @@ public class PTFMSDaoImpl implements PTFMSDao {
         return null;
     }
 
+    /**
+     * Insert break log entry
+     *
+     * @author Khairunnisa Ashri
+     * @param log, BreakLogDTO containing break log information to insert
+     */
     @Override
     public void insertBreakLog(BreakLogDTO log) {
         String sql = "INSERT INTO BreakLog (StaffID, Action, Timestamp) VALUES (?, ?, ?)";
@@ -852,6 +921,13 @@ public class PTFMSDaoImpl implements PTFMSDao {
         }
     }
 
+    /**
+     * Get staff by username
+     *
+     * @author Khairunnisa Ashri
+     * @param username, username to retrieve staff information
+     * @return StaffDTO object for the specified username
+     */
     @Override
     public StaffDTO getStaffByUsername(String username) {
         StaffDTO staff = null;
@@ -924,7 +1000,9 @@ public class PTFMSDaoImpl implements PTFMSDao {
                        INSERT INTO GPS (StaffID, VehicleID, StartingLocation, StartTime, EndTime, EndingLocation, ScheduledEndTime, Notes)
                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)""";
 
-        try (Connection connection = DataSource.getConnection(); PreparedStatement userStmt = connection.prepareStatement(query)) {
+        try (Connection connection = DataSource.getConnection(); 
+                PreparedStatement userStmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+
             userStmt.setInt(1, g.getStaffID());
             userStmt.setInt(2, g.getVehicleID());
             userStmt.setString(3, g.getStartingLocation());
@@ -933,7 +1011,19 @@ public class PTFMSDaoImpl implements PTFMSDao {
             userStmt.setString(6, g.getEndingLocation());
             userStmt.setTimestamp(7, Timestamp.valueOf(g.getScheduledEndTime()));
             userStmt.setString(8, g.getNotes());
-            userStmt.executeUpdate();
+            int affectedRows = userStmt.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Creating GPS failed, no rows affected.");
+            }
+
+            try (ResultSet generatedKeys = userStmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    g.setGpsID(generatedKeys.getInt(1)); // Set generated GPS ID on DTO
+                } else {
+                    throw new SQLException("Creating GPS failed, no ID obtained.");
+                }
+            }
         } catch (SQLException e) {
             Logger.getLogger(PTFMSDaoImpl.class.getName()).log(Level.SEVERE,
                     "SQL Exception occured when adding new GPS data to db.", e);
@@ -941,6 +1031,14 @@ public class PTFMSDaoImpl implements PTFMSDao {
         }
     }
 
+    /**
+     * Retrieves all components associated with a specific vehicle
+     *
+     * @param vehicleId, the unique identifier of the vehicle whose components
+     * are to be retrieved
+     * @return list of ComponentDTO objects representing the vehicle's
+     * components
+     */
     @Override
     public List<ComponentDTO> getComponentsByVehicleId(int vehicleId) {
         List<ComponentDTO> components = new ArrayList<>();
@@ -963,5 +1061,4 @@ public class PTFMSDaoImpl implements PTFMSDao {
         }
         return components;
     }
-
 }

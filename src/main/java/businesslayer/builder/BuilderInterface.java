@@ -2,7 +2,7 @@ package businesslayer.builder;
 
 /**
  * Interface for the vehicle creation builder pattern, allows to chain create characteristics for complex objects step by step
- * author: Lily S.
+ * @author: Lily S.
  * @version 1.0
  * @since JDK 21.0.4
  */

@@ -2,10 +2,11 @@
 package businesslayer.builder;
 
 import businesslayer.builder.vehicles.DieselBus;
+import businesslayer.builder.vehicles.ElectricLightRail;
 
 /**
  * Builder class for the electric light rail vehicle that implements builder interface.
- * author: Lily S.
+ * @author: Lily S.
  * @version 1.0
  * @since JDK 21.0.4
  */
@@ -81,7 +82,7 @@ public class ElectricLightRailBuilder implements BuilderInterface {
      * constructor for electric light rail
      * @return constructed vehicle object
      */
-    public DieselBus build() {
-        return new DieselBus(vehicleNumber, vehicleType, consumptionRate, consumptionUnit, maxPassengers, activeRoute);
+    public ElectricLightRail build() {
+        return new ElectricLightRail(vehicleNumber, vehicleType, consumptionRate, consumptionUnit, maxPassengers, activeRoute);
     }
 }

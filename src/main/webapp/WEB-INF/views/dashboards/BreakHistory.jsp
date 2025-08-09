@@ -1,3 +1,8 @@
+<%-- 
+    Document   : BreakHistory.jsp
+    Purpose    : JSP for breakhistory servlet, showing break log records (punch clock)
+    Author     : Khairunnisa Ashri
+--%>
 <%@page import="transferobjects.reports.BreakLogDTO"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

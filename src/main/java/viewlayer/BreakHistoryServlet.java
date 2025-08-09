@@ -11,14 +11,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Servlet to display break history and allow staff to submit break actions.
+ * Servlet to display break history and allow staff to submit break actions
  *
- * Supports role-based access: - TransitManager can view any staff's break logs
- * (using ?staffID= param), - Other users can view only their own break logs.
+ * Supports role-based access
  *
- * Handles GET to show break logs and POST to record new break actions.
- *
- * Author: Khairunnisa Ashri
+ * @author Khairunnisa Ashri
+ * @version 1.0
+ * @since JDK 21.0.4
  */
 public class BreakHistoryServlet extends HttpServlet {
 
@@ -29,8 +28,7 @@ public class BreakHistoryServlet extends HttpServlet {
 
     /**
      * Handles HTTP GET requests to display break history. Allows TransitManager
-     * to specify staffID to view logs, other users can only view their own
-     * logs.
+     * to specify staffID to view logs, other users can only view their own logs
      *
      * @param req HttpServletRequest object containing client request
      * @param res HttpServletResponse object for sending response
@@ -56,8 +54,8 @@ public class BreakHistoryServlet extends HttpServlet {
         int staffID;
         String staffIDStr = req.getParameter("staffID");
 
+        // TransitManager can view any staff break logs
         if ("TransitManager".equalsIgnoreCase(userRole)) {
-            // TransitManager can view any staff break logs
             if (staffIDStr == null || staffIDStr.isEmpty()) {
                 staffID = loggedStaffId; // default
             } else {
@@ -89,7 +87,7 @@ public class BreakHistoryServlet extends HttpServlet {
         boolean showBreakActions = true;
         // hide buttons if coming from dashboard
         if (referer != null && referer.contains("/dashboard")) {
-            showBreakActions = false; 
+            showBreakActions = false;
         }
 
         req.setAttribute("showBreakActions", showBreakActions);
@@ -99,7 +97,7 @@ public class BreakHistoryServlet extends HttpServlet {
 
     /**
      * Handles HTTP POST requests to record a new break action for the logged-in
-     * user. Expects an "action" parameter describing the break action.
+     * user. Expects an "action" parameter describing the break action
      *
      * @param req HttpServletRequest object containing client request
      * @param res HttpServletResponse object for sending response
@@ -108,18 +106,21 @@ public class BreakHistoryServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        // get existing session
         HttpSession session = req.getSession(false);
         if (session == null) {
             res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "No active session, please login.");
             return;
         }
-
+        
+        // retrieve staff id from session
         Integer staffID = (Integer) session.getAttribute("loggedStaffId");
         if (staffID == null) {
             res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Session missing staff info, please login.");
             return;
         }
-
+        
+        // validate action
         String action = req.getParameter("action");
         if (action == null || action.trim().isEmpty()) {
             res.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing action parameter.");

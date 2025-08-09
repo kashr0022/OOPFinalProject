@@ -2,6 +2,7 @@ package businesslayer.observer;
 
 /**
  * Observer interface for monitoring component stats and updating counters according to component data
+ * 
  * @author Lily S.
  * @version 1.0
  * @since JDK 21.0.4

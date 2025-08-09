@@ -27,7 +27,7 @@ CREATE TABLE Vehicles
 (
     VehicleID   INT            NOT NULL AUTO_INCREMENT PRIMARY KEY,
     VehicleNumber VARCHAR(50) UNIQUE,
-    VehicleType     ENUM('DieselBus', 'DieselElectricTrain', 'ElectricLightRail') NOT NULL,
+    VehicleType      VARCHAR(50) NOT NULL,
     ConsumptionRate DECIMAL(10, 2) NOT NULL,
     ConsumptionUnit ENUM('mpg', 'L/km', 'kWh/hr') NOT NULL,
     MaxPassengers INT NOT NULL,

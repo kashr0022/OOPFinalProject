@@ -2,8 +2,7 @@
 package transferobjects.staff;
 
 /**
- * Data Transfer Object representing the hours worked by an operator.
- * Contains the operator's name and the total hours worked.
+ * DTO representing the hours worked by an operator, contains the operator's name and the total hours worked.
  * 
  * @author Khairunnisa Ashri
  */
@@ -23,7 +22,7 @@ public class OperatorHoursDTO {
     }
 
    /**
-     * Returns the operator's name.
+     * Returns the operator's name
      *
      * @return the operatorName
      */
@@ -32,7 +31,7 @@ public class OperatorHoursDTO {
     }
     
      /**
-     * Returns the total hours worked by the operator.
+     * Returns the total hours worked by the operator
      *
      * @return the hoursWorked
      */

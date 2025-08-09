@@ -235,6 +235,55 @@ Checks in database for duplicate username/first+last combo prevention during reg
    </td>
   <td>August 6th, 2025</td>
 </tr>
+<tr>
+  <td>3.4</td>
+  <td>Francesca Parent</td>
+  <td>Completed FR03, a new GPS tracking page, with the ability to add data, and to not accept invalid data</td>
+  <td>August 6th, 2025</td>
+</tr>
+<tr>
+  <td>3.5</td>
+  <td>Oussema Faleh</td>
+  <td>Completed ValidationException for business logic Operations</td>
+  <td>August 6th, 2025</td>
+</tr>
+<tr>
+  <td>3.6</td>
+  <td>Oussema Faleh</td>
+  <td>
+     <ul>
+        <li>Implemented JUnit Tests on many different aspects of the project including</li>
+        <li>Dao operations</li>
+        <li>Design pattern classes</li>
+        <li>ValidationException cases</li>
+      </ul>
+   </td>
+  <td>August 6th, 2025</td>
+</tr>
+<tr>
+  <td>3.7</td>
+  <td>Lily S.</td>
+  <td>
+     <ul>
+        <li>Added JavaDoc comments to code I am responsible for</li>
+        <li>Table of layers submission file finished</li>
+        <li>UML Diagrams created for patterns personally worked on</li>
+      </ul>
+   </td>
+  <td>August 8th, 2025</td>
+</tr>
+<tr>
+  <td>3.8</td>
+  <td>Khairunnisa Ashri</td>
+  <td>
+     <ul>
+        <li>Checked tests</li>
+        <li>fixed GPS insertion issue</li>
+        <li>Added JavaDoc</li>
+      </ul>
+   </td>
+  <td>August 8th, 2025</td>
+</tr>
 </table>
 
 

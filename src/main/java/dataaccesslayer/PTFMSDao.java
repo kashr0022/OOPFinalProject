@@ -14,6 +14,7 @@ import java.util.List;
  * Interface for DAOImpl, declares all the methods utilized in the web application, directly works with datasource to grab info (or add) from/to the PTFMS database
  * @author Lily S.
  * @author Khairunnisa Ashri
+ * @author Francesca Parent
  */
 public interface PTFMSDao {
 
@@ -207,14 +208,28 @@ public interface PTFMSDao {
     void insertBreakLog(BreakLogDTO log);
     
     /**
+     * Gets a list of components that are associated with the specified vehicle
      *
-     * @param vehicleId
+     * @author Khairunnisa Ashri
+     * @param vehicleId, list of objects representing the components of the vehicle
      * @return
      */
     List<ComponentDTO> getComponentsByVehicleId(int vehicleId);
     
+    /**
+     * Displays the data in the GPS table in the database.
+     * 
+     * @Francesca Parent
+     * @return A list of GpsDTO objects, each representing a row of the GPS table.
+     */
     List<GpsDTO> getDetailedGps();
     
+    /**
+     * Insert GPS data into the database
+     * 
+     * @Francesca Parent
+     * @param g A DTO object holding the attributes of the instance to be added
+     */
     void registerGps(GpsDTO g);
 }
 

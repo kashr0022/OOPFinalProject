@@ -219,7 +219,7 @@ public interface PTFMSDao {
     /**
      * Displays the data in the GPS table in the database.
      * 
-     * @Francesca Parent
+     * @author Francesca Parent
      * @return A list of GpsDTO objects, each representing a row of the GPS table.
      */
     List<GpsDTO> getDetailedGps();
@@ -227,7 +227,7 @@ public interface PTFMSDao {
     /**
      * Insert GPS data into the database
      * 
-     * @Francesca Parent
+     * @author Francesca Parent
      * @param g A DTO object holding the attributes of the instance to be added
      */
     void registerGps(GpsDTO g);

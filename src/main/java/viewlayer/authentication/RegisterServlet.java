@@ -11,6 +11,7 @@ import transferobjects.users.UsersDTO;
 
 /**
  * Servlet responsible for the Register page. Allows users to interact with a GUI form in order to register a new user/staff with the DB.
+ * 
  * @author Lily S.
  * @version 1.0
  * @since JDK 21.0.4
@@ -24,7 +25,7 @@ public class RegisterServlet extends HttpServlet {
      * @author Lily S.
      * @param req, webapp request
      * @param res, webapp response
-     * @throws IOException, input-output error
+     * @throws IOException input-output error
      */
     protected void processRequest(HttpServletRequest req, HttpServletResponse res)
             throws IOException {
@@ -176,8 +177,8 @@ public class RegisterServlet extends HttpServlet {
      * @author Lily S.
      * @param req, request
      * @param res, response
-     * @throws ServletException, servlet related errors
-     * @throws IOException, input-output related errors
+     * @throws ServletException servlet related errors
+     * @throws IOException input-output related errors
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
@@ -190,8 +191,8 @@ public class RegisterServlet extends HttpServlet {
      * @author Lily S.
      * @param req, request
      * @param res, response
-     * @throws ServletException, servlet related errors
-     * @throws IOException, input-output related errors
+     * @throws ServletException servlet related errors
+     * @throws IOException input-output related errors
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res)

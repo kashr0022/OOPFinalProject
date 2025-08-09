@@ -16,7 +16,7 @@ import java.util.List;
  * all vehicle components. Shows color-coded status indicators and maintenance
  * scheduling options based on user roles.
  *
- * @author: Lily S.
+ * @author Lily S.
  * @version 1.0
  * @since JDK 21.0.4
  */
@@ -28,9 +28,9 @@ public class ComponentMaintenanceServlet extends HttpServlet {
      * usage hours, status, and available actions based on user role.
      *
      * @author Lily S.
-     * @param req, request
-     * @param res, response
-     * @throws IOException, input-output related errors
+     * @param req request
+     * @param res response
+     * @throws IOException if input-output related errors
      */
     protected void processRequest(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("text/html;charset=UTF-8");
@@ -112,8 +112,8 @@ public class ComponentMaintenanceServlet extends HttpServlet {
      * display based on hours used thresholds.
      *
      * @author Lily S.
-     * @param hoursUsed, total hours the component has been in use
-     * @return String, color name for status display (red, yellow, or green)
+     * @param hoursUsed total hours the component has been in use
+     * @return String color name for status display (red, yellow, or green)
      */
     protected String getStatusColor(double hoursUsed) {
         if (hoursUsed > 1100) {
@@ -130,8 +130,8 @@ public class ComponentMaintenanceServlet extends HttpServlet {
      * hours used thresholds for display purposes.
      *
      * @author Lily S.
-     * @param hoursUsed, total hours the component has been in use
-     * @return String, status text (CRITICAL, WARNING, or FUNCTIONAL)
+     * @param hoursUsed total hours the component has been in use
+     * @return String status text (CRITICAL, WARNING, or FUNCTIONAL)
      */
     protected String getStatusText(double hoursUsed) {
         if (hoursUsed > 1100) {
@@ -148,7 +148,7 @@ public class ComponentMaintenanceServlet extends HttpServlet {
      * maintenance attention from the business logic layer.
      *
      * @author Lily S.
-     * @return int, number of components with maintenance alerts
+     * @return int number of components with maintenance alerts
      */
     protected int getAlertCounter() {
         PTFMSBusinessLogic ptfmsBusinessLogic = new PTFMSBusinessLogic();
@@ -160,9 +160,9 @@ public class ComponentMaintenanceServlet extends HttpServlet {
      * processRequest while feeding in parameters HTTPServletRequest request
      * (req), HttpServletResponse response (res)
      *
-     * @param request, request
-     * @param response, response
-     * @throws IOException, input-output related errors
+     * @param request request
+     * @param response response
+     * @throws IOException if input-output related errors
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         processRequest(request, response);
@@ -173,9 +173,9 @@ public class ComponentMaintenanceServlet extends HttpServlet {
      * processRequest while feeding in parameters HTTPServletRequest request
      * (req), HttpServletResponse response (res)
      *
-     * @param request, request
-     * @param response, response
-     * @throws IOException, input-output related errors
+     * @param request request
+     * @param response response
+     * @throws IOException input-output related errors
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         processRequest(request, response);

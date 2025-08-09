@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 /**
  * Vehicle registration servlet that handles new vehicle registration for the PTFMS system. Provides role-based access control allowing only transit managers to register vehicles.
  * 
- * @author: Lily S.
+ * @author Lily S.
  * @version 1.0
  * @since JDK 21.0.4
  */
@@ -24,7 +24,7 @@ public class VehicleRegistration extends HttpServlet {
      * @author Lily S.
      * @param req, request
      * @param res, response
-     * @throws IOException, input-output related errors
+     * @throws IOException input-output related errors
      */
     protected void processRequest(HttpServletRequest req, HttpServletResponse res)
             throws IOException {
@@ -182,7 +182,7 @@ public class VehicleRegistration extends HttpServlet {
      * doGet, overridden method corresponding to HTTP GET, simply calls processRequest while feeding in parameters HTTPServletRequest request, HttpServletResponse response
      * @param request, request
      * @param response, response
-     * @throws IOException, input-output related errors
+     * @throws IOException input-output related errors
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         processRequest(request, response);
@@ -194,7 +194,7 @@ public class VehicleRegistration extends HttpServlet {
      * @author Lily S.
      * @param request, request
      * @param response, response
-     * @throws IOException, input-output related errors
+     * @throws IOException input-output related errors
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (!checkIfExists(request, response)) {

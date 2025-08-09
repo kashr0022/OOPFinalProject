@@ -2,7 +2,7 @@ package businesslayer.builder.vehicles;
 
 /**
  * Electric light rail class useed to construct electric light rail vehicles via the simple factory + builder combo
- * @author: Lily S.
+ * @author Lily S.
  * @version 1.0
  * @since JDK 21.0.4
  */

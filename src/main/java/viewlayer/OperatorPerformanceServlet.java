@@ -23,6 +23,7 @@ public class OperatorPerformanceServlet extends HttpServlet {
     /**
      * Handles the HTTP GET request to retrieve operator performance data
      *
+     * @author Khairunnisa Ashri
      * @param req the HttpServletRequest
      * @param res the HttpServletResponse
      * @throws ServletException if a servlet error occurs

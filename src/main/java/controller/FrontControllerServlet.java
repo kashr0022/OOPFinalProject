@@ -11,7 +11,8 @@ import java.io.PrintWriter;
 
 /**
  * Front controller of the web app. Contains log-in screen and navigation to every other page. Acts as a traffic controller.
- * @author: Lily S., Khairunnisa Ashri
+ * @author Lily S.
+ * @author Khairunnisa Ashri
  * @version 1.0
  * @since JDK 21.0.4
  */
@@ -21,9 +22,9 @@ public class FrontControllerServlet extends HttpServlet {
      * processRequest holds all the main html being output to the screen via the printwriter. Content such as navigation, log-in inputs are shown.
      * @author Lily S.
      * @author Khairunnisa Ashri
-     * @param req, request
-     * @param res, response
-     * @throws IOException, input-output related errors
+     * @param req request
+     * @param res response
+     * @throws IOException input-output related errors
      * @version 1.0
      * @since JDK 21.0.4
      */
@@ -144,7 +145,7 @@ public class FrontControllerServlet extends HttpServlet {
      * @author Lily S.
      * @param userIn, passed in username from the input field in processRequest()
      * @param passIn, passed in password from the input field in proccessRequest()
-     * @return boolean, status if credentials are valid or not
+     * @return boolean status if credentials are valid or not
      */
     protected boolean authenticateAccount(String userIn, String passIn) {
         PTFMSBusinessLogic ptfmsBusinessLogic = new PTFMSBusinessLogic();
@@ -155,8 +156,8 @@ public class FrontControllerServlet extends HttpServlet {
      * doGet, overridden method corresponding to HTTP GET, simply calls processRequest while feeding in parameters HTTPServletRequest request (req), HttpServletResponse response (res)
      * @param req, request
      * @param res, response
-     * @throws ServletException, servlet related errors
-     * @throws IOException, input-output related errors
+     * @throws ServletException servlet related errors
+     * @throws IOException input-output related errors
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res)
@@ -167,12 +168,13 @@ public class FrontControllerServlet extends HttpServlet {
 
     /**
      * doPost, overridden method corresponding to HTTP POST, this holds the majority of the logic behind login check, login validation, logout, and putting user cred + role into sesh storage.
+     * 
      * @author Lily S.
-     * @auhtor Khairunnisa Ashri
-     * @param request
-     * @param response
-     * @throws ServletException, servlet related errors
-     * @throws IOException, input-output related errors
+     * @author Khairunnisa Ashri
+     * @param request request
+     * @param response response
+     * @throws ServletException servlet related errors
+     * @throws IOException input-output related errors
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

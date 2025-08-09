@@ -2,7 +2,7 @@ package businesslayer.builder.vehicles;
 
 /**
  * Abstract class that vehicle type classes extend. defines the characteristics of the child objects alongside with getters that can be utilized with any of the children.
- * @author: Lily S.
+ * @author Lily S.
  * @version 1.0
  * @since JDK 21.0.4
  */
